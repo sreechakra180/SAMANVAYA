@@ -47,17 +47,23 @@ def canonicalise(kind: str, raw: str) -> str | None:
         return s if _SENDER.match(s) else None
     return None
 
-def mask(kind: str, canonical: str, distinct: int) -> str:
-    if distinct >= 3:
+def mask(kind: str, canonical: str, distinct: int = 0) -> str:
+    if not canonical:
+        return ""
+    if canonical in ("1930", "+911930", "1909", "+911909"):
         return canonical
     if kind == "phone":
-        return canonical[:6] + "XXXXX" + canonical[-3:] if len(canonical) >= 10 else canonical
+        return canonical[:6] + "XXXXX" + canonical[-2:] if len(canonical) >= 10 else canonical
     if kind == "upi":
         local, _, dom = canonical.partition("@")
-        return (local[0] if local else "") + "***@" + dom
+        if len(local) <= 2:
+            return (local[0] if local else "") + "***@" + dom
+        return local[:2] + "***" + local[-1] + "@" + dom
     if kind == "url":
         host = canonical.replace("https://", "", 1).split("/", 1)[0]
         return host[:3] + "***" + host[3:8] if len(host) > 5 else canonical
     if kind == "sender_id":
+        if len(canonical) == 6 and canonical.isalpha() and canonical.isupper():
+            return canonical
         return canonical[:2] + "***"
     return canonical

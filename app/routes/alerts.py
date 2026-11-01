@@ -10,6 +10,7 @@ from sqlalchemy import select, func, distinct
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.db.models import Report, Indicator, KIND, VERDICT_INV
+from app.services.normalise import mask
 
 router = APIRouter()
 
@@ -144,7 +145,8 @@ def alerts(response: Response, pincode: Optional[str] = None, db: Session = Depe
     for r in recent_rows:
         ind = indicators_map.get(r.indicator_id)
         kind_name = KIND_INV.get(ind.kind, "phone") if ind else "phone"
-        disp_val = (ind.display_value or ind.canonical) if ind else "Unlisted Identifier"
+        raw_val = (ind.canonical or ind.display_value) if ind else "Unlisted Identifier"
+        disp_val = mask(kind_name, raw_val, 0) if ind else "Unlisted Identifier"
         rep_data = {
             "report_id": r.report_id,
             "occurred_at": _to_iso(r.occurred_at),

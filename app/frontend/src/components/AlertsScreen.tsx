@@ -26,6 +26,7 @@ import { useTranslation } from '../i18n/index.js'
 import { AREAS } from '../data.js'
 import { detectIdentifierType } from '../utils/detector.js'
 import { formatFullDateTime } from '../utils/date.js'
+import { maskIdentifier, maskAdvisoryText } from '../utils/mask.js'
 import { fetchAlertsWithFallback, saveSessionChallenge } from '../services/resilientApi.js'
 
 interface AlertsScreenProps {
@@ -338,8 +339,8 @@ export function AlertsScreen({
                               <span className="text-[10px] font-mono uppercase text-[#78877D] block">
                                 Target Identifier ({alt.identifier_type || 'Phone'})
                               </span>
-                              <span className="font-mono font-bold text-xs sm:text-sm text-[#193A2A] truncate block">
-                                {alt.identifier_value}
+                              <span className="font-mono font-bold text-xs sm:text-sm text-[#193A2A] truncate block tracking-wide">
+                                {maskIdentifier(alt.identifier_value, alt.identifier_type)}
                               </span>
                             </div>
                             <button
@@ -355,7 +356,7 @@ export function AlertsScreen({
                         {/* Advisory Content */}
                         <div className="p-3 rounded-xl bg-[#F8FAF7] border border-[#DCE7DD] text-xs text-[#193A2A] leading-relaxed">
                           <strong className="block text-[#BA1A1A] mb-0.5 font-mono">{t.alerts.advisoryHeader}:</strong>
-                          {alt.advice || (alt.type === 'SPIKE'
+                          {maskAdvisoryText(alt.advice) || (alt.type === 'SPIKE'
                             ? `Sudden surge of ${alt.count || 'multiple'} reports detected in the last 24h across ${alt.net_diversity || 'independent'} network segments. Exercise extreme caution.`
                             : `Novel attack vector '${String(alt.scam_type || '').replace(/[-_]/g, ' ')}' recently observed in this jurisdiction with zero prior history in 30 days.`
                           )}
@@ -424,7 +425,7 @@ export function AlertsScreen({
                             {rep.identifier_value && (
                               <div className="flex items-center gap-2 text-xs font-mono">
                                 <span className="text-[#78877D]">Target:</span>
-                                <span className="font-bold text-[#193A2A]">{rep.identifier_value}</span>
+                                <span className="font-bold text-[#193A2A] tracking-wide">{maskIdentifier(rep.identifier_value, rep.identifier_type)}</span>
                                 {onLookupIdentifier && (
                                   <button
                                     onClick={() => onLookupIdentifier(rep.identifier_type || 'phone', rep.identifier_value)}

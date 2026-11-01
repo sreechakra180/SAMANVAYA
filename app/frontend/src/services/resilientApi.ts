@@ -10,6 +10,9 @@
  */
 
 import seedData from '../data/seedDatabase.json'
+import { maskIdentifier, maskAdvisoryText } from '../utils/mask.js'
+
+export { maskIdentifier, maskAdvisoryText }
 
 export interface AIScanResult {
   is_scam: boolean
@@ -429,17 +432,6 @@ function normalizeIdentifier(type: string, val: string): string {
   return v
 }
 
-function maskIdentifier(type: string, canon: string): string {
-  if (type === 'phone') {
-    return canon.length >= 10 ? canon.slice(0, 6) + 'XXXXX' + canon.slice(-3) : canon
-  }
-  if (type === 'upi') {
-    const [local, dom] = canon.split('@')
-    return (local ? local[0] : '') + '***@' + (dom || '')
-  }
-  return canon
-}
-
 export function lookupIdentifierClientSide(type: string, rawVal: string): LookupResult {
   const norm = normalizeIdentifier(type, rawVal)
   const key = `${type}:${norm}`
@@ -484,7 +476,8 @@ export function lookupIdentifierClientSide(type: string, rawVal: string): Lookup
     )
     const verdict = matchedIndicator?.verdict || (distinctReps >= 2 ? 'KNOWN_SCAM' : 'SUSPICIOUS')
     const primaryScamType = matchingReports[0]?.scam_type || matchedIndicator?.scam_type || 'other'
-    const displayVal = matchedIndicator?.display_value || matchingReports[0]?.identifier_value || maskIdentifier(type, norm)
+    const rawDisplay = matchedIndicator?.display_value || matchingReports[0]?.identifier_value || norm
+    const displayVal = maskIdentifier(rawDisplay, type)
 
     const evidenceList: ReportEvidenceRow[] = matchingReports.map(r => ({
       occurred_at: r.occurred_at,
@@ -545,7 +538,7 @@ const SEED_SPIKES: LiveAlertItem[] = [
     type: 'SPIKE',
     pincode: '560102',
     scam_type: 'upi-refund-qr',
-    identifier_value: 'sreeja@hdfcbank',
+    identifier_value: 'sr***a@hdfcbank',
     identifier_type: 'upi',
     report_id: 'REP-BLR-01',
     channel: 'SMS or WhatsApp',
@@ -560,7 +553,7 @@ const SEED_SPIKES: LiveAlertItem[] = [
     type: 'SPIKE',
     pincode: '110016',
     scam_type: 'digital-arrest',
-    identifier_value: '+919876500001',
+    identifier_value: '+91 987XXXXX01',
     identifier_type: 'phone',
     report_id: 'REP-DEL-02',
     channel: 'Phone call',
@@ -575,7 +568,7 @@ const SEED_SPIKES: LiveAlertItem[] = [
     type: 'NEW_TYPE',
     pincode: '400050',
     scam_type: 'fake-kyc-link',
-    identifier_value: '+917282321288',
+    identifier_value: '+91 728XXXXX88',
     identifier_type: 'phone',
     report_id: 'REP-MUM-03',
     channel: 'SMS or WhatsApp',
@@ -616,21 +609,24 @@ export async function fetchAlertsWithFallback(pincode?: string): Promise<{
     ? allReports.filter(r => r.pincode === pincode)
     : allReports
 
-  const liveReportAlerts: LiveAlertItem[] = filteredReports.map(r => ({
-    type: 'LIVE_REPORT',
-    pincode: r.pincode,
-    scam_type: r.scam_type,
-    identifier_value: r.identifier_value,
-    identifier_type: r.identifier_type,
-    report_id: r.report_id,
-    channel: r.channel,
-    occurred_at: r.occurred_at,
-    reported_at: r.reported_at,
-    has_screenshot: r.has_screenshot,
-    amount_lost_inr: r.amount_lost_inr,
-    window: '24h',
-    advice: `Recent citizen incident logged for ${r.identifier_type.toUpperCase()} '${r.identifier_value}' regarding ${r.scam_type.replace(/-/g, ' ')} via ${r.channel}.`,
-  }))
+  const liveReportAlerts: LiveAlertItem[] = filteredReports.map(r => {
+    const maskedVal = maskIdentifier(r.identifier_value, r.identifier_type)
+    return {
+      type: 'LIVE_REPORT',
+      pincode: r.pincode,
+      scam_type: r.scam_type,
+      identifier_value: maskedVal,
+      identifier_type: r.identifier_type,
+      report_id: r.report_id,
+      channel: r.channel,
+      occurred_at: r.occurred_at,
+      reported_at: r.reported_at,
+      has_screenshot: r.has_screenshot,
+      amount_lost_inr: r.amount_lost_inr,
+      window: '24h',
+      advice: `Recent citizen incident logged for ${r.identifier_type.toUpperCase()} '${maskedVal}' regarding ${r.scam_type.replace(/-/g, ' ')} via ${r.channel}.`,
+    }
+  })
 
   const filteredSpikes = pincode && pincode !== 'all'
     ? SEED_SPIKES.filter(a => a.pincode === pincode)
@@ -648,7 +644,7 @@ export async function fetchAlertsWithFallback(pincode?: string): Promise<{
     pincode: r.pincode,
     has_screenshot: r.has_screenshot,
     amount_lost_inr: r.amount_lost_inr,
-    identifier_value: r.identifier_value,
+    identifier_value: maskIdentifier(r.identifier_value, r.identifier_type),
     identifier_type: r.identifier_type,
     report_count: 1,
     verdict: 'SUSPICIOUS',

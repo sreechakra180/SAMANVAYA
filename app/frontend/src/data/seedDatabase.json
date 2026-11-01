@@ -10,7 +10,7 @@
       "first_seen": "2026-10-31 21:33:51.028036",
       "last_seen": "2026-11-01 02:33:51.028036",
       "scam_type": "digital-arrest",
-      "display_value": "+919876543210",
+      "display_value": "+91 987XXXXX10",
       "challenged": false
     },
     {
@@ -423,7 +423,7 @@
     {
       "report_id": "rep_a9d0f539dd36",
       "indicator_type": "phone",
-      "identifier_value": "+919876543210",
+      "identifier_value": "+91 987XXXXX10",
       "canonical": "+919876543210",
       "occurred_at": "2026-11-01 02:33:51.028036",
       "reported_at": "2026-11-01 02:38:51.028036",
@@ -437,7 +437,7 @@
     {
       "report_id": "rep_49dacf19bfe7",
       "indicator_type": "phone",
-      "identifier_value": "+919876543210",
+      "identifier_value": "+91 987XXXXX10",
       "canonical": "+919876543210",
       "occurred_at": "2026-11-01 01:33:51.028036",
       "reported_at": "2026-11-01 01:38:51.028036",
@@ -465,7 +465,7 @@
     {
       "report_id": "rep_2b5cc0567927",
       "indicator_type": "phone",
-      "identifier_value": "+919876543210",
+      "identifier_value": "+91 987XXXXX10",
       "canonical": "+919876543210",
       "occurred_at": "2026-11-01 00:33:51.028036",
       "reported_at": "2026-11-01 00:38:51.028036",
@@ -479,7 +479,7 @@
     {
       "report_id": "rep_a0c585fab22d",
       "indicator_type": "phone",
-      "identifier_value": "+919876543210",
+      "identifier_value": "+91 987XXXXX10",
       "canonical": "+919876543210",
       "occurred_at": "2026-10-31 23:33:51.028036",
       "reported_at": "2026-10-31 23:38:51.028036",
@@ -507,7 +507,7 @@
     {
       "report_id": "rep_07b983bec754",
       "indicator_type": "phone",
-      "identifier_value": "+919876543210",
+      "identifier_value": "+91 987XXXXX10",
       "canonical": "+919876543210",
       "occurred_at": "2026-10-31 22:33:51.028036",
       "reported_at": "2026-10-31 22:38:51.028036",
@@ -521,7 +521,7 @@
     {
       "report_id": "rep_7245b651072e",
       "indicator_type": "phone",
-      "identifier_value": "+919876543210",
+      "identifier_value": "+91 987XXXXX10",
       "canonical": "+919876543210",
       "occurred_at": "2026-10-31 21:33:51.028036",
       "reported_at": "2026-10-31 21:38:51.028036",
