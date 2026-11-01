@@ -4,6 +4,7 @@ import { useTranslation } from '../i18n/index.js'
 import { VerdictBadge } from './VerdictBadge.js'
 import type { IdentifierType } from '../validation/schemas.js'
 import { detectIdentifierType, getIdentifierLabel } from '../utils/detector.js'
+import { lookupIdentifier, type LookupResult } from '../services/resilientApi.js'
 
 interface LookupScreenProps {
   initialType?: IdentifierType
@@ -55,14 +56,7 @@ export function LookupScreen({
     setResult(null)
 
     try {
-      const res = await fetch(
-        `/api/lookup?type=${encodeURIComponent(lookupType)}&value=${encodeURIComponent(trimmed)}`
-      )
-      if (!res.ok) {
-        const errJson = await res.json().catch(() => ({}))
-        throw new Error(errJson.detail || `HTTP ${res.status}: Verification failed`)
-      }
-      const data = await res.json()
+      const data = await lookupIdentifier(lookupType, trimmed)
       setResult(data)
     } catch (err) {
       setError((err as Error).message || 'Unable to connect to verification server.')

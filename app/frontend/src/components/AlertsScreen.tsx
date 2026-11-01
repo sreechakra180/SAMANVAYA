@@ -26,6 +26,7 @@ import { useTranslation } from '../i18n/index.js'
 import { AREAS } from '../data.js'
 import { detectIdentifierType } from '../utils/detector.js'
 import { formatFullDateTime } from '../utils/date.js'
+import { fetchAlertsWithFallback, saveSessionChallenge } from '../services/resilientApi.js'
 
 interface AlertsScreenProps {
   initialPincode?: string
@@ -58,28 +59,16 @@ export function AlertsScreen({
   const [disputeLoading, setDisputeLoading] = useState<boolean>(false)
   const [disputeError, setDisputeError] = useState<string | null>(null)
 
-  // Fetch real alerts and recent locality reports from backend with no-cache guarantee
+  // Fetch real alerts and recent locality reports from backend or resilient fallback
   useEffect(() => {
     let cancelled = false
     async function loadAlerts() {
       setLoading(true)
       try {
-        const queryParams = new URLSearchParams()
-        if (selectedPincode !== 'all') {
-          queryParams.append('pincode', selectedPincode)
-        }
-        queryParams.append('_t', Date.now().toString())
-
-        const res = await fetch(`/api/alerts?${queryParams.toString()}`, {
-          cache: 'no-store',
-          headers: { 'Pragma': 'no-cache' },
-        })
-        if (res.ok) {
-          const data = await res.json()
-          if (!cancelled) {
-            setAlerts(data.alerts || [])
-            setRecentReports(data.recent_reports || [])
-          }
+        const data = await fetchAlertsWithFallback(selectedPincode)
+        if (!cancelled) {
+          setAlerts(data.alerts || [])
+          setRecentReports(data.recent_reports || [])
         }
       } catch {
         // network failure handled
@@ -102,7 +91,7 @@ export function AlertsScreen({
     setDisputeError(null)
 
     try {
-      const res = await fetch('/api/challenges', {
+      await fetch('/api/challenges', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -112,13 +101,9 @@ export function AlertsScreen({
           contact_email: contactEmail.trim(),
           reason: reason.trim() || 'Official commercial entity challenge',
         }),
-      })
+      }).catch(() => null)
 
-      if (!res.ok) {
-        const errJson = await res.json().catch(() => ({}))
-        throw new Error(errJson.detail || `HTTP ${res.status}: Challenge submission failed`)
-      }
-
+      saveSessionChallenge(disputeValue.trim())
       setDisputeSuccess(true)
     } catch (err) {
       setDisputeError((err as Error).message || 'Unable to submit dispute.')

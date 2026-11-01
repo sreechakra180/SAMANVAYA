@@ -50,21 +50,27 @@ export function HomeDashboard({ onSearch, onNavigate }: HomeDashboardProps) {
         // 2. Real Map clusters
         const mapRes = await fetch('/api/map?days=30').catch(() => null)
         if (mapRes && mapRes.ok) {
-          const mapData = await mapRes.json()
-          if (!cancelled) {
-            const list = mapData.clusters || []
-            setMapClusters(list)
-            const sumReports = list.reduce((acc: number, c: any) => acc + (c.count || 0), 0)
-            setTotalReportCount(sumReports)
+          const text = await mapRes.text()
+          if (text && text.trim()) {
+            const mapData = JSON.parse(text)
+            if (!cancelled && mapData.clusters) {
+              const list = mapData.clusters || []
+              setMapClusters(list)
+              const sumReports = list.reduce((acc: number, c: any) => acc + (c.count || 0), 0)
+              setTotalReportCount(sumReports)
+            }
           }
         }
 
         // 3. Real Alerts
         const alertsRes = await fetch('/api/alerts').catch(() => null)
         if (alertsRes && alertsRes.ok) {
-          const alertData = await alertsRes.json()
-          if (!cancelled) {
-            setAlertsCount((alertData.alerts || []).length)
+          const text = await alertsRes.text()
+          if (text && text.trim()) {
+            const alertData = JSON.parse(text)
+            if (!cancelled && alertData.alerts) {
+              setAlertsCount((alertData.alerts || []).length)
+            }
           }
         }
       } catch {

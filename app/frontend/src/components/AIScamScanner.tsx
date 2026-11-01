@@ -13,19 +13,7 @@ import {
   Info,
 } from 'lucide-react'
 import { useTranslation } from '../i18n/index.js'
-
-interface AIScanResult {
-  is_scam: boolean
-  scam_probability: number
-  predicted_category: string
-  risk_level: string
-  extracted_iocs: {
-    phones: string[]
-    upis: string[]
-    urls: string[]
-  }
-  risk_signals: string[]
-}
+import { analyzeScamMessage, type AIScanResult } from '../services/resilientApi.js'
 
 const SAMPLE_MESSAGES = [
   {
@@ -73,17 +61,7 @@ export function AIScamScanner({
     setResult(null)
 
     try {
-      const response = await fetch('/api/model/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
-      })
-
-      if (!response.ok) {
-        throw new Error(`Model API error HTTP ${response.status}`)
-      }
-
-      const data = (await response.json()) as AIScanResult
+      const data = await analyzeScamMessage(text)
       setResult(data)
     } catch (err) {
       setError((err as Error).message || 'Failed to connect to the classification service.')

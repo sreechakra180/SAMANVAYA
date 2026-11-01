@@ -21,6 +21,7 @@ import { AREAS, SCAM_TYPE_OPTIONS } from '../data.js'
 import { useTranslation } from '../i18n/index.js'
 import type { IdentifierType } from '../validation/schemas.js'
 import { detectIdentifierType, getIdentifierLabel } from '../utils/detector.js'
+import { submitReportWithFallback } from '../services/resilientApi.js'
 
 interface ReportFlowProps {
   initialType?: IdentifierType
@@ -145,32 +146,7 @@ export function ReportFlow({
         amount_lost_inr: 0,
       }
 
-      const res = await fetch('/api/reports', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-
-      if (!res.ok) {
-        const errJson = await res.json().catch(() => ({}))
-        let msg = 'Submission failed'
-        if (typeof errJson.detail === 'string') {
-          msg = errJson.detail
-        } else if (Array.isArray(errJson.detail)) {
-          msg = errJson.detail
-            .map((item: any) => {
-              if (typeof item === 'string') return item
-              const field = item.loc ? item.loc.slice(-1)[0] : 'field'
-              return `${field}: ${item.msg || 'invalid'}`
-            })
-            .join(' • ')
-        } else if (errJson.detail) {
-          msg = JSON.stringify(errJson.detail)
-        }
-        throw new Error(msg)
-      }
-
-      const data = await res.json()
+      await submitReportWithFallback(payload)
       const reportedPincode = pincode
 
       // Clear identifier value and reset form so it doesn't persist
