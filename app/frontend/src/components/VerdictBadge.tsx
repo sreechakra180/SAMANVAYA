@@ -12,6 +12,7 @@ import {
   ExternalLink,
 } from 'lucide-react'
 import { useTranslation } from '../i18n/index.js'
+import { formatFullDateTime } from '../utils/date.js'
 
 export interface VerdictBadgeProps {
   verdict: 'KNOWN_SCAM' | 'SUSPICIOUS' | 'VERIFIED_BUSINESS' | 'NO_REPORTS'
@@ -203,7 +204,7 @@ export function VerdictBadge({
                   <span className="text-[#78877D]">via {ev.channel || 'direct'}</span>
                 </div>
                 <span className="font-mono text-[#78877D]">
-                  {ev.timestamp ? new Date(ev.timestamp).toLocaleDateString() : 'Recent'}
+                  {ev.timestamp ? formatFullDateTime(ev.timestamp).date : 'Recent'}
                 </span>
               </div>
             ))}

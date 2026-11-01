@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
@@ -7,6 +9,15 @@ from app.services.normalise import canonicalise, mask
 from app.reference.verified import VERIFIED_KEYS
 
 router = APIRouter()
+
+def _to_iso(dt: Optional[datetime]) -> Optional[str]:
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    else:
+        dt = dt.astimezone(timezone.utc)
+    return dt.isoformat().replace("+00:00", "Z")
 
 @router.get("/lookup")
 def lookup(type: str, value: str, db: Session = Depends(get_db)):
@@ -41,11 +52,11 @@ def lookup(type: str, value: str, db: Session = Depends(get_db)):
         "verdict": VERDICT_INV[ind.verdict],
         "report_count": ind.report_count,
         "distinct_reporters": ind.distinct_reporters,
-        "first_seen": ind.first_seen.isoformat() if ind.first_seen else None,
-        "last_seen": ind.last_seen.isoformat() if ind.last_seen else None,
+        "first_seen": _to_iso(ind.first_seen),
+        "last_seen": _to_iso(ind.last_seen),
         "scam_type": ind.scam_type,
         "display_value": ind.display_value or mask(type, canon, ind.distinct_reporters),
-        "evidence": [{"occurred_at": r.occurred_at.isoformat(),
+        "evidence": [{"occurred_at": _to_iso(r.occurred_at),
                       "channel": r.channel, "scam_type": r.scam_type,
                       "pincode": r.pincode} for r in ev],
         "challenged": ind.challenged,

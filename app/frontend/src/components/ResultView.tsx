@@ -3,6 +3,7 @@ import type { LookupResult } from '../api/client.js'
 import { Icon } from './Icon.js'
 import { cn } from './cn.js'
 import { verdictClass } from './helpers.js'
+import { formatFullDateTime } from '../utils/date.js'
 
 export const ResultView = memo(function ResultView({ result }: { result: LookupResult | null }) {
   if (!result) return null
@@ -19,8 +20,8 @@ export const ResultView = memo(function ResultView({ result }: { result: LookupR
           <dt>Verdict</dt><dd>{result.verdict}</dd>
           <dt>Report count</dt><dd>{result.report_count}</dd>
           <dt>Distinct reporters</dt><dd>{result.distinct_reporters}</dd>
-          <dt>First seen</dt><dd>{result.first_seen ?? '—'}</dd>
-          <dt>Last seen</dt><dd>{result.last_seen ?? '—'}</dd>
+          <dt>First seen</dt><dd>{result.first_seen ? `${formatFullDateTime(result.first_seen).date} ${formatFullDateTime(result.first_seen).time}` : '—'}</dd>
+          <dt>Last seen</dt><dd>{result.last_seen ? `${formatFullDateTime(result.last_seen).date} ${formatFullDateTime(result.last_seen).time}` : '—'}</dd>
           <dt>Scam type</dt><dd>{result.scam_type ?? '—'}</dd>
           <dt className="col-span-2">Display value</dt><dd className="font-mono text-base text-text-primary">{result.display_value}</dd>
         </dl>
@@ -30,13 +31,16 @@ export const ResultView = memo(function ResultView({ result }: { result: LookupR
         <section className="card">
           <h4 className="mb-2 font-semibold text-text-primary">Evidence (latest 10)</h4>
           <ul className="divide-y divide-surface-border">
-            {result.evidence.map((e, i) => (
-              <li key={i} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 py-1.5 pl-4 pr-2">
-                <span className="font-mono text-sm text-text-primary">{e.occurred_at}</span>
-                <span className="text-sm text-text-secondary">{e.channel} · {e.scam_type}</span>
-                <span className="font-mono text-sm text-scam">{e.pincode}</span>
-              </li>
-            ))}
+            {result.evidence.map((e, i) => {
+              const dt = formatFullDateTime(e.occurred_at)
+              return (
+                <li key={i} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 py-1.5 pl-4 pr-2">
+                  <span className="font-mono text-sm text-text-primary">{dt.date} {dt.time}</span>
+                  <span className="text-sm text-text-secondary">{e.channel} · {e.scam_type}</span>
+                  <span className="font-mono text-sm text-scam">{e.pincode}</span>
+                </li>
+              )
+            })}
           </ul>
         </section>
       )}

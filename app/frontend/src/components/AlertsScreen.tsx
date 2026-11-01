@@ -25,43 +25,13 @@ import {
 import { useTranslation } from '../i18n/index.js'
 import { AREAS } from '../data.js'
 import { detectIdentifierType } from '../utils/detector.js'
+import { formatFullDateTime } from '../utils/date.js'
 
 interface AlertsScreenProps {
   initialPincode?: string
   successBanner?: string | null
   onClearBanner?: () => void
   onLookupIdentifier?: (type: string, value: string) => void
-}
-
-function formatFullDateTime(isoString?: string | null): { date: string; time: string; relative: string } {
-  if (!isoString) {
-    const now = new Date()
-    return {
-      date: now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
-      time: now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-      relative: 'Just Now',
-    }
-  }
-
-  const d = new Date(isoString)
-  const now = new Date()
-  const diffMs = now.getTime() - d.getTime()
-  const diffMins = Math.floor(diffMs / 60000)
-
-  let relative = 'Just Now'
-  if (diffMins > 0 && diffMins < 60) {
-    relative = `${diffMins}m ago`
-  } else if (diffMins >= 60 && diffMins < 1440) {
-    relative = `${Math.floor(diffMins / 60)}h ago`
-  } else if (diffMins >= 1440) {
-    relative = `${Math.floor(diffMins / 1440)}d ago`
-  }
-
-  return {
-    date: d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
-    time: d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-    relative,
-  }
 }
 
 export function AlertsScreen({

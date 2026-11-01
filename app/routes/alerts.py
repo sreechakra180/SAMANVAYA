@@ -13,6 +13,15 @@ from app.db.models import Report, Indicator, KIND, VERDICT_INV
 
 router = APIRouter()
 
+def _to_iso(dt: Optional[datetime]) -> Optional[str]:
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    else:
+        dt = dt.astimezone(timezone.utc)
+    return dt.isoformat().replace("+00:00", "Z")
+
 @router.get("/alerts")
 def alerts(response: Response, pincode: Optional[str] = None, db: Session = Depends(get_db)):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -138,8 +147,8 @@ def alerts(response: Response, pincode: Optional[str] = None, db: Session = Depe
         disp_val = (ind.display_value or ind.canonical) if ind else "Unlisted Identifier"
         rep_data = {
             "report_id": r.report_id,
-            "occurred_at": r.occurred_at.isoformat() if r.occurred_at else None,
-            "reported_at": r.reported_at.isoformat() if r.reported_at else None,
+            "occurred_at": _to_iso(r.occurred_at),
+            "reported_at": _to_iso(r.reported_at),
             "channel": r.channel,
             "scam_type": r.scam_type,
             "pincode": r.pincode,
@@ -161,8 +170,8 @@ def alerts(response: Response, pincode: Optional[str] = None, db: Session = Depe
             "identifier_type": kind_name,
             "report_id": r.report_id,
             "channel": r.channel,
-            "occurred_at": r.occurred_at.isoformat() if r.occurred_at else None,
-            "reported_at": r.reported_at.isoformat() if r.reported_at else None,
+            "occurred_at": _to_iso(r.occurred_at),
+            "reported_at": _to_iso(r.reported_at),
             "has_screenshot": r.has_screenshot,
             "amount_lost_inr": r.amount_lost_inr,
             "window": "24h",

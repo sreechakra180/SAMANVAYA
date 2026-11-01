@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { ShieldCheck, ShieldAlert, AlertTriangle, Shield, Volume2, VolumeX, Copy, Check } from 'lucide-react'
+import { formatFullDateTime } from '../utils/date.js'
 
 export interface VerdictProps {
   verdict: 'KNOWN_SCAM' | 'SUSPICIOUS' | 'VERIFIED_BUSINESS' | 'NO_REPORTS'
@@ -256,7 +257,7 @@ export function VerdictBadge3D({
                   <span className="text-slate-500">via</span>
                   <span className="text-slate-400 font-medium">{ev.channel || 'direct'}</span>
                 </div>
-                <span className="font-mono text-slate-500">{ev.timestamp ? new Date(ev.timestamp).toLocaleDateString() : 'recent'}</span>
+                <span className="font-mono text-slate-500">{ev.timestamp ? formatFullDateTime(ev.timestamp).date : 'recent'}</span>
               </div>
             ))}
           </div>
