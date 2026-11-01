@@ -1,12 +1,15 @@
 /**
- * Samanvaya Resilient API Client & Autonomous Client-Side Intelligence Engine
+ * Samanvaya Resilient API Client, Autonomous Intelligence Engine & Cross-Device Cloud Sync
  * 
- * Guarantees zero-downtime, fail-soft execution:
- * 1. Safely parses HTTP responses (prevents "Unexpected end of JSON input" on edge/static proxies).
- * 2. Attempts backend API endpoints first.
- * 3. If running on a static host (Render static site, Vercel preview, GitHub Pages, or during backend cold-starts),
- *    smoothly activates the in-browser Satark-NLP classification engine & verified registry.
+ * Guarantees zero-downtime, multi-device synchronization:
+ * 1. Imports full database snapshot from `seedDatabase.json` (all 27 reports & indicators from `scam_map.db`).
+ * 2. Cross-Device Cloud Relay (`ntfy.sh/samanvaya_reports_sync_prod`):
+ *    Any report submitted on Laptop A or Mobile is instantly broadcast and received by Laptop B / Jury screens!
+ * 3. Safe response parsing immune to edge CDN empty-body and 404 responses.
+ * 4. Satark-NLP edge classification engine runs in-browser when backend API is offline/cold-starting.
  */
+
+import seedData from '../data/seedDatabase.json'
 
 export interface AIScanResult {
   is_scam: boolean
@@ -85,8 +88,10 @@ export interface MapCluster {
 }
 
 // -------------------------------------------------------------
-// Session Storage for Read-After-Write Consistency
+// Cross-Device Cloud Sync Relay & Local Storage
 // -------------------------------------------------------------
+const CLOUD_SYNC_ENDPOINT = 'https://ntfy.sh/samanvaya_reports_sync_prod'
+const LOCAL_STORAGE_REPORTS = 'samanvaya_cloud_synced_reports'
 const SESSION_REPORTS_KEY = 'samanvaya_session_reports'
 const SESSION_CHALLENGES_KEY = 'samanvaya_session_challenges'
 
@@ -95,6 +100,7 @@ export interface SessionReport {
   case_id: string
   identifier_type: string
   identifier_value: string
+  canonical?: string
   channel: string
   scam_type: string
   pincode: string
@@ -117,8 +123,29 @@ export function getSessionReports(): SessionReport[] {
 export function saveSessionReport(rep: SessionReport): void {
   try {
     const list = getSessionReports()
-    list.unshift(rep)
-    sessionStorage.setItem(SESSION_REPORTS_KEY, JSON.stringify(list))
+    if (!list.some(r => r.report_id === rep.report_id)) {
+      list.unshift(rep)
+      sessionStorage.setItem(SESSION_REPORTS_KEY, JSON.stringify(list))
+    }
+  } catch {}
+}
+
+export function getCloudReports(): SessionReport[] {
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_REPORTS)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
+export function saveCloudReport(rep: SessionReport): void {
+  try {
+    const list = getCloudReports()
+    if (!list.some(r => r.report_id === rep.report_id)) {
+      list.unshift(rep)
+      localStorage.setItem(LOCAL_STORAGE_REPORTS, JSON.stringify(list))
+    }
   } catch {}
 }
 
@@ -139,6 +166,81 @@ export function saveSessionChallenge(idValue: string): void {
       sessionStorage.setItem(SESSION_CHALLENGES_KEY, JSON.stringify(list))
     }
   } catch {}
+}
+
+/** Broadcast newly submitted report to cloud relay so all other laptops/devices receive it instantly */
+export async function broadcastReportToCloud(rep: SessionReport): Promise<void> {
+  try {
+    await fetch(CLOUD_SYNC_ENDPOINT, {
+      method: 'POST',
+      body: JSON.stringify(rep),
+      headers: {
+        'Title': 'SAMANVAYA_REPORT',
+        'Tags': 'shield',
+      },
+      keepalive: true,
+    })
+  } catch {}
+}
+
+/** Pull all reports published by other laptops/devices across the internet */
+export async function fetchCloudReports(): Promise<SessionReport[]> {
+  try {
+    const res = await fetch(`${CLOUD_SYNC_ENDPOINT}/json?poll=1&since=all`, {
+      signal: AbortSignal.timeout(3000),
+    })
+    if (res.ok) {
+      const text = await res.text()
+      const lines = text.trim().split('\n')
+      for (const line of lines) {
+        if (!line) continue
+        try {
+          const envelope = JSON.parse(line)
+          if (envelope.event === 'message' && envelope.message) {
+            const rep = JSON.parse(envelope.message) as SessionReport
+            if (rep && rep.report_id && rep.identifier_value) {
+              saveCloudReport(rep)
+              saveSessionReport(rep)
+            }
+          }
+        } catch {}
+      }
+    }
+  } catch {}
+  return getCloudReports()
+}
+
+// -------------------------------------------------------------
+// Unified Database Aggregator (Seed DB + Session + Cloud Synced)
+// -------------------------------------------------------------
+export function getAllAvailableReports(): SessionReport[] {
+  const sessionList = getSessionReports()
+  const cloudList = getCloudReports()
+  const seedReports: SessionReport[] = (seedData.reports || []).map((r: any) => ({
+    report_id: r.report_id,
+    case_id: 'CASE-' + r.report_id.replace(/^rep_/, '').toUpperCase(),
+    identifier_type: r.indicator_type,
+    identifier_value: r.identifier_value,
+    canonical: r.canonical,
+    channel: r.channel,
+    scam_type: r.scam_type,
+    pincode: r.pincode,
+    has_screenshot: Boolean(r.has_screenshot),
+    amount_lost_inr: r.amount_lost_inr || 0,
+    occurred_at: r.occurred_at,
+    reported_at: r.reported_at,
+  }))
+
+  const map = new Map<string, SessionReport>()
+  // Load order: seed first, then cloud, then session (session takes precedence for most recent updates)
+  for (const r of seedReports) map.set(r.report_id, r)
+  for (const r of cloudList) map.set(r.report_id, r)
+  for (const r of sessionList) map.set(r.report_id, r)
+
+  const combined = Array.from(map.values())
+  // Strict chronological sorting: newest report first
+  combined.sort((a, b) => new Date(b.reported_at).getTime() - new Date(a.reported_at).getTime())
+  return combined
 }
 
 // -------------------------------------------------------------
@@ -169,7 +271,6 @@ const FRAUD_KEYWORDS = [
 
 export function extractIOCsClientSide(text: string): { phones: string[]; upis: string[]; urls: string[] } {
   const phones: string[] = []
-  // Indian phone numbers: +91..., 0..., 10-digit mobile, 1800..., 1930
   const phoneMatches = text.match(/(?:\+91|0)?[6-9]\d{9}|1800\d{6,7}|1930/g) || []
   for (const p of phoneMatches) {
     let cleaned = p.replace(/[\s\-]/g, '')
@@ -201,7 +302,6 @@ export function extractIOCsClientSide(text: string): { phones: string[]; upis: s
 export function analyzeScamMessageClientSide(text: string): AIScanResult {
   const lower = text.toLowerCase()
   const iocs = extractIOCsClientSide(text)
-
   const signals = FRAUD_KEYWORDS.filter(kw => lower.includes(kw)).slice(0, 6)
 
   // Legitimate transaction check
@@ -284,7 +384,6 @@ export async function analyzeScamMessage(text: string): Promise<AIScanResult> {
     }
   } catch {}
 
-  // Fallback to client-side engine (smoothly supports Render static sites)
   return analyzeScamMessageClientSide(text)
 }
 
@@ -310,75 +409,6 @@ const VERIFIED_DIRECTORY: Record<string, string> = {
   'url:https://cybercrime.gov.in': 'National Cyber Crime Reporting Portal (MHA)',
   'url:https://sancharsaathi.gov.in': 'Department of Telecom — Sanchar Saathi',
   'upi:freshbakes@okaxis': 'Fresh Bakes Indiranagar (Verified Business)',
-}
-
-const KNOWN_SCAM_DATABASE: Record<string, Partial<LookupResult>> = {
-  'phone:+919876543210': {
-    verdict: 'KNOWN_SCAM',
-    report_count: 14,
-    distinct_reporters: 12,
-    scam_type: 'utility_disconnection',
-    display_value: '+919876543210',
-    first_seen: new Date(Date.now() - 6 * 86400000).toISOString(),
-    last_seen: new Date(Date.now() - 3600000).toISOString(),
-    evidence: [
-      { occurred_at: new Date(Date.now() - 3600000).toISOString(), channel: 'SMS', scam_type: 'utility_disconnection', pincode: '560001' },
-      { occurred_at: new Date(Date.now() - 14400000).toISOString(), channel: 'WhatsApp', scam_type: 'utility_disconnection', pincode: '560102' },
-      { occurred_at: new Date(Date.now() - 86400000).toISOString(), channel: 'Phone call', scam_type: 'utility_disconnection', pincode: '110001' },
-      { occurred_at: new Date(Date.now() - 172800000).toISOString(), channel: 'SMS', scam_type: 'utility_disconnection', pincode: '400050' },
-    ],
-  },
-  'phone:9876543210': {
-    verdict: 'KNOWN_SCAM',
-    report_count: 14,
-    distinct_reporters: 12,
-    scam_type: 'utility_disconnection',
-    display_value: '+919876543210',
-    first_seen: new Date(Date.now() - 6 * 86400000).toISOString(),
-    last_seen: new Date(Date.now() - 3600000).toISOString(),
-    evidence: [
-      { occurred_at: new Date(Date.now() - 3600000).toISOString(), channel: 'SMS', scam_type: 'utility_disconnection', pincode: '560001' },
-      { occurred_at: new Date(Date.now() - 14400000).toISOString(), channel: 'WhatsApp', scam_type: 'utility_disconnection', pincode: '560102' },
-    ],
-  },
-  'upi:quickrefund@axl': {
-    verdict: 'SUSPICIOUS',
-    report_count: 5,
-    distinct_reporters: 4,
-    scam_type: 'upi_fraud',
-    display_value: 'q***@axl',
-    first_seen: new Date(Date.now() - 3 * 86400000).toISOString(),
-    last_seen: new Date(Date.now() - 7200000).toISOString(),
-    evidence: [
-      { occurred_at: new Date(Date.now() - 7200000).toISOString(), channel: 'WhatsApp', scam_type: 'upi_fraud', pincode: '560034' },
-      { occurred_at: new Date(Date.now() - 86400000).toISOString(), channel: 'Phone call', scam_type: 'upi_fraud', pincode: '500081' },
-    ],
-  },
-  'url:sbi-kyc-verify.top': {
-    verdict: 'KNOWN_SCAM',
-    report_count: 22,
-    distinct_reporters: 18,
-    scam_type: 'kyc_phishing',
-    display_value: 'sbi-kyc-verify.top',
-    first_seen: new Date(Date.now() - 10 * 86400000).toISOString(),
-    last_seen: new Date(Date.now() - 1800000).toISOString(),
-    evidence: [
-      { occurred_at: new Date(Date.now() - 1800000).toISOString(), channel: 'SMS', scam_type: 'kyc_phishing', pincode: '110016' },
-      { occurred_at: new Date(Date.now() - 43200000).toISOString(), channel: 'SMS', scam_type: 'kyc_phishing', pincode: '400050' },
-    ],
-  },
-  'url:http://sbi-kyc-update.xyz': {
-    verdict: 'KNOWN_SCAM',
-    report_count: 19,
-    distinct_reporters: 15,
-    scam_type: 'kyc_phishing',
-    display_value: 'sbi-kyc-update.xyz',
-    first_seen: new Date(Date.now() - 8 * 86400000).toISOString(),
-    last_seen: new Date(Date.now() - 3600000).toISOString(),
-    evidence: [
-      { occurred_at: new Date(Date.now() - 3600000).toISOString(), channel: 'SMS', scam_type: 'kyc_phishing', pincode: '560038' },
-    ],
-  },
 }
 
 function normalizeIdentifier(type: string, val: string): string {
@@ -431,43 +461,47 @@ export function lookupIdentifierClientSide(type: string, rawVal: string): Lookup
     }
   }
 
-  // 2. Check Session Reports (Read-After-Write Verification)
-  const sessionReps = getSessionReports().filter(
-    r => normalizeIdentifier(r.identifier_type, r.identifier_value) === norm
-  )
-  if (sessionReps.length > 0) {
-    const isChallenged = getSessionChallenges().includes(norm)
-    return {
-      verdict: sessionReps.length >= 3 ? 'KNOWN_SCAM' : 'SUSPICIOUS',
-      report_count: sessionReps.length,
-      distinct_reporters: sessionReps.length,
-      first_seen: sessionReps[sessionReps.length - 1].reported_at,
-      last_seen: sessionReps[0].reported_at,
-      scam_type: sessionReps[0].scam_type,
-      display_value: maskIdentifier(type, norm),
-      evidence: sessionReps.map(r => ({
-        occurred_at: r.occurred_at,
-        channel: r.channel,
-        scam_type: r.scam_type,
-        pincode: r.pincode,
-      })),
-      challenged: isChallenged,
-    }
-  }
+  // 2. Check Unified Reports (Session + Cloud Synced + Seed Database from SQLite)
+  const allReports = getAllAvailableReports()
+  const matchingReports = allReports.filter(r => {
+    const rNorm = normalizeIdentifier(r.identifier_type, r.identifier_value)
+    const rCanon = r.canonical ? normalizeIdentifier(r.identifier_type, r.canonical) : ''
+    return rNorm === norm || rCanon === norm || r.identifier_value.trim().toLowerCase() === rawVal.trim().toLowerCase()
+  })
 
-  // 3. Check Known Scam Samples
-  const known = KNOWN_SCAM_DATABASE[key] || KNOWN_SCAM_DATABASE[rawKey]
-  if (known) {
-    const isChallenged = getSessionChallenges().includes(norm)
+  // 3. Check Seed Indicators table
+  const matchedIndicator = (seedData.indicators || []).find((ind: any) => {
+    const indNorm = normalizeIdentifier(ind.kind, ind.canonical)
+    return indNorm === norm || ind.canonical === norm || (ind.display_value && ind.display_value.toLowerCase() === rawVal.trim().toLowerCase())
+  })
+
+  if (matchingReports.length > 0 || matchedIndicator) {
+    const isChallenged = getSessionChallenges().includes(norm) || Boolean(matchedIndicator?.challenged)
+    const repCount = Math.max(matchingReports.length, matchedIndicator?.report_count || 1)
+    const distinctReps = Math.max(
+      new Set(matchingReports.map(r => r.report_id)).size,
+      matchedIndicator?.distinct_reporters || 1
+    )
+    const verdict = matchedIndicator?.verdict || (distinctReps >= 2 ? 'KNOWN_SCAM' : 'SUSPICIOUS')
+    const primaryScamType = matchingReports[0]?.scam_type || matchedIndicator?.scam_type || 'other'
+    const displayVal = matchedIndicator?.display_value || matchingReports[0]?.identifier_value || maskIdentifier(type, norm)
+
+    const evidenceList: ReportEvidenceRow[] = matchingReports.map(r => ({
+      occurred_at: r.occurred_at,
+      channel: r.channel,
+      scam_type: r.scam_type,
+      pincode: r.pincode,
+    }))
+
     return {
-      verdict: known.verdict || 'KNOWN_SCAM',
-      report_count: known.report_count || 1,
-      distinct_reporters: known.distinct_reporters || 1,
-      first_seen: known.first_seen || null,
-      last_seen: known.last_seen || null,
-      scam_type: known.scam_type || null,
-      display_value: known.display_value || norm,
-      evidence: known.evidence || [],
+      verdict: verdict as any,
+      report_count: repCount,
+      distinct_reporters: distinctReps,
+      first_seen: matchingReports[matchingReports.length - 1]?.reported_at || matchedIndicator?.first_seen || null,
+      last_seen: matchingReports[0]?.reported_at || matchedIndicator?.last_seen || null,
+      scam_type: primaryScamType,
+      display_value: displayVal,
+      evidence: evidenceList,
       challenged: isChallenged,
     }
   }
@@ -487,6 +521,9 @@ export function lookupIdentifierClientSide(type: string, rawVal: string): Lookup
 }
 
 export async function lookupIdentifier(type: string, value: string): Promise<LookupResult> {
+  // First attempt cloud sync in parallel so latest reports from other laptops are included
+  fetchCloudReports().catch(() => null)
+
   try {
     const res = await fetch(`/api/lookup?type=${encodeURIComponent(type)}&value=${encodeURIComponent(value.trim())}`)
     if (res.ok) {
@@ -497,34 +534,33 @@ export async function lookupIdentifier(type: string, value: string): Promise<Loo
     }
   } catch {}
 
-  // Seamless client-side fallback
   return lookupIdentifierClientSide(type, value)
 }
 
 // -------------------------------------------------------------
-// Live Alerts & Recent Feed
+// Live Alerts & Recent Feed (Synced Across All Devices)
 // -------------------------------------------------------------
-const SEED_ALERTS: LiveAlertItem[] = [
+const SEED_SPIKES: LiveAlertItem[] = [
   {
     type: 'SPIKE',
-    pincode: '560001',
-    scam_type: 'utility_disconnection',
-    identifier_value: '+919876543210',
-    identifier_type: 'phone',
+    pincode: '560102',
+    scam_type: 'upi-refund-qr',
+    identifier_value: 'sreeja@hdfcbank',
+    identifier_type: 'upi',
     report_id: 'REP-BLR-01',
-    channel: 'SMS',
+    channel: 'SMS or WhatsApp',
     occurred_at: new Date(Date.now() - 1800000).toISOString(),
     reported_at: new Date(Date.now() - 1800000).toISOString(),
     has_screenshot: true,
     amount_lost_inr: 0,
     window: '24h',
-    advice: 'Sudden spike of fake BESCOM power disconnection notices targeting Bengaluru Central.',
+    advice: 'Sudden spike of fake QR code refund scams targeting Bengaluru Koramangala & HSR.',
   },
   {
     type: 'SPIKE',
     pincode: '110016',
-    scam_type: 'digital_arrest',
-    identifier_value: '+919811223344',
+    scam_type: 'digital-arrest',
+    identifier_value: '+919876500001',
     identifier_type: 'phone',
     report_id: 'REP-DEL-02',
     channel: 'Phone call',
@@ -538,11 +574,11 @@ const SEED_ALERTS: LiveAlertItem[] = [
   {
     type: 'NEW_TYPE',
     pincode: '400050',
-    scam_type: 'kyc_phishing',
-    identifier_value: 'sbi-kyc-verify.top',
-    identifier_type: 'url',
+    scam_type: 'fake-kyc-link',
+    identifier_value: '+917282321288',
+    identifier_type: 'phone',
     report_id: 'REP-MUM-03',
-    channel: 'SMS',
+    channel: 'SMS or WhatsApp',
     occurred_at: new Date(Date.now() - 10800000).toISOString(),
     reported_at: new Date(Date.now() - 10800000).toISOString(),
     has_screenshot: true,
@@ -557,6 +593,9 @@ export async function fetchAlertsWithFallback(pincode?: string): Promise<{
   recent_reports: RecentReportItem[]
   summary: { total_alerts: number; live_reports: number; spikes: number; new_types: number }
 }> {
+  // Pull live updates from other devices across the cloud
+  await fetchCloudReports().catch(() => null)
+
   try {
     const query = pincode && pincode !== 'all' ? `?pincode=${encodeURIComponent(pincode)}` : ''
     const res = await fetch(`/api/alerts${query}`, {
@@ -565,15 +604,19 @@ export async function fetchAlertsWithFallback(pincode?: string): Promise<{
     })
     if (res.ok) {
       const parsed = await safeParseJson<any>(res)
-      if (parsed && Array.isArray(parsed.alerts)) {
+      if (parsed && Array.isArray(parsed.alerts) && parsed.alerts.length > 0) {
         return parsed
       }
     }
   } catch {}
 
-  // Fallback combined with session reports
-  const sessionReps = getSessionReports()
-  const liveSessionAlerts: LiveAlertItem[] = sessionReps.map(r => ({
+  // Fallback combined with unified multi-device reports
+  const allReports = getAllAvailableReports()
+  const filteredReports = pincode && pincode !== 'all'
+    ? allReports.filter(r => r.pincode === pincode)
+    : allReports
+
+  const liveReportAlerts: LiveAlertItem[] = filteredReports.map(r => ({
     type: 'LIVE_REPORT',
     pincode: r.pincode,
     scam_type: r.scam_type,
@@ -589,13 +632,14 @@ export async function fetchAlertsWithFallback(pincode?: string): Promise<{
     advice: `Recent citizen incident logged for ${r.identifier_type.toUpperCase()} '${r.identifier_value}' regarding ${r.scam_type.replace(/-/g, ' ')} via ${r.channel}.`,
   }))
 
-  const filteredSeed = pincode && pincode !== 'all'
-    ? SEED_ALERTS.filter(a => a.pincode === pincode)
-    : SEED_ALERTS
+  const filteredSpikes = pincode && pincode !== 'all'
+    ? SEED_SPIKES.filter(a => a.pincode === pincode)
+    : SEED_SPIKES
 
-  const combined = [...liveSessionAlerts, ...filteredSeed]
+  // Top ranking: newest live reports first
+  const combinedAlerts = [...liveReportAlerts, ...filteredSpikes]
 
-  const recentReports: RecentReportItem[] = sessionReps.map(r => ({
+  const recentReports: RecentReportItem[] = filteredReports.map(r => ({
     report_id: r.report_id,
     occurred_at: r.occurred_at,
     reported_at: r.reported_at,
@@ -611,19 +655,19 @@ export async function fetchAlertsWithFallback(pincode?: string): Promise<{
   }))
 
   return {
-    alerts: combined,
+    alerts: combinedAlerts,
     recent_reports: recentReports,
     summary: {
-      total_alerts: combined.length,
-      live_reports: liveSessionAlerts.length,
-      spikes: combined.filter(a => a.type === 'SPIKE').length,
-      new_types: combined.filter(a => a.type === 'NEW_TYPE').length,
+      total_alerts: combinedAlerts.length,
+      live_reports: liveReportAlerts.length,
+      spikes: combinedAlerts.filter(a => a.type === 'SPIKE').length,
+      new_types: combinedAlerts.filter(a => a.type === 'NEW_TYPE').length,
     },
   }
 }
 
 // -------------------------------------------------------------
-// Citizen Report Submission (Guaranteed Non-Crashing)
+// Citizen Report Submission (Auto-Synced Across All Devices)
 // -------------------------------------------------------------
 export async function submitReportWithFallback(payload: {
   identifier_type: string
@@ -635,6 +679,34 @@ export async function submitReportWithFallback(payload: {
   has_screenshot?: boolean
   amount_lost_inr?: number
 }): Promise<{ report_id: string; case_id: string; merged: boolean }> {
+  const nowIso = new Date().toISOString()
+  const localRepId = 'rep_' + Math.random().toString(36).substring(2, 10)
+  const localCaseId = 'CASE-' + Date.now().toString(36).toUpperCase()
+
+  const reportObj: SessionReport = {
+    report_id: localRepId,
+    case_id: localCaseId,
+    identifier_type: payload.identifier_type,
+    identifier_value: payload.identifier_value,
+    canonical: normalizeIdentifier(payload.identifier_type, payload.identifier_value),
+    channel: payload.channel,
+    scam_type: payload.scam_type,
+    pincode: payload.pincode,
+    note: payload.note,
+    has_screenshot: Boolean(payload.has_screenshot),
+    amount_lost_inr: payload.amount_lost_inr || 0,
+    occurred_at: nowIso,
+    reported_at: nowIso,
+  }
+
+  // 1. Save locally to session and local cache
+  saveSessionReport(reportObj)
+  saveCloudReport(reportObj)
+
+  // 2. Broadcast to cloud relay so all other laptops see it immediately
+  broadcastReportToCloud(reportObj).catch(() => null)
+
+  // 3. Also try backend API
   try {
     const res = await fetch('/api/reports', {
       method: 'POST',
@@ -645,47 +717,17 @@ export async function submitReportWithFallback(payload: {
     if (res.ok) {
       const parsed = await safeParseJson<{ report_id: string; case_id: string; merged: boolean }>(res)
       if (parsed && parsed.report_id) {
-        // Save to session cache as well
-        saveSessionReport({
-          report_id: parsed.report_id,
-          case_id: parsed.case_id,
-          identifier_type: payload.identifier_type,
-          identifier_value: payload.identifier_value,
-          channel: payload.channel,
-          scam_type: payload.scam_type,
-          pincode: payload.pincode,
-          note: payload.note,
-          has_screenshot: Boolean(payload.has_screenshot),
-          amount_lost_inr: payload.amount_lost_inr || 0,
-          occurred_at: new Date().toISOString(),
-          reported_at: new Date().toISOString(),
-        })
+        reportObj.report_id = parsed.report_id
+        reportObj.case_id = parsed.case_id
+        saveSessionReport(reportObj)
+        saveCloudReport(reportObj)
+        broadcastReportToCloud(reportObj).catch(() => null)
         return parsed
       }
     }
   } catch {}
 
-  // Generate fallback report & save to session
-  const nowIso = new Date().toISOString()
-  const repId = 'REP-' + Math.random().toString(36).substring(2, 8).toUpperCase()
-  const caseId = 'CASE-' + Date.now().toString(36).toUpperCase()
-
-  saveSessionReport({
-    report_id: repId,
-    case_id: caseId,
-    identifier_type: payload.identifier_type,
-    identifier_value: payload.identifier_value,
-    channel: payload.channel,
-    scam_type: payload.scam_type,
-    pincode: payload.pincode,
-    note: payload.note,
-    has_screenshot: Boolean(payload.has_screenshot),
-    amount_lost_inr: payload.amount_lost_inr || 0,
-    occurred_at: nowIso,
-    reported_at: nowIso,
-  })
-
-  return { report_id: repId, case_id: caseId, merged: false }
+  return { report_id: localRepId, case_id: localCaseId, merged: false }
 }
 
 // -------------------------------------------------------------
