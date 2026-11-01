@@ -1,0 +1,23 @@
+{
+  "model_name": "Satark-NLP Scam Intent Classifier",
+  "version": "1.0.0-calibrated",
+  "architecture": "TF-IDF (1-2 N-grams) + Calibrated Logistic Regression",
+  "sample_count": 350,
+  "binary_accuracy": 1.0,
+  "binary_f1": 1.0,
+  "multiclass_accuracy": 1.0,
+  "supported_categories": [
+    "customs_fedex",
+    "digital_arrest",
+    "electricity_bill",
+    "impersonation_govt",
+    "investment_crypto",
+    "kyc_expiry",
+    "legitimate",
+    "loan_fraud",
+    "lottery_prize",
+    "part_time_job",
+    "sextortion"
+  ],
+  "trained_at": "2026-10-31T17:45:00Z"
+}

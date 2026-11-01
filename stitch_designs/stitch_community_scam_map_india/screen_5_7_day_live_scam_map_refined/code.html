@@ -1,0 +1,808 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="web_standard" name="shell-type">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..500,0..1,-25..0&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+      }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-[#0b0f17] text-[#f1f5f9] antialiased min-h-screen flex flex-col selection:bg-cyan-500/20 selection:text-cyan-300">
+<!-- Header -->
+<header class="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#0b0f17]/80 backdrop-blur-xl transition-all">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+<div class="flex items-center gap-6">
+<a class="flex items-center gap-2.5 group" href="#">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-black font-semibold text-sm shadow-[0_0_15px_rgba(6,182,212,0.35)]">
+<span class="material-symbols-outlined text-[19px] text-[#0b0f17]">shield</span>
+</div>
+<span class="font-semibold text-[15px] tracking-tight text-white group-hover:text-cyan-400 transition-colors">ScamMap</span>
+<div class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-950/70 border border-cyan-800/40 text-[11px] font-medium text-cyan-400">
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Live telemetry
+          </div>
+</a>
+<nav class="hidden md:flex items-center gap-1 pl-2">
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-white bg-white/[0.07] border border-white/[0.06] transition-colors" href="#">Lookup</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Report</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Radar</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Alerts</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Directory</a>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<a class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-[12px] font-medium transition-all group" href="tel:1930">
+<span class="material-symbols-outlined text-[14px] text-rose-400 group-hover:scale-110 transition-transform">phone_in_talk</span>
+<span class="">Dial 1930</span>
+</a>
+<div class="h-4 w-[1px] bg-white/[0.1] hidden sm:block"></div>
+<button class="w-7 h-7 rounded-full bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] flex items-center justify-center text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[17px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full relative"><div class="flex flex-col w-full">
+<!-- Intelligence Control Strip -->
+<div class="w-full bg-surface-container-lowest px-4 sm:px-6 lg:px-8 py-3 shadow-sm">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
+<!-- Left: Telemetry Breadcrumb & Metric Highlights -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed animate-ping"></span>
+<span class="font-caption text-caption uppercase text-on-surface-variant tracking-wider">THREAT TOPOLOGY // N-CIR/7D</span>
+</div>
+<div class="h-3 w-px bg-surface-container"></div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">5,618</span>
+<span class="font-caption text-caption text-on-surface-variant">ACTIVE CLUSTERS</span>
+</div>
+<div class="h-3 w-px bg-surface-container hidden sm:block"></div>
+<div class="hidden sm:flex items-center gap-1">
+<span class="font-caption text-caption px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-mono-data">SYNC: 14s AGO</span>
+</div>
+</div>
+<!-- Right: Controls & Selectors -->
+<div class="flex items-center flex-wrap gap-2">
+<!-- Time Range Selector -->
+<div class="flex items-center bg-surface-container-low p-0.5 rounded shadow-sm" id="time-filter-group">
+<button class="time-filter-btn px-2.5 py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" data-time="24h" type="button">24h</button>
+<button class="time-filter-btn px-2.5 py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" data-time="48h" type="button">48h</button>
+<button class="time-filter-btn px-2.5 py-1 rounded font-label-sm text-label-sm bg-surface-container-lowest text-on-surface shadow-sm font-semibold transition-colors" data-time="7d" type="button">7 Days [Active]</button>
+<button class="time-filter-btn px-2.5 py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" data-time="30d" type="button">30-Day Trend</button>
+</div>
+<div class="h-4 w-px bg-surface-container hidden lg:block"></div>
+<!-- Vector Filter Pills -->
+<div class="flex items-center gap-1 overflow-x-auto py-0.5">
+<button class="vector-tag px-2.5 py-1 rounded font-label-sm text-label-sm bg-primary text-on-primary font-medium shadow-sm transition-all" data-vector="all" type="button">All Vectors</button>
+<button class="vector-tag px-2 py-1 rounded font-label-sm text-label-sm bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all" data-vector="digital-arrest" type="button">Digital Arrest</button>
+<button class="vector-tag px-2 py-1 rounded font-label-sm text-label-sm bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all" data-vector="electricity-kyc" type="button">Electricity KYC</button>
+<button class="vector-tag px-2 py-1 rounded font-label-sm text-label-sm bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all" data-vector="upi-collect" type="button">UPI Collect</button>
+<button class="vector-tag px-2 py-1 rounded font-label-sm text-label-sm bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all" data-vector="telegram-tasks" type="button">Telegram Tasks</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Cockpit: Map Canvas & Tactical Inspection Sidebar -->
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+<!-- Visualizer Left/Center Canvas (8 Cols) -->
+<div class="lg:col-span-8 bg-inverse-surface rounded-xl overflow-hidden relative shadow-lg min-h-[560px] flex flex-col justify-between">
+<!-- Overhead Cartography Heads-Up Display -->
+<div class="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
+<div class="flex items-center gap-2 pointer-events-auto bg-primary-container/85 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-md">
+<span class="material-symbols-outlined text-[15px] text-secondary-fixed">radar</span>
+<span class="font-caption text-caption text-surface tracking-wider uppercase">SYNTHETIC GEODESIC TELEMETRY</span>
+<span class="text-on-primary-container font-mono-data text-caption">INGESTION: 184 EPS</span>
+</div>
+<div class="pointer-events-auto flex items-center gap-1.5 bg-primary-container/85 backdrop-blur-md px-2 py-1 rounded-lg shadow-md">
+<button class="p-1 hover:bg-surface-variant/20 rounded text-surface transition-colors" id="recenter-btn" title="Recenter to active cluster">
+<span class="material-symbols-outlined text-[16px]">filter_center_focus</span>
+</button>
+<div class="h-3 w-px bg-surface-variant/20"></div>
+<button class="p-1 hover:bg-surface-variant/20 rounded text-surface transition-colors" id="layer-btn" title="Cycle threat density layer">
+<span class="material-symbols-outlined text-[16px]">layers</span>
+</button>
+</div>
+</div>
+<!-- Interactive Vector Threat Topology Visualizer Canvas -->
+<div class="relative w-full h-[560px] flex items-center justify-center overflow-hidden select-none bg-[#09101b]">
+<!-- Micro-Grid Cartographic Underlay -->
+<svg class="absolute inset-0 w-full h-full opacity-[0.08]" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="32" id="carto-grid" patternUnits="userSpaceOnUse" width="32">
+<path d="M 32 0 L 0 0 0 32" fill="none" stroke="#6ffbbe" stroke-width="0.5"></path>
+<circle cx="0" cy="0" fill="#6ffbbe" r="1"></circle>
+</pattern>
+</defs>
+<rect fill="url(#carto-grid)" height="100%" width="100%"></rect>
+</svg>
+<!-- Radar Sweep Ring Line -->
+<div class="absolute w-[440px] h-[440px] rounded-full border border-secondary-fixed/10 pointer-events-none animate-ping opacity-25"></div>
+<div class="absolute w-[300px] h-[300px] rounded-full border border-secondary-fixed/15 pointer-events-none"></div>
+<!-- Stylized Geographic Silhouette (India Centroid Subdivisions) -->
+<svg class="w-full max-w-[500px] h-auto max-h-[520px] drop-shadow-2xl relative z-10" viewBox="0 0 600 680" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="india-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#111c2e" stop-opacity="0.95"></stop>
+    <stop offset="100%" stop-color="#0a1322" stop-opacity="0.95"></stop>
+  </linearGradient>
+  <filter id="glow-critical" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="4" result="blur"></feGaussianBlur>
+    <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+  </filter>
+</defs>
+
+<!-- Detailed & Recognizable Sovereign Geographic Boundary of India -->
+<g id="india-geographic-boundary">
+  <!-- Base Landfill Contour -->
+  <path class="transition-colors hover:fill-[#14233a]" fill="url(#india-gradient)" stroke="#253b5c" stroke-width="1.5" stroke-linejoin="round" d="M 285 42 C 275 48 260 62 250 82 C 242 98 232 110 220 120 C 205 132 195 142 198 152 C 202 165 190 178 178 188 C 168 198 160 215 158 228 C 155 242 145 252 138 262 C 128 275 120 288 122 300 C 125 310 115 322 108 332 C 92 342 75 350 78 360 C 80 372 95 372 105 370 C 125 365 140 365 138 375 C 132 385 105 388 95 392 C 85 398 90 410 108 412 C 128 412 145 408 152 418 C 158 428 148 438 135 440 C 145 450 162 445 168 452 C 172 462 170 478 172 495 C 175 515 182 540 190 560 C 202 590 225 625 240 648 C 245 655 252 658 255 650 C 265 630 282 595 292 560 C 302 525 315 490 325 460 C 330 445 342 432 355 425 C 370 418 390 410 405 398 C 418 385 432 370 422 355 C 415 345 395 345 390 335 C 388 325 395 315 410 310 C 428 305 445 308 458 295 C 468 285 462 272 470 262 C 480 252 505 250 520 255 C 532 260 540 270 548 268 C 555 262 555 245 545 238 C 530 228 505 230 495 220 C 485 210 492 195 480 188 C 468 180 445 188 435 182 C 425 175 415 178 402 188 C 390 198 375 200 365 205 C 352 210 340 205 330 195 C 320 182 322 165 328 150 C 335 130 338 108 330 85 C 322 65 305 45 285 42 Z"></path>
+  <!-- Subtle Internal State Territorial Division Coordinates -->
+  <path d="M 220 120 Q 260 145 325 155 M 198 152 Q 250 178 305 188 M 158 228 Q 230 240 330 248 M 122 300 Q 185 315 280 320 M 138 375 Q 235 385 365 370 M 152 418 Q 220 445 330 440 M 172 495 Q 240 520 315 490 M 190 560 Q 245 580 292 560" fill="none" stroke="#1d2d46" stroke-dasharray="2,4" stroke-width="0.8" opacity="0.7"></path>
+  <path d="M 410 310 Q 440 280 470 262 M 435 182 Q 465 215 520 255" fill="none" stroke="#1d2d46" stroke-dasharray="2,4" stroke-width="0.8" opacity="0.7"></path>
+</g>
+
+<!-- 1. Chandigarh (Punjab / Haryana Border, North ~30.7°N, 76.8°E) -->
+<g class="cursor-pointer group centroid-node" data-centroid="chandigarh" transform="translate(242, 172)">
+  <circle fill="#10b981" opacity="0.2" r="10"></circle>
+  <circle fill="#10b981" opacity="0.9" r="4"></circle>
+  <circle fill="#ffffff" r="1.5"></circle>
+  <text fill="#cbdbf5" font-family="Inter" font-size="9" font-weight="500" x="8" y="3">Chandigarh 194</text>
+</g>
+
+<!-- 2. Delhi NCR Threat Centroid (Lat ~28.6°N, Long ~77.2°E) - High Density Hotspot -->
+<g class="cursor-pointer group centroid-node" data-centroid="delhi" transform="translate(254, 218)">
+  <circle class="animate-pulse" fill="#ef4444" opacity="0.2" r="24"></circle>
+  <circle fill="#ef4444" opacity="0.9" r="9"></circle>
+  <circle fill="#ffffff" r="3"></circle>
+  <rect fill="#131b2e" height="24" opacity="0.95" rx="4" stroke="#ef4444" stroke-width="0.7" width="104" x="14" y="-12"></rect>
+  <text fill="#ffffff" font-family="Inter" font-size="10" font-weight="600" x="20" y="4">DELHI NCR</text>
+  <text fill="#ffb3ad" font-family="Inter" font-size="9" font-weight="700" x="82" y="4">1.8k</text>
+</g>
+
+<!-- 3. Jaipur (Rajasthan, West-Northwest, Lat ~26.9°N, Long ~75.8°E) -->
+<g class="cursor-pointer group centroid-node" data-centroid="jaipur" transform="translate(222, 252)">
+  <circle fill="#f59e0b" opacity="0.25" r="12"></circle>
+  <circle fill="#f59e0b" opacity="0.85" r="5"></circle>
+  <circle fill="#ffffff" r="2"></circle>
+  <rect fill="#131b2e" height="18" opacity="0.9" rx="3" stroke="#f59e0b" stroke-width="0.5" width="74" x="10" y="-9"></rect>
+  <text fill="#ffffff" font-family="Inter" font-size="9" font-weight="500" x="15" y="4">Jaipur 290</text>
+</g>
+
+<!-- 4. Ahmedabad (Gujarat Peninsula, Lat ~23.0°N, Long ~72.6°E) -->
+<g class="cursor-pointer group centroid-node" data-centroid="ahmedabad" transform="translate(162, 332)">
+  <circle fill="#f59e0b" opacity="0.25" r="14"></circle>
+  <circle fill="#f59e0b" opacity="0.85" r="5.5"></circle>
+  <circle fill="#ffffff" r="2"></circle>
+  <rect fill="#131b2e" height="18" opacity="0.9" rx="3" stroke="#f59e0b" stroke-width="0.5" width="86" x="-92" y="-9"></rect>
+  <text fill="#ffffff" font-family="Inter" font-size="8.5" font-weight="500" x="-87" y="4">Ahmedabad 312</text>
+</g>
+
+<!-- 5. Kolkata (East / Bengal Coast, Lat ~22.6°N, Long ~88.4°E) -->
+<g class="cursor-pointer group centroid-node" data-centroid="kolkata" transform="translate(390, 328)">
+  <circle fill="#f59e0b" opacity="0.25" r="15"></circle>
+  <circle fill="#f59e0b" opacity="0.85" r="6"></circle>
+  <circle fill="#ffffff" r="2"></circle>
+  <rect fill="#131b2e" height="18" opacity="0.9" rx="3" stroke="#f59e0b" stroke-width="0.5" width="80" x="10" y="-9"></rect>
+  <text fill="#ffffff" font-family="Inter" font-size="8.5" font-weight="500" x="15" y="4">Kolkata 422</text>
+</g>
+
+<!-- 6. Mumbai MMR Node (West Coast, Lat ~19.0°N, Long ~72.8°E) -->
+<g class="cursor-pointer group centroid-node" data-centroid="mumbai" transform="translate(172, 412)">
+  <circle fill="#ef4444" opacity="0.25" r="18"></circle>
+  <circle fill="#ef4444" opacity="0.9" r="7.5"></circle>
+  <circle fill="#ffffff" r="2.5"></circle>
+  <rect fill="#131b2e" height="20" opacity="0.9" rx="3" stroke="#ef4444" stroke-width="0.6" width="92" x="-98" y="-10"></rect>
+  <text fill="#ffffff" font-family="Inter" font-size="9" font-weight="600" x="-92" y="4">MUMBAI 980</text>
+</g>
+
+<!-- 7. Pune Metro (Inland Maharashtra, Lat ~18.5°N, Long ~73.8°E) -->
+<g class="cursor-pointer group centroid-node" data-centroid="pune" transform="translate(196, 442)">
+  <circle fill="#f59e0b" opacity="0.25" r="14"></circle>
+  <circle fill="#f59e0b" opacity="0.85" r="5.5"></circle>
+  <circle fill="#ffffff" r="2"></circle>
+  <text fill="#cbdbf5" font-family="Inter" font-size="9.5" font-weight="500" x="10" y="3">Pune 430</text>
+</g>
+
+<!-- 8. Hyderabad (Deccan Plateau, Lat ~17.4°N, Long ~78.5°E) -->
+<g class="cursor-pointer group centroid-node" data-centroid="hyderabad" transform="translate(262, 446)">
+  <circle fill="#f59e0b" opacity="0.25" r="16"></circle>
+  <circle fill="#f59e0b" opacity="0.85" r="6.5"></circle>
+  <circle fill="#ffffff" r="2"></circle>
+  <rect fill="#131b2e" height="18" opacity="0.9" rx="3" stroke="#f59e0b" stroke-width="0.5" width="66" x="11" y="-9"></rect>
+  <text fill="#ffffff" font-family="Inter" font-size="9" font-weight="600" x="16" y="4">Hyd 610</text>
+</g>
+
+<!-- 9. Bengaluru Urban [ACTIVE SPIKE SELECTION / PRIMARY TARGET RETICLE] (Lat ~12.97°N, Long ~77.6°E) -->
+<g class="cursor-pointer group centroid-node active-target" data-centroid="bengaluru" transform="translate(248, 545)">
+  <!-- Radar Pulse Rings -->
+  <circle class="animate-ping" fill="#ef4444" opacity="0.15" r="42"></circle>
+  <circle fill="#ef4444" opacity="0.25" r="26"></circle>
+  <circle fill="#ef4444" r="10" stroke="#ffffff" stroke-width="2"></circle>
+  <circle fill="#ffffff" r="3.5"></circle>
+  <!-- Crosshair Reticles -->
+  <line stroke="#ffdad6" stroke-width="1.2" x1="-18" x2="-12" y1="0" y2="0"></line>
+  <line stroke="#ffdad6" stroke-width="1.2" x1="12" x2="18" y1="0" y2="0"></line>
+  <line stroke="#ffdad6" stroke-width="1.2" x1="0" x2="0" y1="-18" y2="-12"></line>
+  <line stroke="#ffdad6" stroke-width="1.2" x1="0" x2="0" y1="12" y2="18"></line>
+  <!-- Centroid HUD Badge Callout -->
+  <g transform="translate(16, -18)">
+    <rect fill="#131b2e" height="36" rx="4" stroke="#ef4444" stroke-width="1.2" width="144"></rect>
+    <text fill="#ffffff" font-family="Inter" font-size="10.5" font-weight="700" x="8" y="15">BENGALURU URB</text>
+    <text fill="#ffb3ad" font-family="Inter" font-size="9" font-weight="600" x="8" y="29">1.4k [+142% SPIKE]</text>
+  </g>
+</g>
+
+<!-- 10. Chennai (Coromandel Coast, Lat ~13.08°N, Long ~80.3°E) -->
+<g class="cursor-pointer group centroid-node" data-centroid="chennai" transform="translate(296, 552)">
+  <circle fill="#10b981" opacity="0.25" r="9"></circle>
+  <circle fill="#10b981" opacity="0.9" r="4.5"></circle>
+  <circle fill="#ffffff" r="1.5"></circle>
+  <text fill="#cbdbf5" font-family="Inter" font-size="9" font-weight="500" x="10" y="3">Chennai 88</text>
+</g>
+</svg>
+<!-- Fixed Centroid Aggregation Legend Overlay (Bottom Left) -->
+<div class="absolute bottom-3 left-3 bg-primary-container/90 backdrop-blur-md px-3 py-2.5 rounded-lg shadow-md max-w-xs pointer-events-auto">
+<div class="font-caption text-caption text-surface-dim uppercase tracking-wider mb-1.5 font-bold">RADAR AGGREGATION LEGEND</div>
+<div class="grid grid-cols-2 gap-x-4 gap-y-1">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-on-tertiary-container shadow-sm"></span>
+<span class="font-caption text-caption text-surface font-mono-data">&gt;900 Critical</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span>
+<span class="font-caption text-caption text-surface font-mono-data">300-899 Elevated</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
+<span class="font-caption text-caption text-surface font-mono-data">&lt;300 Baseline</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded border border-secondary-fixed"></span>
+<span class="font-caption text-caption text-surface font-mono-data">Centroid Focal</span>
+</div>
+</div>
+</div>
+<!-- Live Feed Ticker in Canvas (Bottom Right) -->
+<div class="absolute bottom-3 right-3 hidden md:flex items-center gap-2 bg-primary-container/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-surface-dim font-caption text-caption">
+<span class="material-symbols-outlined text-[13px] text-secondary-fixed">sensors</span>
+<span class="">POLICE DOCKET C3-KA/4481 INTERCEPTED</span>
+</div>
+</div>
+</div>
+<!-- Right Telemetry Rail for Selected Active Hotspot (4 Cols) -->
+<div class="lg:col-span-4 flex flex-col gap-3">
+<!-- Header Surface for Selected Sector -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-caption text-caption font-bold">SECTOR 09</span>
+<span class="font-caption text-caption text-on-surface-variant font-mono-data">LAT: 12.9716°N</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mt-1 tracking-tight">Bengaluru Urban (KA)</h2>
+</div>
+<span class="px-2 py-0.5 rounded bg-error/10 text-error font-caption text-caption font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+              CRITICAL
+            </span>
+</div>
+<!-- Dual Telemetry Metric Badges -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
+<!-- Metric 1: Verified Reports -->
+<div class="bg-surface-container-low p-2.5 rounded flex items-start justify-between">
+<div>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-semibold">VERIFIED INCIDENTS</span>
+<div class="font-headline-sm text-headline-sm text-on-surface font-mono-data font-bold mt-0.5">1,420</div>
+</div>
+<span class="font-caption text-caption px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-mono-data font-semibold">
+                +142% Anomaly
+              </span>
+</div>
+<!-- Metric 2: 1930 Losses Prevented -->
+<div class="bg-surface-container-low p-2.5 rounded flex items-start justify-between">
+<div>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-semibold">PREVENTED (1930 GOLDEN HR)</span>
+<div class="font-headline-sm text-headline-sm text-secondary font-mono-data font-bold mt-0.5">₹84.50 Lakh</div>
+</div>
+<span class="font-caption text-caption px-1.5 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-mono-data font-semibold">
+                91.4% Hold
+              </span>
+</div>
+</div>
+<!-- 5-Day Surge Velocity Histogram / Sparkline Chart -->
+<div class="bg-surface-container-low p-3 rounded">
+<div class="flex items-center justify-between mb-2">
+<span class="font-caption text-caption text-on-surface-variant uppercase font-semibold">5-Day Surge Velocity (Vol/Day)</span>
+<span class="font-caption text-caption text-on-surface font-mono-data">PEAK: 412/d</span>
+</div>
+<div class="h-20 w-full flex items-end justify-between gap-2 pt-2 px-1">
+<!-- Day -4 -->
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end group">
+<div class="w-full bg-surface-variant rounded-t transition-all group-hover:bg-primary" style="height: 28%;"></div>
+<span class="font-caption text-[10px] text-on-surface-variant font-mono-data">D-4</span>
+</div>
+<!-- Day -3 -->
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end group">
+<div class="w-full bg-surface-variant rounded-t transition-all group-hover:bg-primary" style="height: 38%;"></div>
+<span class="font-caption text-[10px] text-on-surface-variant font-mono-data">D-3</span>
+</div>
+<!-- Day -2 -->
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end group">
+<div class="w-full bg-surface-variant rounded-t transition-all group-hover:bg-primary" style="height: 52%;"></div>
+<span class="font-caption text-[10px] text-on-surface-variant font-mono-data">D-2</span>
+</div>
+<!-- Day -1 -->
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end group">
+<div class="w-full bg-surface-variant rounded-t transition-all group-hover:bg-primary" style="height: 72%;"></div>
+<span class="font-caption text-[10px] text-on-surface-variant font-mono-data">D-1</span>
+</div>
+<!-- Today (Surge) -->
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end group">
+<div class="w-full bg-on-tertiary-container rounded-t transition-all shadow-sm" style="height: 100%;"></div>
+<span class="font-caption text-[10px] text-error font-mono-data font-bold">TODAY</span>
+</div>
+</div>
+</div>
+<!-- Micro-Targeting: Active Hotspot Sub-clusters -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-caption text-caption text-on-surface-variant uppercase font-semibold">Active Sub-Cluster Pockets</span>
+<span class="font-caption text-caption text-on-surface-variant">3 ZONES</span>
+</div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low text-body-sm hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-2 truncate">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="font-mono-data text-body-sm text-on-surface truncate">Whitefield Tech Hub</span>
+</div>
+<span class="font-mono-data text-caption text-on-surface-variant shrink-0">612 cases • 43%</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low text-body-sm hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-2 truncate">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="font-mono-data text-body-sm text-on-surface truncate">Koramangala 4th Blk</span>
+</div>
+<span class="font-mono-data text-caption text-on-surface-variant shrink-0">485 cases • 34%</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low text-body-sm hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-2 truncate">
+<span class="w-1.5 h-1.5 rounded-full bg-[#f59e0b]"></span>
+<span class="font-mono-data text-body-sm text-on-surface truncate">Indiranagar 100ft Rd</span>
+</div>
+<span class="font-mono-data text-caption text-on-surface-variant shrink-0">323 cases • 23%</span>
+</div>
+</div>
+</div>
+<!-- Operational Quick Action Triggers -->
+<div class="flex flex-col gap-2 pt-1">
+<button class="w-full h-9 rounded bg-primary text-on-primary hover:bg-inverse-surface font-label-sm text-label-sm font-semibold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99]">
+<span class="material-symbols-outlined text-[17px] text-secondary-fixed">cell_tower</span>
+              Broadcast Local Advisory
+            </button>
+<button class="w-full h-8 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm font-medium flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[15px] text-secondary">forum</span>
+              Subscribe WhatsApp Incident Stream
+            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: High-Density Regional Telemetry Registry -->
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<!-- Registry Filter & Header Bar -->
+<div class="px-4 py-3 bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-on-surface">dataset</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Regional Telemetry Registry</h3>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono-data text-caption font-semibold">25 ZONES MONITORED</span>
+</div>
+<!-- Search & Filter Within Registry -->
+<div class="flex items-center gap-2">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-[16px] text-outline">search</span>
+<input class="w-full h-8 pl-8 pr-3 text-body-sm font-body-sm bg-surface-container-lowest rounded text-on-surface placeholder:text-outline focus:outline-none shadow-sm" id="registry-search" placeholder="Search zone, state or vector..." type="text">
+</div>
+<button class="h-8 px-2.5 rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-sm text-label-sm font-medium flex items-center gap-1.5 shadow-sm transition-colors" id="export-csv-btn">
+<span class="material-symbols-outlined text-[15px]">download</span>
+<span class="hidden sm:inline">Export</span>
+</button>
+</div>
+</div>
+<!-- Compact Tabular View (25 Monitored Regional Zones) -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm" id="registry-table">
+<thead>
+<tr class="bg-surface-container-lowest text-on-surface-variant text-caption font-caption uppercase tracking-wider">
+<th class="py-2.5 px-4 font-semibold">Zone Identifier</th>
+<th class="py-2.5 px-4 font-semibold">Jurisdiction / State</th>
+<th class="py-2.5 px-4 font-semibold">Primary Attack Vector</th>
+<th class="py-2.5 px-4 font-semibold text-right">Active Count (7D)</th>
+<th class="py-2.5 px-4 font-semibold">7D Velocity Spark</th>
+<th class="py-2.5 px-4 font-semibold">Risk Classification</th>
+<th class="py-2.5 px-4 font-semibold text-right">Interception Rate</th>
+<th class="py-2.5 px-4 font-semibold text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low text-on-surface" id="registry-table-body">
+<!-- Row 1: Bengaluru Urban (Spike) -->
+<tr class="hover:bg-surface-container-lowest transition-colors bg-surface-container-low/40">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-KA-09</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Bengaluru Urban (Karnataka)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">Digital Arrest / FedEx</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">1,420</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-error" fill="none" viewBox="0 0 80 16">
+<path d="M0 14 L18 12 L36 9 L54 6 L80 1" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-caption text-caption font-bold">CRITICAL SPIKE</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">91.4%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-primary text-on-primary font-caption text-caption font-semibold hover:bg-inverse-surface transition-colors" data-zone="Bengaluru Urban">Inspect</button>
+</td>
+</tr>
+<!-- Row 2: Delhi NCR -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-DL-01</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Delhi NCR (Capital Region)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">Telegram Task / Stocks</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">1,842</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-error" fill="none" viewBox="0 0 80 16">
+<path d="M0 10 L20 11 L40 7 L60 5 L80 2" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-caption text-caption font-bold">HIGH SEVERITY</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">88.2%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-caption text-caption font-semibold transition-colors" data-zone="Delhi NCR">Inspect</button>
+</td>
+</tr>
+<!-- Row 3: Mumbai MMR -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-MH-02</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Mumbai MMR (Maharashtra)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">Electricity KYC Trap</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">980</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-[#f59e0b]" fill="none" viewBox="0 0 80 16">
+<path d="M0 8 L22 9 L44 5 L64 7 L80 4" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-caption text-caption font-semibold">ELEVATED</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">84.7%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-caption text-caption font-semibold transition-colors" data-zone="Mumbai MMR">Inspect</button>
+</td>
+</tr>
+<!-- Row 4: Hyderabad Cyberabad -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-TS-04</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Hyderabad (Telangana)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">UPI Collect / Fake QR</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">610</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-[#f59e0b]" fill="none" viewBox="0 0 80 16">
+<path d="M0 12 L20 10 L40 11 L60 8 L80 5" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-caption text-caption font-semibold">ELEVATED</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">89.1%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-caption text-caption font-semibold transition-colors" data-zone="Hyderabad">Inspect</button>
+</td>
+</tr>
+<!-- Row 5: Pune Metropolitan -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-MH-05</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Pune Metro (Maharashtra)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">Digital Arrest Spoof</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">430</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-[#f59e0b]" fill="none" viewBox="0 0 80 16">
+<path d="M0 11 L20 10 L40 8 L60 9 L80 6" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-caption text-caption font-semibold">ELEVATED</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">82.0%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-caption text-caption font-semibold transition-colors" data-zone="Pune Metro">Inspect</button>
+</td>
+</tr>
+<!-- Row 6: Jaipur District -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-RJ-03</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Jaipur Urban (Rajasthan)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">Electricity Bill Smishing</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">290</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-secondary" fill="none" viewBox="0 0 80 16">
+<path d="M0 9 L25 9 L50 8 L75 9 L80 8" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-secondary-fixed/50 text-on-secondary-fixed-variant font-caption text-caption font-semibold">BASELINE</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">79.5%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-caption text-caption font-semibold transition-colors" data-zone="Jaipur Urban">Inspect</button>
+</td>
+</tr>
+<!-- Row 7: Chennai Metro -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-TN-07</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Chennai (Tamil Nadu)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">Courier Customs Call</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">88</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-secondary" fill="none" viewBox="0 0 80 16">
+<path d="M0 8 L20 9 L40 10 L60 9 L80 11" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-secondary-fixed/50 text-on-secondary-fixed-variant font-caption text-caption font-semibold">CONTROLLED</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">96.1%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-caption text-caption font-semibold transition-colors" data-zone="Chennai">Inspect</button>
+</td>
+</tr>
+<!-- Row 8: Ahmedabad -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-GJ-06</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Ahmedabad (Gujarat)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">IPO Allocation Scam</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">312</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-[#f59e0b]" fill="none" viewBox="0 0 80 16">
+<path d="M0 13 L20 11 L40 9 L60 7 L80 6" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-caption text-caption font-semibold">ELEVATED</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">87.3%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-caption text-caption font-semibold transition-colors" data-zone="Ahmedabad">Inspect</button>
+</td>
+</tr>
+<!-- Row 9: Kolkata Metro -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-WB-08</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Kolkata (West Bengal)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">KYC Remote App (AnyDesk)</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">422</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-[#f59e0b]" fill="none" viewBox="0 0 80 16">
+<path d="M0 10 L25 8 L50 9 L75 6 L80 4" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-caption text-caption font-semibold">ELEVATED</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">76.8%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-caption text-caption font-semibold transition-colors" data-zone="Kolkata">Inspect</button>
+</td>
+</tr>
+<!-- Row 10: Chandigarh Tri-City -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2 px-4 font-mono-data text-body-sm font-semibold">ZN-CH-10</td>
+<td class="py-2 px-4 font-semibold text-on-surface">Chandigarh (Tri-City)</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-caption">Overseas Visa Scam</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data font-bold text-on-surface">194</td>
+<td class="py-2 px-4">
+<svg class="w-20 h-4 text-secondary" fill="none" viewBox="0 0 80 16">
+<path d="M0 10 L20 10 L40 10 L60 8 L80 9" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+<td class="py-2 px-4">
+<span class="px-2 py-0.5 rounded bg-secondary-fixed/50 text-on-secondary-fixed-variant font-caption text-caption font-semibold">BASELINE</span>
+</td>
+<td class="py-2 px-4 text-right font-mono-data text-secondary font-semibold">85.0%</td>
+<td class="py-2 px-4 text-center">
+<button class="inspect-btn h-6 px-2 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-caption text-caption font-semibold transition-colors" data-zone="Chandigarh">Inspect</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Compact Footer Pagination & Metric Summary -->
+<div class="px-4 py-2.5 bg-surface-container-lowest flex items-center justify-between font-caption text-caption text-on-surface-variant">
+<div class="">Showing <span class="font-mono-data text-on-surface font-semibold">1-10</span> of <span class="font-mono-data text-on-surface font-semibold">25</span> mapped high-risk jurisdictions</div>
+<div class="flex items-center gap-1">
+<button class="px-2 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors disabled:opacity-40" disabled="">Previous</button>
+<button class="px-2 py-1 rounded bg-surface-container text-on-surface font-semibold">1</button>
+<button class="px-2 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors">2</button>
+<button class="px-2 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors">3</button>
+<button class="px-2 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors">Next</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Micro-Interaction Script for Filter Toggles and Centroid Pin Click -->
+<script>
+    (function () {
+      // Time Range Toggles
+      const timeBtns = document.querySelectorAll('.time-filter-btn');
+      timeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          timeBtns.forEach(b => {
+            b.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm', 'font-semibold');
+            b.classList.add('text-on-surface-variant');
+          });
+          btn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm', 'font-semibold');
+          btn.classList.remove('text-on-surface-variant');
+        });
+      });
+
+      // Vector Tag Toggles
+      const vectorTags = document.querySelectorAll('.vector-tag');
+      vectorTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+          vectorTags.forEach(t => {
+            t.classList.remove('bg-primary', 'text-on-primary', 'font-medium', 'shadow-sm');
+            t.classList.add('bg-surface-container-low', 'text-on-surface-variant');
+          });
+          tag.classList.add('bg-primary', 'text-on-primary', 'font-medium', 'shadow-sm');
+          tag.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
+        });
+      });
+
+      // Table search filtering
+      const searchInput = document.getElementById('registry-search');
+      const tableRows = document.querySelectorAll('#registry-table-body tr');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase().trim();
+          tableRows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(query) ? '' : 'none';
+          });
+        });
+      }
+
+      // Map Centroid Pin Click Simulation
+      const centroids = document.querySelectorAll('.centroid-node');
+      centroids.forEach(c => {
+        c.addEventListener('click', () => {
+          const centroidId = c.getAttribute('data-centroid');
+          centroids.forEach(other => other.classList.remove('opacity-100'));
+          c.classList.add('opacity-100');
+        });
+      });
+
+      // Inspect Cluster Button Trigger
+      const inspectBtns = document.querySelectorAll('.inspect-btn');
+      inspectBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const zone = btn.getAttribute('data-zone');
+          const original = btn.innerText;
+          btn.innerText = 'Active';
+          btn.classList.add('bg-secondary', 'text-on-secondary');
+          setTimeout(() => {
+            btn.innerText = original;
+            btn.classList.remove('bg-secondary', 'text-on-secondary');
+          }, 1200);
+        });
+      });
+    })();
+  </script>
+</div></main>
+<!-- Clean Minimalist Footer -->
+<footer class="border-t border-white/[0.08] bg-[#0b0f17] py-8 text-xs text-slate-500">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-slate-300">ScamMap</span>
+<span class="text-slate-600">/</span>
+<span class="">Civic Threat Intelligence Platform</span>
+</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-slate-300 transition-colors" href="#">Telemetry API</a>
+<a class="hover:text-slate-300 transition-colors" href="#">1930 Integration</a>
+<a class="hover:text-slate-300 transition-colors" href="#">Privacy Model</a>
+<a class="hover:text-slate-300 transition-colors" href="#">Security</a>
+</div>
+<div class="">© 2025 National Civic Network</div>
+</div>
+</footer>
+<script>
+    (function () {
+      const search = document.getElementById('omni-search');
+      const pill = document.getElementById('type-pill');
+      const chips = document.querySelectorAll('.sample-chip');
+
+      function evaluateQuery(val) {
+        const v = val.trim();
+        if (!v) {
+          pill.classList.add('hidden');
+          return;
+        }
+        pill.classList.remove('hidden');
+
+        if (/^(\+91|91|0)?[6-9]\d{9}$/.test(v.replace(/[\s-]/g, ''))) {
+          pill.textContent = 'Phone Detected';
+        } else if (v.includes('@')) {
+          pill.textContent = 'UPI Detected';
+        } else if (v.includes('.') || v.startsWith('http')) {
+          pill.textContent = 'URL Detected';
+        } else {
+          pill.textContent = 'Entity Query';
+        }
+      }
+
+      if (search) {
+        search.addEventListener('input', (e) => evaluateQuery(e.target.value));
+      }
+
+      chips.forEach((c) => {
+        c.addEventListener('click', () => {
+          const val = c.getAttribute('data-val');
+          if (search && val) {
+            search.value = val;
+            evaluateQuery(val);
+            search.focus();
+          }
+        });
+      });
+
+      // Quick keyboard shortcut simulation
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          if (search) search.focus();
+        }
+      });
+    })();
+  </script>
+
+
+</body></html>

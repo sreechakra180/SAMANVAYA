@@ -1,0 +1,147 @@
+@import "leaflet/dist/leaflet.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── SAMANVAYA Editorial Technology Palette ─── */
+:root {
+  --color-bg: #F8FAF7;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #F1F4F0;
+  --color-surface-mint: #EAF3EA;
+  --color-sage: #CADFCC;
+  --color-green-natural: #A8C9AD;
+  --color-forest: #24543B;
+  --color-forest-dark: #193A2A;
+  --color-text-secondary: #78877D;
+  --color-border: #DCE7DD;
+  --color-warning: #D97869;
+  --color-critical: #BA1A1A;
+  
+  --font-heading: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* ─── Global Reset & Typography ─── */
+html {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-forest-dark);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-forest-dark);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+/* ─── Restrained Editorial Components ─── */
+@layer components {
+  .samanvaya-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(36, 84, 59, 0.04), 0 6px 16px rgba(36, 84, 59, 0.02);
+    transition: all 0.2s ease;
+  }
+  
+  .samanvaya-panel {
+    background-color: var(--color-surface-mint);
+    border: 1px solid var(--color-sage);
+    border-radius: 12px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: var(--color-forest);
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 9999px;
+    transition: all 0.15s ease;
+  }
+  .btn-primary:hover {
+    background-color: var(--color-forest-dark);
+    box-shadow: 0 4px 12px rgba(36, 84, 59, 0.18);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: var(--color-surface);
+    color: var(--color-forest);
+    border: 1px solid var(--color-border);
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 9999px;
+    transition: all 0.15s ease;
+  }
+  .btn-secondary:hover {
+    border-color: var(--color-natural-green);
+    background-color: var(--color-surface-subtle);
+  }
+
+  .input-editorial {
+    width: 100%;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-forest-dark);
+    transition: border-color 0.15s ease;
+  }
+  .input-editorial:focus {
+    outline: none;
+    border-color: var(--color-forest);
+    box-shadow: 0 0 0 3px rgba(36, 84, 59, 0.08);
+  }
+}
+
+/* ─── Scroll-bar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface-subtle);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-sage);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-green-natural);
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

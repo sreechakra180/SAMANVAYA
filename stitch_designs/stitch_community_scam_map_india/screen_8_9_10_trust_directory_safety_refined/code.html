@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..500,0..1,-25..0&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+      }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-[#0b0f17] text-[#f1f5f9] antialiased min-h-screen flex flex-col selection:bg-cyan-500/20 selection:text-cyan-300">
+<!-- Header -->
+<header class="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#0b0f17]/80 backdrop-blur-xl transition-all">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+<div class="flex items-center gap-6">
+<a class="flex items-center gap-2.5 group" href="#">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-black font-semibold text-sm shadow-[0_0_15px_rgba(6,182,212,0.35)]">
+<span class="material-symbols-outlined text-[19px] text-[#0b0f17]">shield</span>
+</div>
+<span class="font-semibold text-[15px] tracking-tight text-white group-hover:text-cyan-400 transition-colors">ScamMap</span>
+<div class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-950/70 border border-cyan-800/40 text-[11px] font-medium text-cyan-400">
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Live telemetry
+          </div>
+</a>
+<nav class="hidden md:flex items-center gap-1 pl-2">
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-white bg-white/[0.07] border border-white/[0.06] transition-colors" href="#">Lookup</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Report</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Radar</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Alerts</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Directory</a>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<a class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-[12px] font-medium transition-all group" href="tel:1930">
+<span class="material-symbols-outlined text-[14px] text-rose-400 group-hover:scale-110 transition-transform">phone_in_talk</span>
+<span>Dial 1930</span>
+</a>
+<div class="h-4 w-[1px] bg-white/[0.1] hidden sm:block"></div>
+<button class="w-7 h-7 rounded-full bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] flex items-center justify-center text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[17px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full relative"><div class="flex flex-col w-full">
+<!-- Top Forensic Banner / Protocol State -->
+<section class="w-full bg-surface-container-low px-4 sm:px-6 lg:px-8 py-3">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-on-surface">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary animate-ping"></div>
+<span class="font-caption uppercase tracking-wider text-caption text-on-surface-variant">Cryptographic Ground Truth • Production Spec v4.11</span>
+<span class="hidden sm:inline-block w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="hidden sm:inline-block font-mono-data text-mono-data text-on-surface">I4C / NPCI Schema Verified</span>
+</div>
+<div class="flex items-center gap-4 text-body-sm font-body-sm text-on-surface-variant">
+<span>Epoch: <strong class="font-mono-data text-on-surface">#2025.Q1.990</strong></span>
+<span>Attestation: <span class="text-secondary font-mono-data">SHA256:ECDSA-Secp256k1</span></span>
+</div>
+</div>
+</section>
+<!-- SECTION 1: Screen 8 - Zero-Knowledge Civic Architecture -->
+<section class="w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-surface">
+<div class="max-w-7xl mx-auto flex flex-col gap-10">
+<!-- Section Header with Linear/Vercel Technical Rigor -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6">
+<div class="flex flex-col gap-2 max-w-2xl">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-primary-container font-caption text-caption uppercase tracking-wider">Screen 08 • Protocol Architecture</span>
+<span class="font-mono-data text-caption text-secondary">Zero-Knowledge Defense Core</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Zero-Knowledge Civic Architecture</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">A sovereign telemetry plane engineered so the reporting pipeline cannot de-anonymize citizens, even under subpoena, database compromise, or node collusion.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="px-3 py-1.5 rounded-lg bg-surface-container-high flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">lock</span>
+<span class="font-mono-data text-body-sm text-on-surface">Zero Data Retention SLA</span>
+</div>
+</div>
+</div>
+<!-- 4 Crisp Architecture Cards in Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Card 1: Anonymous Ingestion -->
+<div class="group p-6 rounded-lg bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col justify-between h-full relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="font-mono-data text-caption uppercase text-on-surface-variant">Spec 01 / Ingest</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">fingerprint_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">100% Anonymous Ingestion</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">No tracking cookies, no browser canvas fingerprinting, zero HTTP Referer retention. Ephemeral RAM-only ingestion sinks drop IP connections immediately after TLS termination.</p>
+</div>
+<div class="mt-6 pt-4 flex flex-col gap-2 bg-surface-container-low p-3 rounded">
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>PII Stored:</span>
+<span class="font-mono-data text-secondary font-semibold">0-BYTES STRICT</span>
+</div>
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>Telemetry Retention:</span>
+<span class="font-mono-data text-on-surface">Transient Heap</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Client-Side Salted Hashes -->
+<div class="group p-6 rounded-lg bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col justify-between h-full relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="font-mono-data text-caption uppercase text-on-surface-variant">Spec 02 / Crypto</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">enhanced_encryption</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Client-Side Salted Hashes</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Identifiers (VPA, Phone, URL) are transformed on-device via SHA-256 with epoch salts prior to wire transmission. The clearinghouse ingests irreversible math, never raw entities.</p>
+</div>
+<div class="mt-6 pt-4 flex flex-col gap-2 bg-surface-container-low p-3 rounded">
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>Hash Routine:</span>
+<span class="font-mono-data text-on-surface">SHA-256 + HKDF</span>
+</div>
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>Transport:</span>
+<span class="font-mono-data text-secondary">Pre-Hashed Hex</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Fixed Centroid Spatial Telemetry -->
+<div class="group p-6 rounded-lg bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col justify-between h-full relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="font-mono-data text-caption uppercase text-on-surface-variant">Spec 03 / Geospatial</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">explore_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Fixed Centroid Telemetry</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Fine-grained GPS coordinates are deliberately rejected. Spatial incident vectors are quantized to municipal telecom centroid bounding boxes (H3 resolution L7).</p>
+</div>
+<div class="mt-6 pt-4 flex flex-col gap-2 bg-surface-container-low p-3 rounded">
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>Spatial Precision:</span>
+<span class="font-mono-data text-on-surface">±5.2 km Triangulation</span>
+</div>
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>Cell Topology:</span>
+<span class="font-mono-data text-secondary">Municipal Poly</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Quorum Corroboration -->
+<div class="group p-6 rounded-lg bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col justify-between h-full relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="font-mono-data text-caption uppercase text-on-surface-variant">Spec 04 / Consensus</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">rule_folder</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Quorum Corroboration</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Classification requires threshold convergence. A flagged entity requires ≥3 uncorrelated geographic clusters within a rolling 72-hour window before transitioning to KNOWN_SCAM status.</p>
+</div>
+<div class="mt-6 pt-4 flex flex-col gap-2 bg-surface-container-low p-3 rounded">
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>Quorum Threshold:</span>
+<span class="font-mono-data text-on-surface">≥3 Independent Nodes</span>
+</div>
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>Attack Resilience:</span>
+<span class="font-mono-data text-secondary">Sybil-Resistant</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Tactical SVG Pipeline Flow Diagram -->
+<div class="w-full p-6 rounded-lg bg-surface-container-lowest shadow-sm flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">schema</span>
+<span class="font-caption text-caption uppercase tracking-wider text-on-surface font-semibold">Zero-Knowledge Ingestion • Dataflow Topology</span>
+</div>
+<span class="font-mono-data text-caption text-on-surface-variant">TLS 1.3 / ECH Mandatory</span>
+</div>
+<div class="w-full overflow-x-auto py-2">
+<svg class="w-full min-w-[700px] h-20 text-on-surface" fill="none" viewbox="0 0 860 80">
+<!-- Client Layer -->
+<rect class="fill-surface-container" height="50" rx="4" width="160" x="10" y="15"></rect>
+<text class="fill-on-surface font-mono-data text-[11px] font-semibold" text-anchor="middle" x="90" y="38">Citizen Browser</text>
+<text class="fill-on-surface-variant font-mono-data text-[9px]" text-anchor="middle" x="90" y="52">WebCrypto SHA-256 Salt</text>
+<!-- Connector 1 -->
+<path class="text-outline" d="M170 40 L220 40" stroke="currentColor" stroke-dasharray="3 3" stroke-width="1.5"></path>
+<polygon class="fill-outline" points="220,40 214,37 214,43"></polygon>
+<text class="fill-secondary font-mono-data text-[8px]" text-anchor="middle" x="195" y="32">SALTED_HASH</text>
+<!-- Edge Proxy -->
+<rect class="fill-surface-container" height="50" rx="4" width="180" x="220" y="15"></rect>
+<text class="fill-on-surface font-mono-data text-[11px] font-semibold" text-anchor="middle" x="310" y="38">Anycast Edge Ingress</text>
+<text class="fill-on-surface-variant font-mono-data text-[9px]" text-anchor="middle" x="310" y="52">Drops IP • RAM Sink</text>
+<!-- Connector 2 -->
+<path class="text-outline" d="M400 40 L450 40" stroke="currentColor" stroke-width="1.5"></path>
+<polygon class="fill-outline" points="450,40 444,37 444,43"></polygon>
+<text class="fill-on-surface-variant font-mono-data text-[8px]" text-anchor="middle" x="425" y="32">ANON_PAYLOAD</text>
+<!-- Quorum Validator -->
+<rect class="fill-surface-container" height="50" rx="4" width="190" x="450" y="15"></rect>
+<text class="fill-on-surface font-mono-data text-[11px] font-semibold" text-anchor="middle" x="545" y="38">Cluster Quorum Engine</text>
+<text class="fill-on-surface-variant font-mono-data text-[9px]" text-anchor="middle" x="545" y="52">≥3 Multi-Centroid Check</text>
+<!-- Connector 3 -->
+<path class="text-outline" d="M640 40 L690 40" stroke="currentColor" stroke-width="1.5"></path>
+<polygon class="fill-outline" points="690,40 684,37 684,43"></polygon>
+<text class="fill-secondary font-mono-data text-[8px]" text-anchor="middle" x="665" y="32">ATTESTED</text>
+<!-- Public Threat Graph -->
+<rect class="fill-primary-container" height="50" rx="4" width="160" x="690" y="15"></rect>
+<text class="fill-on-primary font-mono-data text-[11px] font-semibold" text-anchor="middle" x="770" y="38">Consensus Radar</text>
+<text class="fill-primary-fixed font-mono-data text-[9px]" text-anchor="middle" x="770" y="52">Immutable Public Log</text>
+</svg>
+</div>
+</div>
+<!-- Axiom Minimal Notice Card -->
+<div class="p-4 rounded-lg bg-surface-container-high flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex items-start sm:items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container text-surface-container-lowest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-body-md font-semibold text-on-surface">The Zero Reports Axiom</span>
+<span class="px-1.5 py-0.2 rounded bg-tertiary-fixed font-caption text-caption text-tertiary-container uppercase">Advisory Warning</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+<strong>"No Reports ≠ Safe."</strong> Fraud syndicates rapidly cycle SIM cards and UPI handles in bursts under 90 minutes. A clean telemetry lookup simply indicates absence of historical corroboration, never unconditional institutional trust.
+            </p>
+</div>
+</div>
+<div class="shrink-0 font-mono-data text-caption text-on-surface-variant">
+          RULE_REF: RFC-8919/SEC-4
+        </div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: Screen 9 - Official Indian Reference Registry -->
+<section class="w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto flex flex-col gap-8">
+<!-- Section Header with Official Status -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+<div class="flex flex-col gap-2 max-w-2xl">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-primary-container font-caption text-caption uppercase tracking-wider">Screen 09 • Reference Ledger</span>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-caption text-caption font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              NPCI / TRAI Whitelisted
+            </div>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Official Indian Reference Registry</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Cryptographically audited directory of statutory banking handles, sovereign crime helplines, and state utility gateways. All entries pinned to verified TRAI DLT headers.</p>
+</div>
+<!-- Registry Search Input with Inset Feel -->
+<div class="w-full md:w-80">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-[18px] text-on-surface-variant">search</span>
+<input class="w-full pl-9 pr-4 py-2 bg-surface-container rounded-lg text-on-surface font-body-sm text-body-sm placeholder:text-outline focus:outline-none focus:bg-surface-container-high transition-colors" id="registry-search" placeholder="Search entity, handle, IFSC or SMS header..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Distinction Banner -->
+<div class="p-3.5 rounded bg-surface-container-low flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-body-sm font-body-sm">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+<span class="font-medium">Registry Attestation:</span>
+<span class="text-on-surface-variant">Every record below carries root authority from NPCI National Automated Clearing House, TRAI Distributed Ledger, or MHA.</span>
+</div>
+<div class="font-mono-data text-caption text-on-secondary-container bg-secondary-container px-2 py-0.5 rounded">
+          Sync Status: LIVE 1930 DISPATCH
+        </div>
+</div>
+<!-- Searchable Verified Directory Table -->
+<div class="w-full rounded-lg bg-surface shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left" id="verified-registry-table">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-caption text-caption uppercase">
+<th class="py-3 px-4">Entity &amp; Regulatory Jurisdiction</th>
+<th class="py-3 px-4">Official Channels / VPA</th>
+<th class="py-3 px-4">Verified Helpline</th>
+<th class="py-3 px-4">Sender DLT ID</th>
+<th class="py-3 px-4 text-right">Instant Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container text-body-sm font-body-sm text-on-surface">
+<!-- 1930 National Cyber Crime -->
+<tr class="hover:bg-surface-container-low transition-colors registry-row" data-entity="1930 national cyber crime helpline i4c ministry of home affairs mha">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container text-on-primary flex items-center justify-center font-bold text-caption shrink-0">
+                      1930
+                    </div>
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+                        National Cyber Crime Reporting Helpline
+                        <span class="material-symbols-outlined text-secondary text-[14px]">verified</span>
+</span>
+<span class="font-caption text-caption text-on-surface-variant">I4C / Ministry of Home Affairs (MHA)</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data text-on-surface bg-surface-container-high px-2 py-0.5 rounded">cybercrime.gov.in</span>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data font-semibold text-error">1930</span>
+<span class="text-caption text-on-surface-variant ml-1">(Toll Free)</span>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data text-caption bg-surface-container px-1.5 py-0.5 rounded">GOV-CYBER</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="px-2.5 py-1 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded font-caption text-caption flex items-center gap-1 transition-colors" onclick="navigator.clipboard.writeText('cybercrime.gov.in'); alert('Copied: cybercrime.gov.in')">
+<span class="material-symbols-outlined text-[13px]">content_copy</span> Copy
+                    </button>
+<a class="px-3 py-1 bg-primary text-on-primary hover:bg-primary-container rounded font-caption text-caption flex items-center gap-1 transition-colors" href="tel:1930">
+<span class="material-symbols-outlined text-[13px]">call</span> Dial 1930
+                    </a>
+</div>
+</td>
+</tr>
+<!-- State Bank of India -->
+<tr class="hover:bg-surface-container-low transition-colors registry-row" data-entity="state bank of india sbi banking vpa sbiinb">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-high text-on-surface flex items-center justify-center font-bold text-caption shrink-0">
+                      SBI
+                    </div>
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+                        State Bank of India (Official Desk)
+                        <span class="material-symbols-outlined text-secondary text-[14px]">verified</span>
+</span>
+<span class="font-caption text-caption text-on-surface-variant">Scheduled Public Commercial Bank</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="font-mono-data text-caption bg-surface-container-high px-1.5 py-0.5 rounded">@sbi</span>
+<span class="font-mono-data text-caption bg-surface-container-high px-1.5 py-0.5 rounded">@sbiinb</span>
+<span class="font-mono-data text-caption bg-surface-container-high px-1.5 py-0.5 rounded">onlinesbi.sbi</span>
+</div>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data font-semibold text-on-surface">1800 1234</span>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data text-caption bg-surface-container px-1.5 py-0.5 rounded">SBIINB / SBIPAY</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="px-2.5 py-1 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded font-caption text-caption flex items-center gap-1 transition-colors" onclick="navigator.clipboard.writeText('@sbi'); alert('Copied SBI VPA: @sbi')">
+<span class="material-symbols-outlined text-[13px]">content_copy</span> Copy
+                    </button>
+<a class="px-3 py-1 bg-surface-container hover:bg-surface-container-high text-on-surface rounded font-caption text-caption flex items-center gap-1 transition-colors" href="tel:18001234">
+<span class="material-symbols-outlined text-[13px]">call</span> Dial
+                    </a>
+</div>
+</td>
+</tr>
+<!-- RBI Sachet -->
+<tr class="hover:bg-surface-container-low transition-colors registry-row" data-entity="reserve bank of india rbi sachet portal unapproved loan fraud">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-high text-on-surface flex items-center justify-center font-bold text-caption shrink-0">
+                      RBI
+                    </div>
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+                        RBI Sachet Portal
+                        <span class="material-symbols-outlined text-secondary text-[14px]">verified</span>
+</span>
+<span class="font-caption text-caption text-on-surface-variant">Apex Central Bank Registry • NBFC Verification</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data text-on-surface bg-surface-container-high px-2 py-0.5 rounded">sachet.rbi.org.in</span>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data font-semibold text-on-surface">14440</span>
+<span class="text-caption text-on-surface-variant ml-1">(RBI CMS)</span>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data text-caption bg-surface-container px-1.5 py-0.5 rounded">RBIBNK / SACHET</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="px-2.5 py-1 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded font-caption text-caption flex items-center gap-1 transition-colors" onclick="navigator.clipboard.writeText('https://sachet.rbi.org.in'); alert('Copied Sachet Portal URL')">
+<span class="material-symbols-outlined text-[13px]">content_copy</span> Copy
+                    </button>
+<a class="px-3 py-1 bg-surface-container hover:bg-surface-container-high text-on-surface rounded font-caption text-caption flex items-center gap-1 transition-colors" href="tel:14440">
+<span class="material-symbols-outlined text-[13px]">call</span> Dial
+                    </a>
+</div>
+</td>
+</tr>
+<!-- BESCOM / Karnataka Gov -->
+<tr class="hover:bg-surface-container-low transition-colors registry-row" data-entity="bescom karnataka electricity kargov power bill disconnect scam">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-high text-on-surface flex items-center justify-center font-bold text-caption shrink-0">
+                      BES
+                    </div>
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+                        BESCOM / KarGov Payment Gateway
+                        <span class="material-symbols-outlined text-secondary text-[14px]">verified</span>
+</span>
+<span class="font-caption text-caption text-on-surface-variant">Bangalore Electricity Supply • Gov of Karnataka</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data text-on-surface bg-surface-container-high px-2 py-0.5 rounded">bescom.karnataka.gov.in</span>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data font-semibold text-on-surface">1912</span>
+<span class="text-caption text-on-surface-variant ml-1">(24x7 Helpline)</span>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data text-caption bg-surface-container px-1.5 py-0.5 rounded">KARGOV / BESCOM</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="px-2.5 py-1 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded font-caption text-caption flex items-center gap-1 transition-colors" onclick="navigator.clipboard.writeText('bescom.karnataka.gov.in'); alert('Copied BESCOM URL')">
+<span class="material-symbols-outlined text-[13px]">content_copy</span> Copy
+                    </button>
+<a class="px-3 py-1 bg-surface-container hover:bg-surface-container-high text-on-surface rounded font-caption text-caption flex items-center gap-1 transition-colors" href="tel:1912">
+<span class="material-symbols-outlined text-[13px]">call</span> Dial 1912
+                    </a>
+</div>
+</td>
+</tr>
+<!-- HDFC Bank -->
+<tr class="hover:bg-surface-container-low transition-colors registry-row" data-entity="hdfc bank private banking hdfcbank loan vpa fraud">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-high text-on-surface flex items-center justify-center font-bold text-caption shrink-0">
+                      HDFC
+                    </div>
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+                        HDFC Bank Official Registry
+                        <span class="material-symbols-outlined text-secondary text-[14px]">verified</span>
+</span>
+<span class="font-caption text-caption text-on-surface-variant">Scheduled Private Commercial Bank</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-4">
+<div class="flex flex-wrap gap-1">
+<span class="font-mono-data text-caption bg-surface-container-high px-1.5 py-0.5 rounded">@hdfcbank</span>
+<span class="font-mono-data text-caption bg-surface-container-high px-1.5 py-0.5 rounded">hdfcbank.com</span>
+</div>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data font-semibold text-on-surface">1800 202 6161</span>
+</td>
+<td class="py-3 px-4">
+<span class="font-mono-data text-caption bg-surface-container px-1.5 py-0.5 rounded">HDFCBK</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="px-2.5 py-1 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded font-caption text-caption flex items-center gap-1 transition-colors" onclick="navigator.clipboard.writeText('@hdfcbank'); alert('Copied HDFC VPA: @hdfcbank')">
+<span class="material-symbols-outlined text-[13px]">content_copy</span> Copy
+                    </button>
+<a class="px-3 py-1 bg-surface-container hover:bg-surface-container-high text-on-surface rounded font-caption text-caption flex items-center gap-1 transition-colors" href="tel:18002026161">
+<span class="material-symbols-outlined text-[13px]">call</span> Dial
+                    </a>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: Screen 10 - Citizen Defense Academy & Golden Hour Protocol -->
+<section class="w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-surface-container-low">
+<div class="max-w-7xl mx-auto flex flex-col gap-12">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+<div class="flex flex-col gap-2 max-w-2xl">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-primary-container font-caption text-caption uppercase tracking-wider">Screen 10 • Citizen Defense Academy</span>
+<span class="font-mono-data text-caption text-error font-semibold">Triage • Golden Hour Protocol</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Active Scam Vectors &amp; Counter-Measures</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Tactical operational blueprints to neutralize ongoing social engineering, psychological coercion, and instant financial drain attacks.</p>
+</div>
+</div>
+<!-- Tactical Vector Deconstruction Cards (5 Real Indian Vectors) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+<!-- Vector 1: Digital Arrest -->
+<div class="p-6 rounded-lg bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-6">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-caption text-caption uppercase font-semibold">Vector 01</span>
+<span class="material-symbols-outlined text-error text-[20px]">videocam_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Digital Arrest • Fake Police Skype</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Imposters posing as CBI, Mumbai Police, or Narcotics Control Bureau demand isolation on video calls claiming a parcel in your name contains narcotics.
+            </p>
+</div>
+<div class="flex flex-col gap-3 pt-4 bg-surface-container-low p-3.5 rounded">
+<div>
+<div class="font-caption text-caption uppercase text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">warning</span> Tactical Red Flag
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">Demands to stay on Skype/WhatsApp video call without hanging up, or transfer to "RBI verification escrow account".</p>
+</div>
+<div class="pt-2">
+<div class="font-caption text-caption uppercase text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">shield</span> Absolute Counter-Rule
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5 font-medium">Indian Law Enforcement never conducts arrests or trials over video calls. Hang up immediately. There is no such legal concept as "Digital Arrest".</p>
+</div>
+</div>
+</div>
+<!-- Vector 2: Electricity KYC -->
+<div class="p-6 rounded-lg bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-6">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-caption text-caption uppercase font-semibold">Vector 02</span>
+<span class="material-symbols-outlined text-error text-[20px]">flash_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Electricity Bill KYC Disconnect</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              SMS claiming power will be cut at 9:30 PM tonight due to unpaid bill or un-updated KYC, providing an 10-digit mobile number for electricity officer.
+            </p>
+</div>
+<div class="flex flex-col gap-3 pt-4 bg-surface-container-low p-3.5 rounded">
+<div>
+<div class="font-caption text-caption uppercase text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">warning</span> Tactical Red Flag
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">Standard 10-digit personal phone numbers instead of official 6-character TRAI DLT headers (e.g. BESCOM/TATAPW).</p>
+</div>
+<div class="pt-2">
+<div class="font-caption text-caption uppercase text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">shield</span> Absolute Counter-Rule
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5 font-medium">Discoms never request APK installation (AnyDesk, QuickSupport) to update KYC. Pay strictly via official DISCOM portals or consumer CA numbers.</p>
+</div>
+</div>
+</div>
+<!-- Vector 3: UPI Reverse QR Code -->
+<div class="p-6 rounded-lg bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-6">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-caption text-caption uppercase font-semibold">Vector 03</span>
+<span class="material-symbols-outlined text-error text-[20px]">qr_code_2</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">UPI Reverse QR Code</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Buyer on OLX or Facebook Marketplace claims they are sending payment and asks seller to scan a QR code or enter UPI PIN to receive money.
+            </p>
+</div>
+<div class="flex flex-col gap-3 pt-4 bg-surface-container-low p-3.5 rounded">
+<div>
+<div class="font-caption text-caption uppercase text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">warning</span> Tactical Red Flag
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">The UPI interface asks for your 4-digit or 6-digit MPIN after scanning a code shared on chat.</p>
+</div>
+<div class="pt-2">
+<div class="font-caption text-caption uppercase text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">shield</span> Absolute Counter-Rule
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5 font-medium">ENTERING UPI PIN ALWAYS DEBITS MONEY. You never, under any circumstance, enter an MPIN or scan a QR code to credit funds to your account.</p>
+</div>
+</div>
+</div>
+<!-- Vector 4: Telegram Task / Job Scam -->
+<div class="p-6 rounded-lg bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-6">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-caption text-caption uppercase font-semibold">Vector 04</span>
+<span class="material-symbols-outlined text-error text-[20px]">send</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Telegram "Task / Review" Scam</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Unsolicited message offering ₹3,000–₹8,000 per day for simple tasks like rating YouTube videos or Google Maps places, followed by "prepaid investment tasks".
+            </p>
+</div>
+<div class="flex flex-col gap-3 pt-4 bg-surface-container-low p-3.5 rounded">
+<div>
+<div class="font-caption text-caption uppercase text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">warning</span> Tactical Red Flag
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">Initial ₹150–₹500 payouts to build trust, followed by demands to deposit ₹5,000+ into private bank accounts to "unlock profits".</p>
+</div>
+<div class="pt-2">
+<div class="font-caption text-caption uppercase text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">shield</span> Absolute Counter-Rule
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5 font-medium">Legitimate jobs do not require depositing personal funds to withdraw salary. Never join Telegram VIP investment groups.</p>
+</div>
+</div>
+</div>
+<!-- Vector 5: Instant Loan Extortion -->
+<div class="p-6 rounded-lg bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-6">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-caption text-caption uppercase font-semibold">Vector 05</span>
+<span class="material-symbols-outlined text-error text-[20px]">phonelink_erase</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Predatory Instant Loan Apps</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Unregistered 7-day loan apps downloaded via APK links or deceptive ads. The app requests complete contacts, SMS, and photo album permissions during installation.
+            </p>
+</div>
+<div class="flex flex-col gap-3 pt-4 bg-surface-container-low p-3.5 rounded">
+<div>
+<div class="font-caption text-caption uppercase text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">warning</span> Tactical Red Flag
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">Disbursement of less than 60% of requested amount, followed by threatening WhatsApp messages with morphed photos sent to contacts.</p>
+</div>
+<div class="pt-2">
+<div class="font-caption text-caption uppercase text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">shield</span> Absolute Counter-Rule
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5 font-medium">Verify the NBFC on RBI Sachet portal before installing. Do not grant contacts or gallery storage access to any loan application.</p>
+</div>
+</div>
+</div>
+<!-- Vector 6: SIM Swap & OTP Hijacking -->
+<div class="p-6 rounded-lg bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-6">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-caption text-caption uppercase font-semibold">Vector 06</span>
+<span class="material-symbols-outlined text-error text-[20px]">sim_card_alert</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">5G eSIM Upgrade / SIM Swap</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Caller pretending to be Airtel/Jio executive offering 5G network speeds, prompting user to forward an SMS containing eSIM confirmation code.
+            </p>
+</div>
+<div class="flex flex-col gap-3 pt-4 bg-surface-container-low p-3.5 rounded">
+<div>
+<div class="font-caption text-caption uppercase text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">warning</span> Tactical Red Flag
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">Instruction to send "121" or telecom porting message containing personal email or 32-digit alphanumeric token.</p>
+</div>
+<div class="pt-2">
+<div class="font-caption text-caption uppercase text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">shield</span> Absolute Counter-Rule
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5 font-medium">Telecom operators never initiate unsolicited eSIM migrations over phone calls. Any sudden mobile network loss must be reported immediately from an alternate line.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- INTERACTIVE: The 60-Minute Golden Hour Protocol -->
+<div class="w-full p-6 sm:p-8 rounded-lg bg-surface-container-lowest shadow-md flex flex-col gap-8">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[20px]">timer</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">The 60-Minute Golden Hour Protocol</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              If fraudulent transfer has occurred, financial lien blocking success drops by 87% after minute 60. Execute these chronological milestones immediately.
+            </p>
+</div>
+<div class="flex items-center gap-2 shrink-0 bg-surface-container px-3 py-1.5 rounded">
+<span class="w-2.5 h-2.5 rounded-full bg-error animate-pulse"></span>
+<span class="font-mono-data text-body-sm text-on-surface font-semibold">T-00:00 Lien Window</span>
+</div>
+</div>
+<!-- 3 Milestone Steps in Sequence -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+<!-- Phase 1: 0 - 15 Mins -->
+<div class="flex flex-col gap-4 p-5 rounded-lg bg-surface-container-low relative">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-mono-data text-caption font-semibold">MIN 00 – 15</span>
+<span class="material-symbols-outlined text-tertiary-container text-[18px]">emergency</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Step 1: Direct 1930 Dispatch</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Dial <strong>1930</strong> immediately from any telephone line in India. Provide caller with:
+            </p>
+<ul class="text-caption font-mono-data text-on-surface space-y-1.5 bg-surface p-2.5 rounded">
+<li>• Transaction UTR / Reference ID</li>
+<li>• Source Debit Bank Account Number</li>
+<li>• Destination Beneficiary / UPI VPA</li>
+<li>• Exact Timestamp of Debit</li>
+</ul>
+<p class="font-caption text-caption text-on-surface-variant">
+              Operator inputs the alert into the CFCFRMS real-time banking network to trace and place immediate liens on receiving beneficiary nodes.
+            </p>
+<a class="mt-2 w-full py-2 bg-error text-on-error hover:bg-tertiary-container rounded font-label-md text-label-md font-semibold text-center flex items-center justify-center gap-1.5 transition-colors" href="tel:1930">
+<span class="material-symbols-outlined text-[16px]">call</span> Dial 1930 Now
+            </a>
+</div>
+<!-- Phase 2: 15 - 30 Mins -->
+<div class="flex flex-col gap-4 p-5 rounded-lg bg-surface-container-low relative">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface font-mono-data text-caption font-semibold">MIN 15 – 30</span>
+<span class="material-symbols-outlined text-on-surface text-[18px]">account_balance</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Step 2: Bank Fraud Desk Freeze</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Call your bank's dedicated 24x7 Emergency Fraud Desk (not standard branch support):
+            </p>
+<ul class="text-caption font-mono-data text-on-surface space-y-1.5 bg-surface p-2.5 rounded">
+<li>• Request immediate "Debit Freeze" on account</li>
+<li>• Revoke NetBanking access tokens</li>
+<li>• Hotlist compromised ATM &amp; Virtual Debit Cards</li>
+<li>• Note official Bank Ticket Incident Number</li>
+</ul>
+<p class="font-caption text-caption text-on-surface-variant">
+              Secures RBI Circular compliance regarding Zero Liability if unauthorized electronic transactions are reported within 3 days.
+            </p>
+<button class="mt-2 w-full py-2 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded font-label-md text-label-md font-medium text-center flex items-center justify-center gap-1.5 transition-colors" onclick="document.getElementById('verified-registry-table').scrollIntoView({behavior: 'smooth'})">
+<span class="material-symbols-outlined text-[16px]">list</span> View Bank Helplines
+            </button>
+</div>
+<!-- Phase 3: 30 - 60 Mins -->
+<div class="flex flex-col gap-4 p-5 rounded-lg bg-surface-container-low relative">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-mono-data text-caption font-semibold">MIN 30 – 60</span>
+<span class="material-symbols-outlined text-secondary text-[18px]">gavel</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Step 3: Portal Incident Filing</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Navigate to <strong>cybercrime.gov.in</strong> and lodge formal statutory grievance:
+            </p>
+<ul class="text-caption font-mono-data text-on-surface space-y-1.5 bg-surface p-2.5 rounded">
+<li>• Upload SMS debit screenshots</li>
+<li>• Attach 1930 Acknowledgment Token</li>
+<li>• Attach WhatsApp / Call log export</li>
+<li>• Download official PDF acknowledgment</li>
+</ul>
+<p class="font-caption text-caption text-on-surface-variant">
+              Required by local cyber police stations to convert the preliminary freeze into a formal court or magistrate refund authorization.
+            </p>
+<a class="mt-2 w-full py-2 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded font-label-md text-label-md font-medium text-center flex items-center justify-center gap-1.5 transition-colors" href="https://cybercrime.gov.in" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[16px]">open_in_new</span> cybercrime.gov.in
+            </a>
+</div>
+</div>
+<!-- Telemetry Audit Summary -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded bg-surface border-none text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">published_with_changes</span>
+<span><strong>Citizen Defense Checksum:</strong> Automated sync active with I4C Citizen Financial Cyber Fraud Reporting System.</span>
+</div>
+<div class="font-mono-data text-caption text-on-surface">
+            LAST_CONSENSUS_TICK: 24s AGO
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Search Script for Screen 9 Directory -->
+<script>
+    (function () {
+      const searchInput = document.getElementById('registry-search');
+      if (!searchInput) return;
+
+      searchInput.addEventListener('input', function (e) {
+        const query = e.target.value.toLowerCase().trim();
+        const rows = document.querySelectorAll('.registry-row');
+
+        rows.forEach(function (row) {
+          const entityText = row.getAttribute('data-entity') || '';
+          const rowText = row.innerText.toLowerCase();
+          
+          if (!query || entityText.includes(query) || rowText.includes(query)) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+    })();
+  </script>
+</div></main>
+<!-- Clean Minimalist Footer -->
+<footer class="border-t border-white/[0.08] bg-[#0b0f17] py-8 text-xs text-slate-500">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-slate-300">ScamMap</span>
+<span class="text-slate-600">/</span>
+<span>Civic Threat Intelligence Platform</span>
+</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-slate-300 transition-colors" href="#">Telemetry API</a>
+<a class="hover:text-slate-300 transition-colors" href="#">1930 Integration</a>
+<a class="hover:text-slate-300 transition-colors" href="#">Privacy Model</a>
+<a class="hover:text-slate-300 transition-colors" href="#">Security</a>
+</div>
+<div>© 2025 National Civic Network</div>
+</div>
+</footer>
+<script>
+    (function () {
+      const search = document.getElementById('omni-search');
+      const pill = document.getElementById('type-pill');
+      const chips = document.querySelectorAll('.sample-chip');
+
+      function evaluateQuery(val) {
+        const v = val.trim();
+        if (!v) {
+          pill.classList.add('hidden');
+          return;
+        }
+        pill.classList.remove('hidden');
+
+        if (/^(\+91|91|0)?[6-9]\d{9}$/.test(v.replace(/[\s-]/g, ''))) {
+          pill.textContent = 'Phone Detected';
+        } else if (v.includes('@')) {
+          pill.textContent = 'UPI Detected';
+        } else if (v.includes('.') || v.startsWith('http')) {
+          pill.textContent = 'URL Detected';
+        } else {
+          pill.textContent = 'Entity Query';
+        }
+      }
+
+      if (search) {
+        search.addEventListener('input', (e) => evaluateQuery(e.target.value));
+      }
+
+      chips.forEach((c) => {
+        c.addEventListener('click', () => {
+          const val = c.getAttribute('data-val');
+          if (search && val) {
+            search.value = val;
+            evaluateQuery(val);
+            search.focus();
+          }
+        });
+      });
+
+      // Quick keyboard shortcut simulation
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          if (search) search.focus();
+        }
+      });
+    })();
+  </script>
+</body></html>

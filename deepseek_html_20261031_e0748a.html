@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Community Scam Map — Complete Design &amp; Test Book</title>
+<style>
+@page { size: A4; margin: 17mm 15mm 18mm 15mm; @bottom-center { content: counter(page) " / " counter(pages); font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-size: 8pt; color: #6b7a8d; } }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html { font-size: 10.2pt; }
+body { font-family: Charter,"Bitstream Charter",Georgia,"Times New Roman",serif; line-height: 1.46; color: #14181f; margin: 0; }
+h1,h2,h3,h4,h5 { font-family: -apple-system,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; color: #0d1b2a; line-height: 1.22; margin: 0 0 .4em 0; page-break-after: avoid; }
+h1 { font-size: 26pt; }
+h2 { font-size: 15pt; border-bottom: 2.5px solid #0d1b2a; padding-bottom: .2em; margin: 1.2em 0 .9em 0; }
+h3 { font-size: 11.5pt; margin-top: 1.4em; color: #1b3a5c; }
+h4 { font-size: 10.4pt; margin-top: 1.1em; color: #2c4a6e; }
+p { margin: 0 0 .6em 0; text-align: justify; hyphens: auto; }
+ul,ol { margin: 0 0 .7em 0; padding-left: 1.3em; }
+li { margin-bottom: .22em; }
+strong { color: #0d1b2a; }
+
+.part { page-break-before: always; padding-top: 60mm; }
+.part .num { font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-size: 10pt; letter-spacing: .2em; color: #5a6b80; text-transform: uppercase; }
+.part h1 { font-size: 28pt; margin: .15em 0 .25em 0; border-bottom: 5px solid #0d1b2a; padding-bottom: .2em; display: inline-block; }
+.part .sub { font-size: 13pt; color: #2c4a6e; font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-weight: 400; margin-top: .4em; }
+.part .abstract { margin-top: 14mm; font-size: 10pt; color: #23303f; background: #f4f7fa; border: 1px solid #dbe3ec; padding: 5mm 6mm; }
+
+.cover { height: 245mm; display: flex; flex-direction: column; justify-content: center; page-break-after: always; border-top: 6px solid #0d1b2a; border-bottom: 6px solid #0d1b2a; padding: 14mm 0; }
+.cover .kicker { font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-size: 9pt; letter-spacing: .18em; text-transform: uppercase; color: #5a6b80; margin-bottom: 10mm; }
+.cover h1 { font-size: 30pt; line-height: 1.1; margin-bottom: .18em; }
+.cover .sub { font-size: 14pt; color: #2c4a6e; font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-weight: 400; margin-bottom: 12mm; }
+.cover .meta { font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-size: 9.2pt; color: #3d4a5c; line-height: 1.75; border-left: 3px solid #c3cfdd; padding-left: 6mm; }
+.cover .abstract { margin-top: 14mm; font-size: 10pt; color: #23303f; background: #f4f7fa; border: 1px solid #dbe3ec; padding: 5mm 6mm; }
+
+.toc { font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-size: 9.6pt; page-break-after: always; }
+.toc h2 { border: none; margin-top: 0; }
+.toc .part-entry { font-size: 11pt; font-weight: 600; margin: 1.3em 0 .3em 0; color: #0d1b2a; }
+.toc ol { padding-left: 1.4em; margin: 0 0 .8em 0; }
+.toc li { margin-bottom: .25em; }
+.toc .d { color: #5a6b80; }
+
+table { width: 100%; border-collapse: collapse; margin: .8em 0 1em 0; font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-size: 8.2pt; line-height: 1.36; page-break-inside: auto; }
+thead { display: table-header-group; }
+tr { page-break-inside: avoid; }
+th { background: #0d1b2a; color: #fff; text-align: left; padding: 4px 6px; font-weight: 600; vertical-align: bottom; font-size: 8pt; }
+td { padding: 3.5px 6px; vertical-align: top; border-bottom: 1px solid #d8e0e9; }
+tbody tr:nth-child(even) td { background: #f7f9fb; }
+td code, th code { font-size: 7.9pt; }
+
+pre { font-family: "SF Mono","Cascadia Mono",Menlo,Consolas,"Liberation Mono",monospace; font-size: 7.7pt; line-height: 1.4; background: #f6f8fa; border: 1px solid #dfe5ec; border-left: 3.5px solid #4a5568; padding: 6px 9px; margin: .7em 0 .9em 0; white-space: pre-wrap; word-break: break-word; page-break-inside: avoid; color: #1a2430; }
+code { font-family: "SF Mono","Cascadia Mono",Menlo,Consolas,"Liberation Mono",monospace; font-size: 8.5pt; background: #eef2f7; padding: 1px 3px; border-radius: 2px; color: #12263a; }
+
+.eq { font-family: "SF Mono",Menlo,Consolas,monospace; font-size: 8.8pt; background: #eef4fb; border: 1px solid #bcd0e5; border-left: 4px solid #1b3a5c; padding: 7px 11px; margin: .8em 0 .9em 0; page-break-inside: avoid; line-height: 1.5; white-space: pre-wrap; }
+.note { background: #fdf8e8; border: 1px solid #e8d9a8; border-left: 4px solid #c9a227; padding: 7px 11px; margin: .8em 0 .9em 0; font-size: 9.4pt; page-break-inside: avoid; }
+.warn { background: #fdf0ee; border: 1px solid #eccac3; border-left: 4px solid #b33a2b; padding: 7px 11px; margin: .8em 0 .9em 0; font-size: 9.4pt; page-break-inside: avoid; }
+.note p, .warn p, .eq p { margin-bottom: .3em; text-align: left; }
+.note p:last-child, .warn p:last-child { margin-bottom: 0; }
+
+.attack { border: 1px solid #d3dce6; border-left: 4px solid #0d1b2a; margin: 0 0 7px 0; page-break-inside: avoid; background: #fff; }
+.attack .ah { background: #eef2f7; padding: 4px 9px; font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-size: 9pt; font-weight: 700; color: #0d1b2a; border-bottom: 1px solid #d3dce6; }
+.attack .ah span { font-weight: 400; color: #5a6b80; }
+.attack dl { margin: 0; padding: 5px 9px 6px 9px; }
+.attack dt { font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; font-size: 7.2pt; text-transform: uppercase; letter-spacing: .05em; color: #5a6b80; font-weight: 700; margin-top: 3px; }
+.attack dt:first-child { margin-top: 0; }
+.attack dd { margin: 0 0 1px 0; font-size: 8.9pt; line-height: 1.4; }
+
+.small { font-size: 9pt; color: #4a5766; }
+.keep { page-break-inside: avoid; }
+hr.rule { border: none; border-top: 1px solid #d3dce6; margin: 1.4em 0; }
+</style>
+</head>
+<body>
+
+<!-- ================================================================ -->
+<!-- COVER -->
+<!-- ================================================================ -->
+<section class="cover">
+  <div class="kicker">Community Scam Map &middot; Design &amp; Test Book</div>
+  <h1>Trust, Performance<br>&amp; Test Specification</h1>
+  <div class="sub">Complete four-part engineering reference &middot; v1.0</div>
+  <div class="meta">
+    <strong>Scope</strong> Trust engine · Performance architecture · Specialist review · Test plan<br>
+    <strong>Decision authority</strong> Rules + Beta-Binomial statistics &middot; <em>no LLM on the decision path</em><br>
+    <strong>Status</strong> Thresholds pending mentor sign-off; implementation runs in safe mode<br>
+    <strong>Substrate</strong> One-process FastAPI monolith &middot; SQLite WAL <em>or</em> PostgreSQL (chosen deliberately, not mixed)<br>
+    <strong>Constraint</strong> All performance figures must be produced by the committed harness — none are asserted here.
+  </div>
+  <div class="abstract">
+    <strong>Abstract.</strong> This book specifies the trust subsystem, performance engineering, and
+    test plan for an anonymous community scam-reporting platform. The engine does not count reports —
+    it counts <em>independent sources</em>. Reporter identity is reduced to keyed pseudonymous
+    fingerprints, reports are collapsed into source clusters, coordinated campaigns are detected and
+    merged into a single evidence unit, and evidence mass is aggregated through a skeptical
+    Beta-Binomial posterior before a deterministic state machine assigns one of the four official
+    verdicts. Two invariants are enforced outside the arithmetic: a disputed identifier can never be
+    <code>KNOWN_SCAM</code>, and an allowlisted business can never be anything other than
+    <code>VERIFIED_BUSINESS</code>. Part 2 covers lookup latency, ingestion, time windows, alerts and
+    benchmark methodology. Parts 3 and 4 reconcile thresholds and provide a reproducible synthetic
+    generator plus contract/privacy/licence/load test plans.
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- MASTER TOC -->
+<!-- ================================================================ -->
+<section class="toc">
+<h2>Contents</h2>
+
+<div class="part-entry">Part 1 — Trust Engine Design Specification</div>
+<ol>
+<li>Entity Model <span class="d">— raw report, canonical indicator, fingerprints, clusters, campaigns</span></li>
+<li>Model Comparison <span class="d">— five candidate architectures and selection</span></li>
+<li>Report Weighting <span class="d">— validity gate, per-report weight, independence, coordination collapse</span></li>
+<li>Attack Simulation <span class="d">— twelve adversarial scenarios with detection logic and residual risk</span></li>
+<li>Trust State Machine <span class="d">— states, transitions, verdict mapping, hard invariants</span></li>
+<li>Alert Poisoning <span class="d">— SPIKE/NEW_TYPE gating, poisoning test matrix</span></li>
+<li>Mathematical Validation <span class="d">— generator, metrics, pre-registered acceptance gates</span></li>
+<li>Final Design <span class="d">— architecture, equations, pseudocode, pitch</span></li>
+</ol>
+
+<div class="part-entry">Part 2 — Performance Engineering &amp; Data Algorithms</div>
+<ol>
+<li>Lookup Architecture <span class="d">— sub-500 ms design, budget, schema, indexes, cache, degradation</span></li>
+<li>Report Ingestion <span class="d">— 60-second contract, idempotency, bounded queues</span></li>
+<li>Exact Time Windows <span class="d">— occurred_at, timezone, half-open intervals, four windows</span></li>
+<li>Official Alert Algorithms <span class="d">— SPIKE, NEW_TYPE, edge cases</span></li>
+<li>Benchmarking Plan <span class="d">— dataset, mix, concurrency ladder, results template (blank)</span></li>
+<li>Engineering Decision <span class="d">— comparison, selection, what was deliberately not built</span></li>
+</ol>
+
+<div class="part-entry">Part 3 — Trust Engine Specialist Review &amp; Reconciliation</div>
+<ol>
+<li>Option Reconciliation <span class="d">— eight candidate designs, adopt/reject table</span></li>
+<li>The Selected Algorithm <span class="d">— single deterministic path</span></li>
+<li>Formulas <span class="d">— weights, clustering, posterior, hard invariants</span></li>
+<li>Pseudocode <span class="d">— assess, classify, detect_campaign</span></li>
+<li>Reason Codes <span class="d">— the contract the README discloses</span></li>
+<li>Config Object <span class="d">— single source of every threshold</span></li>
+<li>Twelve-Scenario Simulation <span class="d">— S1 through S12</span></li>
+<li>Residual Risks &amp; Trade-offs <span class="d">— FP/FN, LLM boundaries</span></li>
+<li>Unit Test Cases <span class="d">— pure-function assertions</span></li>
+</ol>
+
+<div class="part-entry">Part 4 — API Contract &amp; Adversarial Test Plan</div>
+<ol>
+<li>Generator Specification <span class="d">— determinism, identifier gen, scenario families</span></li>
+<li>Test Plan <span class="d">— canonicalisation, windows, alerts, contracts, privacy, licence, load</span></li>
+<li>What These Files Do and Don't Do <span class="d">— explicit claims table</span></li>
+</ol>
+
+<div class="note">
+<p><strong>Reading note.</strong> The four parts were authored separately and overlap deliberately.
+Part 1 is the full design narrative. Part 3 is the mentor-review recommendation and reconciles the
+numeric thresholds in one place. Where Parts 1 and 3 give identical formulas, Part 3 is authoritative.
+Part 2 and Part 4 are engineering and test specifications respectively and are non-overlapping.
+</p>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<!-- PART 1 -->
+<!-- ================================================================ -->
+<section class="part">
+  <div class="num">Part One</div>
+  <h1>Trust Engine Design Specification</h1>
+  <div class="sub">Explainable · Deterministic · LLM-free at decision time</div>
+  <div class="abstract">
+    Phases 1–8 of the trust subsystem. Entities, model comparison, weighting, twelve red-team
+    simulations, state machine, alert poisoning defence, validation methodology, and final
+    architecture with equations, pseudocode, and the judge-facing pitch.
+  </div>
+</section>
+
+<section>
+<h2>Phase 1 — Entity Model</h2>
+<h3>1.1 Definitions</h3>
+<table>
+<thead><tr><th style="width:17%">Entity</th><th style="width:55%">Definition</th><th style="width:28%">Stored?</th></tr></thead>
+<tbody>
+<tr><td><strong>Raw report</strong></td><td>One <code>POST /reports</code> payload. Immutable once accepted. Carries <code>report_id</code>, <code>occurred_at</code>, <code>reported_at</code>, <code>reporter_id</code>, <code>ip_prefix</code>, <code>channel</code>, <code>scam_type</code>, <code>identifier_type/value</code>, <code>pincode</code>, <code>note</code>, <code>has_screenshot</code>, <code>amount_lost_inr</code>.</td><td>Yes, minus identity fields</td></tr>
+<tr><td><strong>Canonical indicator</strong></td><td>Normalised, deduplicated identifier (<code>+919876543210</code>, <code>ravi12@okaxis</code>, <code>https://sbi-kyc.in/pay</code>, <code>HDFCBK</code>). The unit a lookup returns a verdict for.</td><td>Yes — primary key of trust</td></tr>
+<tr><td><strong>Reporter identity signal</strong></td><td><code>reporter_id</code> / <code>ip_prefix</code> as supplied. <strong>Asserted</strong>, not authenticated. Never proof of personhood.</td><td>Only as keyed fingerprints</td></tr>
+<tr><td><strong>Pseudonymous reporter</strong></td><td><code>rid_fp = HMAC-SHA256(K_id, reporter_id)</code>. Counts "one person many times = one person" without being able to name them.</td><td>Yes (fingerprint)</td></tr>
+<tr><td><strong>Network cluster</strong></td><td>Reports sharing <code>net_fp = HMAC-SHA256(K_id, ip_prefix)</code> <strong>within a 6-hour window</strong>. A /24 is shared by cafés, hostels and apartments — <em>weak</em> signal, never identity.</td><td>Derived at query time</td></tr>
+<tr><td><strong>Independent report</strong></td><td>Representative of a <strong>source cluster</strong> (§3.3). Independence is a property of the evidence, not of the IP.</td><td>Derived</td></tr>
+<tr><td><strong>Corroborating evidence</strong></td><td>Two or more independent source clusters for the same indicator, distinct notes, compatible <code>scam_type</code>/<code>channel</code>.</td><td>Derived</td></tr>
+<tr><td><strong>Coordinated campaign</strong></td><td>≥4 source clusters, near-duplicate wording, tightly bunched in time, dominated by low-history reporters. Collapsed to one evidence unit.</td><td>Derived, flagged</td></tr>
+<tr><td><strong>Trust assessment</strong></td><td><code>{state, score S, evidence mass E, cluster count c, flags, timestamps}</code>. Deterministic function of stored reports + <code>now</code>.</td><td>Computed, cached</td></tr>
+<tr><td><strong>Business challenge</strong></td><td><code>POST /challenges</code> record. Forces <code>DISPUTED</code>, hard veto on <code>KNOWN_SCAM</code>.</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<h3>1.2 Privacy-preserving identity handling (non-negotiable)</h3>
+<pre>K_id  := 32-byte secret from TRUST_HMAC_KEY env   (never git, never logs)
+rid_fp = HMAC-SHA256(K_id, "rid:" || reporter_id).hex()[:32]
+net_fp = HMAC-SHA256(K_id, "net:" || ip_prefix).hex()[:16]</pre>
+<ol>
+<li><code>reporter_id</code> / <code>ip_prefix</code> written <strong>once</strong> into an <code>identity_vault</code> table and then discarded from the request object. No other table references them.</li>
+<li>Log formatter carries a <strong>denylist</strong> replacing <code>reporter_id</code>, <code>ip_prefix</code>, <code>note</code>, <code>contact_email</code>, <code>claimant_name</code> with <code>[redacted]</code> before any sink (stdout, file, Sentry). Unit-tested.</li>
+<li><code>GET /lookup</code> <code>evidence[]</code> never contains <code>rid_fp</code>, <code>net_fp</code>, <code>note</code>, exact coordinates — only <code>occurred_at</code>, <code>channel</code>, <code>scam_type</code>, <code>pincode</code>.</li>
+<li><code>TRUST_HMAC_KEY</code> versioned (<code>K_id_v1</code>). Rotation breaks cross-period linkage but preserves aggregates.</li>
+<li>Reporter reliability stored as <code>(n_good, n_bad)</code> keyed by <code>rid_fp</code> — no free text, no record of <em>what</em> they reported.</li>
+</ol>
+
+<h2>Phase 2 — Model Comparison</h2>
+<table>
+<thead><tr><th style="width:19%">Model</th><th style="width:22%">Math</th><th style="width:20%">Strengths</th><th style="width:20%">Weaknesses</th><th style="width:19%">Manipulation resistance</th></tr></thead>
+<tbody>
+<tr><td><strong>A. Rule-based weighted</strong></td><td><code>E = Σ w_i</code> + thresholds</td><td>Explainable, µs-fast, auditable</td><td>Arbitrary thresholds, saturates, brittle at scale</td><td>Poor — linear sum inflates</td></tr>
+<tr><td><strong>B. Bayesian (Beta-Binomial)</strong></td><td><code>α=α₀+E</code>, <code>β=β₀+D</code>, <code>S=α/(α+β)</code></td><td>Principled, diminishing returns, bounded</td><td>Independence assumption is everything</td><td>Excellent once independence enforced</td></tr>
+<tr><td><strong>C. Reputation</strong></td><td><code>ρ=(g+1)/(g+b+2)</code></td><td>Rewards track record</td><td>Cold-start brutal, farmable, privacy tension</td><td>Needs bounding</td></tr>
+<tr><td><strong>D. Graph clustering</strong></td><td>Union-Find on <code>rid_fp</code>, <code>net_fp</code>+time, note similarity</td><td>Catches Sybil directly</td><td>Paraphrase evades; /24 collisions</td><td>High, adversarially aware</td></tr>
+<tr><td><strong>E. Hybrid (selected)</strong></td><td>D for independence + A for quality + B for aggregation + C bounded</td><td>Explainable, fast, reproducible</td><td>~7 components to test</td><td>High</td></tr>
+</tbody>
+</table>
+<p><strong>Selected: E.</strong> ~40–80 lines per component. No GPU, no LLM in the decision path. Rejected: LLM authority (non-deterministic), pure ML (no labels), pure counting (fails every trick).</p>
+
+<h2>Phase 3 — Report Weighting</h2>
+<h3>3.1 Validity gate (hard reject → <code>400</code>)</h3>
+<pre>phone:      strip [ -().]; "00"→"+"; "0"+10d→drop; "91"+10d→"+91"+10d
+            ACCEPT  ^\+91[6-9]\d{9}$                (mobile)
+                 ^\+91(1800|1860)\d{4,7}$           (toll-free)
+                 ^\+911\d{3}$                       (helplines 1930/1909)
+            REJECT  everything else → "12345", "test", 9/11-digit
+upi:        lower, strip spaces; ^[a-z0-9.\-_]{2,256}@[a-z]{2,64}$
+url:        force https://, strip www., strip ?, strip /, lowercase host
+sender_id:  upper; strip leading "XX-"; ^[A-Z]{6}$
+area:       pincode ∈ the 25-code table
+time:       occurred_at parses with offset; ≤ now + 5 min</pre>
+
+<h3>3.2 Per-report weight</h3>
+<div class="eq">w_i = clip( q_note · q_type · q_evidence · q_temporal · ρ_i , 0, 1 )</div>
+<table>
+<thead><tr><th style="width:14%">Factor</th><th style="width:56%">Rule</th><th style="width:30%">Rationale</th></tr></thead>
+<tbody>
+<tr><td><code>q_note</code></td><td><code>0.45 + 0.55·min(1, L/200)</code>, L = trimmed note length. Junk (matches <code>^(test\|asdf\|123+\|\W*)$</code>, &lt;12 chars, only URL/digits) → <strong>0.15</strong>. Empty → 0.45. Template-dup (Jaccard ≥ 0.85) → <strong>0.35</strong></td><td>"Personal description counts more than copy-paste"</td></tr>
+<tr><td><code>q_type</code></td><td>Known → 1.0; <code>other</code> → 0.75</td><td>Unknown accepted, weaker</td></tr>
+<tr><td><code>q_evidence</code></td><td><code>1.08</code> screenshot, <code>1.04</code> amount, cap 1.10</td><td>Small boost. Screenshot ≠ proof</td></tr>
+<tr><td><code>q_temporal</code></td><td>≤1h 1.0, ≤24h 0.95, ≤7d 0.85, &gt;7d 0.60, &gt;90d ×0.5</td><td>Punishes backdating</td></tr>
+<tr><td><code>ρ_i</code></td><td><code>clip(0.7 + 0.6·R̂, 0.70, 1.10)</code>, <code>R̂ = (g+1)/(g+b+2)</code></td><td>New user <code>R̂=0.5 → 1.00</code>. <strong>Zero cold-start penalty</strong></td></tr>
+</tbody>
+</table>
+
+<h3>3.3 Independence — the core defence</h3>
+<pre>def source_clusters(reports):
+    uf = UnionFind(reports)
+    for a, b in pairs(sorted(reports, key=report_id)):
+        if a.rid_fp == b.rid_fp:
+            uf.union(a, b)
+        elif a.net_fp == b.net_fp and |a.reported_at − b.reported_at| ≤ 6h:
+            uf.union(a, b)
+    return uf.groups()</pre>
+<div class="eq">v_k = max_{i ∈ cluster k} w_i     # duplicates add nothing
+E   = Σ_k v_k</div>
+<p>Implements: "One person reporting many times is still one person" and "Many reports from the same internet connection within a short time count as one person."</p>
+<div class="note"><p><strong>Design note on <code>net_fp</code>.</strong> A /24 window is coarse. Two genuine victims on the same ISP block within 6 h <em>will</em> merge, under-counting evidence. We accept that: <strong>under-counting is a false negative on a scam; over-counting is a false positive on an innocent business.</strong> The brief prioritises the second.</p></div>
+
+<h3>3.4 Coordination collapse</h3>
+<pre>For G = clusters reporting within 120 min:
+  γ_note = fraction with a Jaccard ≥ 0.70 partner in G
+  γ_time = fraction in the 120-min peak window
+  γ_age  = fraction of reporters with < 3 prior reports
+  γ      = 0.55·γ_note + 0.30·γ_time + 0.15·γ_age
+  CAMPAIGN iff γ_note ≥ 0.60 ∧ γ ≥ 0.70
+  v_G = max_{k∈G} v_k · min(1, 1 + 0.1·log2|G|)
+  E   = Σ_{k∉G} v_k + v_G</pre>
+<p><code>γ_note ≥ 0.60</code> is a <strong>hard gate</strong>. A genuine wave of 40 people writing in their own words fails it and is not collapsed — exactly the discriminator the brief asks for.</p>
+
+<h3>3.5 Factors <em>not</em> used as standalone negatives</h3>
+<table>
+<thead><tr><th style="width:30%">Factor</th><th>Handling</th></tr></thead>
+<tbody>
+<tr><td>New / zero-history reporter</td><td>Never penalised. <code>ρ=1.00</code>. Only 15 %-weighted in <code>γ_age</code>.</td></tr>
+<tr><td>Distinct IP count</td><td>Never treated as independence. Byproduct of clustering.</td></tr>
+<tr><td>Screenshot presence</td><td>+8 % maximum.</td></tr>
+<tr><td>Report count alone</td><td>Never used. Only cluster-collapsed <code>E</code>.</td></tr>
+<tr><td>Contradictory reports</td><td>Different scam_types compatible. True contradiction = challenge.</td></tr>
+</tbody>
+</table>
+
+<h2>Phase 4 — Attack Simulation</h2>
+<p>Setup: <code>α₀=0.5, β₀=1.5</code>, <code>S = (0.5+E)/(2.0+E+D)</code>, <code>S(0)=0.25</code>.</p>
+
+<div class="attack"><div class="ah">1 · Forty friends vs. legitimate bakery</div><dl>
+<dt>Input</dt><dd>40 reporters, mixed <code>ip_prefix</code>, 3 note templates, 90 min, <code>scam_type=fake-customer-care</code></dd>
+<dt>Detection</dt><dd>Templates → <code>q_note=0.35</code>, <code>w≈0.30</code>. <code>γ_note≈0.95, γ≈0.9</code> → <strong>CAMPAIGN</strong> → 1 unit, <code>v_G≈0.33</code></dd>
+<dt>Adjustment</dt><dd><code>E≈0.33 → S≈0.29</code></dd>
+<dt>Verdict</dt><dd><code>SUSPICIOUS</code>, masked. Allowlist → <code>VERIFIED_BUSINESS</code>.</dd>
+</dl></div>
+
+<div class="attack"><div class="ah">2 · 22 fake accounts, one Wi-Fi</div><dl>
+<dt>Input</dt><dd>22 reporters, <strong>one</strong> <code>ip_prefix</code>, 25 min</dd>
+<dt>Detection</dt><dd>Same <code>net_fp</code> + Δt ≤ 6 h → <strong>1 cluster</strong> → <code>v=max w ≈ 0.55</code></dd>
+<dt>Adjustment</dt><dd><code>E=0.55 → S≈0.36</code></dd>
+<dt>Verdict</dt><dd><code>SUSPICIOUS</code>, masked</dd>
+</dl></div>
+
+<div class="attack"><div class="ah">3 · One reporter, six repeats</div><dl>
+<dt>Input</dt><dd>Same <code>reporter_id</code> ×6</dd>
+<dt>Detection</dt><dd>Same <code>rid_fp</code> → 1 cluster</dd>
+<dt>Adjustment</dt><dd><code>E=max(w) ≈ 0.85</code> (not 5.1)</dd>
+<dt>Verdict</dt><dd><code>SUSPICIOUS</code>, masked</dd>
+</dl></div>
+
+<div class="attack"><div class="ah">4 · Thousands of reports, one attacker</div><dl>
+<dt>Input</dt><dd>5 000 POSTs, one <code>rid_fp</code></dd>
+<dt>Detection</dt><dd>Rate limit 10/h, 30/d per rid; 40/h per net → <code>429</code>. Survivors one cluster</dd>
+<dt>Verdict</dt><dd><code>SUSPICIOUS</code>, masked</dd>
+</dl></div>
+
+<div class="attack"><div class="ah">5 · Multiple attackers, separate networks</div><dl>
+<dt>Input</dt><dd>6 actors, 6 networks, distinct short notes, same day</dd>
+<dt>Adjustment</dt><dd>6 clusters, <code>w≈0.45 → E≈2.7 → S≈0.62</code></dd>
+<dt>Verdict</dt><dd><code>SUSPICIOUS</code> — never <code>KNOWN_SCAM</code> (needs c≥5 ∧ S≥0.75)</dd>
+</dl></div>
+
+<div class="attack"><div class="ah">6 · Coordinated paraphrase &nbsp;<span>(weakest point — §6.4)</span></div><dl>
+<dt>Input</dt><dd>15 accounts, reworded notes, 40 min</dd>
+<dt>Detection</dt><dd>Lexical Jaccard misses. <code>γ_note</code> low → <strong>not collapsed</strong></dd>
+<dt>Adjustment</dt><dd><code>c=15, w≈0.55 → E≈8.25 → S≈0.78</code></dd>
+<dt>Verdict</dt><dd><strong><code>KNOWN_SCAM</code> — documented residual risk</strong></dd>
+</dl></div>
+
+<div class="attack"><div class="ah">7 · Genuine independent victims</div><dl>
+<dt>Input</dt><dd>7 people, 7 networks, own words, spread over 5 days</dd>
+<dt>Adjustment</dt><dd>7 clusters, distinct notes, <code>w≈0.80 → E≈5.6 → S≈0.80</code></dd>
+<dt>Verdict</dt><dd><code>KNOWN_SCAM</code> (correct)</dd>
+</dl></div>
+
+<div class="attack"><div class="ah">8 · Fake geographic spike</div><dl>
+<dt>Input</dt><dd>30 reports, one target pincode</dd>
+<dt>Detection</dt><dd>Cluster collapse caps E; SPIKE requires ≥3 distinct <code>net_fp</code></dd>
+<dt>Verdict</dt><dd>≤1 trusted cluster; no spike</dd>
+</dl></div>
+
+<div class="attack"><div class="ah">9 · Old reports replayed</div><dl>
+<dt>Input</dt><dd><code>occurred_at</code> weeks/months ago, <code>reported_at</code> now</dd>
+<dt>Detection</dt><dd>Windows use <code>occurred_at</code>; &gt;7 d → <code>q_temporal 0.60</code>; &gt;90 d ×0.5</dd>
+<dt>Verdict</dt><dd>No alert; verdict unchanged</dd>
+</dl></div>
+
+<div class="attack"><div class="ah">10 · Competitor, multi-channel</div><dl>
+<dt>Input</dt><dd>Phone + UPI + URL reports on one business</dd>
+<dt>Detection</dt><dd>Challenge on any identifier sets <code>challenged:true</code> globally</dd>
+<dt>Adjustment</dt><dd><code>D=2.0 → S≈0.63</code></dd>
+<dt>Verdict</dt><dd><code>SUSPICIOUS</code>, never <code>KNOWN_SCAM</code></dd>
+</dl></div>
+
+<div class="attack"><div class="ah">11 · New user, first report</div><dl>
+<dt>Input</dt><dd><code>c=1</code>, <code>w=0.85</code>, good note</dd>
+<dt>Adjustment</dt><dd>No penalty, <code>ρ=1.00 → E=0.85 → S≈0.45</code></dd>
+<dt>Verdict</dt><dd><code>SUSPICIOUS</code>, masked, <code>distinct_reporters:1</code></dd>
+</dl></div>
+
+<div class="attack"><div class="ah">12 · Business dispute</div><dl>
+<dt>Input</dt><dd><code>POST /challenges</code> for identifier with <code>E=5.6</code></dd>
+<dt>Detection</dt><dd>Hard state override to <code>DISPUTED</code></dd>
+<dt>Adjustment</dt><dd><code>D=2.0 → S≈0.63</code>; verdict vetoed regardless</dd>
+<dt>Verdict</dt><dd><code>SUSPICIOUS</code>, <code>challenged:true</code></dd>
+</dl></div>
+
+<h2>Phase 5 — Trust State Machine</h2>
+<h3>5.1 States</h3>
+<table>
+<thead><tr><th style="width:19%">State</th><th style="width:38%">Meaning</th><th style="width:43%">Entered when</th></tr></thead>
+<tbody>
+<tr><td><code>UNVERIFIED</code></td><td>1–2 clusters, weak evidence</td><td>first accepted report</td></tr>
+<tr><td><code>UNDER_REVIEW</code></td><td>open challenge exists</td><td><code>POST /challenges</code> accepted</td></tr>
+<tr><td><code>CORROBORATED</code></td><td>≥3 independent sources</td><td><code>c≥3 ∧ S≥0.55</code></td></tr>
+<tr><td><code>HIGH_CONFIDENCE</code></td><td>strong, diverse, sustained</td><td><code>c≥5 ∧ S≥0.75 ∧ not disputed</code></td></tr>
+<tr><td><code>DISPUTED</code></td><td>challenge filed / upheld pending</td><td>challenge open</td></tr>
+<tr><td><code>CLEARED</code></td><td>challenge upheld or evidence withdrawn</td><td>challenge resolved for business</td></tr>
+<tr><td><code>EXPIRED</code></td><td>decayed out of relevance</td><td><code>now − last_seen &gt; 180 d ∧ S &lt; 0.50</code></td></tr>
+</tbody>
+</table>
+
+<h3>5.2 Transitions</h3>
+<pre>first report → UNVERIFIED
+              │ c≥3 ∧ S≥0.55
+              ▼
+           CORROBORATED ──S<0.45(hy.)──▶ UNVERIFIED
+              │ c≥5 ∧ S≥0.75
+              ▼
+        HIGH_CONFIDENCE ──S<0.65(hy.)──▶ CORROBORATED
+Any state --POST /challenges--> DISPUTED
+DISPUTED --upheld--> CLEARED
+        --rejected--> previous (never straight to HIGH)
+CLEARED --new evidence c≥3/30d--> UNVERIFIED
+Any --expiry--> EXPIRED</pre>
+<p><strong>Hysteresis.</strong> Promote at 0.75, demote at 0.65. No flicker.</p>
+
+<h3>5.3 Mapping to four official verdicts</h3>
+<table>
+<thead><tr><th style="width:44%">Internal state</th><th style="width:18%">verdict</th><th style="width:12%">challenged</th><th style="width:26%">Display</th></tr></thead>
+<tbody>
+<tr><td><code>VERIFIED_ALLOWLIST</code></td><td><code>VERIFIED_BUSINESS</code></td><td>false</td><td>full value</td></tr>
+<tr><td>no accepted reports</td><td><code>NO_REPORTS</code></td><td>—</td><td>—</td></tr>
+<tr><td><code>UNVERIFIED</code>, <code>UNDER_REVIEW</code>, <code>CORROBORATED</code>, <code>DISPUTED</code>, <code>EXPIRED</code></td><td><code>SUSPICIOUS</code></td><td>iff challenged</td><td>masked until c≥3</td></tr>
+<tr><td><code>HIGH_CONFIDENCE</code></td><td><code>KNOWN_SCAM</code></td><td>false</td><td>full value</td></tr>
+<tr><td><code>CLEARED</code></td><td><code>SUSPICIOUS</code> if reports remain, else <code>NO_REPORTS</code></td><td>true</td><td>masked</td></tr>
+</tbody>
+</table>
+
+<h3>5.4 Hard invariants (asserted in code, tested in CI)</h3>
+<ol>
+<li><strong><code>DISPUTED</code> ⇒ verdict ≠ <code>KNOWN_SCAM</code>.</strong> Enforced <em>after</em> scoring, as a final <code>if</code>, not a threshold. Cannot be outvoted by volume.</li>
+<li><strong><code>KNOWN_SCAM</code> ⇒ <code>c ≥ 3</code>.</strong> The three-reporter rule is the privacy/display floor and a <em>necessary but not sufficient</em> condition. Also needs <code>c≥5 ∧ S≥0.75</code>.</li>
+<li><strong>Allowlist ⇒ <code>VERIFIED_BUSINESS</code>.</strong> Checked before scoring.</li>
+<li><strong><code>display_value</code> masked whenever <code>distinct_reporters &lt; 3</code></strong> — <code>98XXXXX210</code>, <code>r***@okaxis</code>, <code>sbi***.in/...</code>, <code>HD***</code>.</li>
+<li><strong>Wording.</strong> "Reported by N people near you". "scammer"/"fraud" banned by lint.</li>
+</ol>
+
+<h2>Phase 6 — Alert Poisoning</h2>
+<h3>6.1 Trusted-reports filter</h3>
+<pre>w_i ≥ 0.40                        # junk/templated/back-dated excluded
+cluster k not in a collapsed CAMPAIGN
+occurred_at inside the window being evaluated (24 h or 7 d)
+pincode ∈ accepted area table</pre>
+<p>Counts are <strong>distinct source clusters</strong>, never raw reports.</p>
+
+<h3>6.2 Exact PRD conditions</h3>
+<pre>baseline_per_day = trusted clusters in [now-8d, now-1d) / 7
+SPIKE   iff  n24 ≥ 5  ∧  n24 ≥ 2·baseline_per_day
+             ∧  ≥3 distinct net_fp  (hardening gate)
+NEW_TYPE iff  ∃ scam_type with ≥3 trusted clusters in [now-24h, now)
+              ∧  absent from pincode in [now-30d, now-24h)</pre>
+<p>The <code>≥3 distinct net_fp</code> clause is a second independent gate: a single actor holding 30 accounts on one Wi-Fi cannot fire a SPIKE even if clustering is bypassed.</p>
+
+<h3>6.3 Poisoning test matrix</h3>
+<table>
+<thead><tr><th style="width:40%">Poison attempt</th><th>Gate that stops it</th></tr></thead>
+<tbody>
+<tr><td>30 fakes → SPIKE</td><td><code>w≥0.40</code> filter + campaign collapse + ≥3 net_fp</td></tr>
+<tr><td>Fake NEW_TYPE</td><td>≥3 distinct trusted clusters required</td></tr>
+<tr><td>Fake geographic</td><td>Fixed centroid table</td></tr>
+<tr><td>Replay escalation</td><td>Old <code>occurred_at</code> out of window</td></tr>
+<tr><td>Ignored → any alert</td><td>Structurally impossible</td></tr>
+</tbody>
+</table>
+
+<h3>6.4 Honest weakness — paraphrase attack</h3>
+<p>An adversary with 15+ clean networks, 15 aged accounts, genuinely reworded notes, good scam-type specificity <strong>will</strong> reach <code>S≈0.78</code> and be labelled <code>KNOWN_SCAM</code>. We say so. Mitigations:</p>
+<ol>
+<li><strong>c ≥ 5 gate</strong> — small coordinated sets can't do it alone.</li>
+<li><strong>Hysteresis</strong> — sustained, not one-shot.</li>
+<li><strong>Reputation ρ</strong> — accounts never once corroborated sit at the mean; never quickly exceed 1.0.</li>
+<li><strong>Challenge veto</strong> — guaranteed path to <code>SUSPICIOUS</code>-only. <strong>The real backstop: cost of a successful paraphrase attack is a disputed label, not a permanent one.</strong></li>
+<li><strong>Optional cached embedding bucket</strong> — off by default; never decision authority.</li>
+</ol>
+
+<h2>Phase 7 — Mathematical Validation</h2>
+<div class="warn"><p><strong>No performance numbers claimed.</strong> This section specifies <em>how</em> to measure, not what we measured. Any figure must come from the harness with recorded seed.</p></div>
+
+<h3>7.1 Generator</h3>
+<pre>gen_dataset(seed=20261029, n_scenarios=2000):
+  identifiers: synthetic, NOT from Appendix C
+  areas: 25-code table
+  reporters: 70% new / 20% few / 10% established
+  networks: Zipf popularity (hostel/café realism)
+  Families:
+    S1  organic      7–40 victims, own words, ≥5 nets, 0–6 d     [SCAM]
+    S2  bombing      10–60 accounts, ≤3 templates, ≤2 h          [NOT_SCAM]
+    S3  same-wifi    10–40, 1 net_fp, ≤1 h                        [NOT_SCAM]
+    S4  repeat       1 rid_fp × 3–20                              [NOT_SCAM]
+    S5  junk         invalid identifiers                          [REJECT]
+    S6  paraphrase   8–20, reworded, distinct nets, ≤1 h          [NOT_SCAM]
+    S7  replay       occurred_at 10–200 d ago                     [NOT_SCAM]
+    S8  geographic   20–40 to one pincode, mixed notes            [NOT_SCAM]
+    S9  verified     allowlist + hostile reports                  [VERIFIED]
+    S10 disputed     genuine + valid challenge                    [SUSPICIOUS]
+    S11 ambiguous    3–4 medium-quality                           [SUSPICIOUS]
+    S12 first-time   1 high-quality                               [SUSPICIOUS]</pre>
+
+<h3>7.2 Metrics</h3>
+<pre>Precision, Recall, F1
+FPR = FP/(FP+TN)   target < 0.01    ← disqualification metric
+FNR = FN/(FN+TP)   target < 0.25
+AttackDet per S2–S8
+LegitRet = [SCAM] retained / [SCAM] submitted
+AlertFP  = false SPIKE/NEW_TYPE / total alerts</pre>
+<div class="note"><p><strong>Report <code>(FPR, LegitRet)</code> together always.</strong> A trust engine discarding everything trivially achieves FPR=0 and is worthless.</p></div>
+
+<h3>7.3 Pre-registered acceptance gates</h3>
+<table>
+<thead><tr><th style="width:32%">Gate</th><th style="width:22%">Threshold</th><th>If failed</th></tr></thead>
+<tbody>
+<tr><td>FPR on S2/S3/S4/S9</td><td>≤ 0.01</td><td>raise c gate or tighten γ_note</td></tr>
+<tr><td>AttackDet S2–S4</td><td>≥ 0.99</td><td>clustering bug</td></tr>
+<tr><td>AttackDet S6</td><td>≥ 0.60</td><td>accept and document</td></tr>
+<tr><td>Recall S1</td><td>≥ 0.75</td><td>lower S threshold, re-check FPR</td></tr>
+<tr><td>AlertFP S2–S8</td><td>≤ 0.02</td><td>tighten net_fp diversity</td></tr>
+<tr><td>LegitRet S1/S12</td><td>≥ 0.90</td><td>weights too punitive</td></tr>
+</tbody>
+</table>
+
+<h3>7.4 Analytical expectation</h3>
+<ul>
+<li>S2/S3/S4 force <code>c</code> small and <code>E ≤ 1</code>. <code>KNOWN_SCAM</code> needs <code>c ≥ 5</code>. <strong>Cannot reach <code>KNOWN_SCAM</code> by construction.</strong></li>
+<li>S9 decided before scoring. S10 decided by post-hoc veto ignoring S.</li>
+<li>S1 at 7 voices → <code>E ≈ 5.6, S ≈ 0.80</code>, intended operating point.</li>
+</ul>
+
+<h2>Phase 8 — Final Design</h2>
+<h3>8.1 Architecture</h3>
+<pre>POST /reports  → canonicalise → rate-limit → fingerprint → insert
+                 → assess in TX → update indicators → cache invalidate → 201
+GET /lookup   → canonicalise → allowlist short-circuit → indicators row (unique probe)
+                 → hard overrides → 200 (pre-serialised on hit)</pre>
+
+<h3>8.2 Equations</h3>
+<pre>w_i  = clip(q_note·q_type·q_evidence·q_temporal·ρ, 0, 1)
+C_i  = union-find over rid_fp ∪ (net_fp ∧ Δt≤6h)
+v_k  = max_{i∈C_k} w_i
+γ    = 0.55·γ_note + 0.30·γ_time + 0.15·γ_age
+G    = campaign group iff γ_note ≥ 0.60 ∧ γ ≥ 0.70 ∧ |G| ≥ 4
+v_G  = max_{k∈G} v_k · min(1, 1 + 0.1·log2|G|)
+E    = Σ_{k∉G} v_k + v_G   (or Σ_k v_k if no campaign)
+D    = 2.0 (open) / 4.0 (upheld) / 0
+α,β  = 0.5+E, 1.5+D    →   S = α/(α+β)
+State:
+  c=0                    → NO_REPORTS
+  challenge_open         → DISPUTED       (SUSPICIOUS, veto)
+  c≥5 ∧ S≥0.75           → HIGH_CONFIDENCE (KNOWN_SCAM)
+  c≥3 ∧ S≥0.55           → CORROBORATED   (SUSPICIOUS)
+  S≥0.30                 → UNVERIFIED     (SUSPICIOUS)
+  else                   → NO_REPORTS_effective
+Hysteresis: HC→CORR when S<0.65; CORR→UNV when S<0.45
+Decay: 180 d ∧ S<0.50 → EXPIRED</pre>
+
+<h3>8.3 Deterministic pseudocode</h3>
+<pre>def assess(indicator, now):
+    if indicator in ALLOWLIST: return VERIFIED_BUSINESS
+    reports = sorted(db.reports(indicator), key=rid)
+    if not reports: return NO_REPORTS
+    cl = source_clusters(reports)
+    sim = minhash_lsh([r.note for r in reports])
+    for r in reports:
+        r.w = clip(note_q(r,sim)*type_q(r)*evidence_q(r)*temporal_q(r,now)
+                   *reputation(r.rid_fp), 0, 1)
+    v = {k: max(r.w for r in g) for k, g in cl.items()}
+    G = detect_campaign(cl, reports, sim, now) if len(cl) >= 4 else None
+    if G:
+        v_G = max(v[k] for k in G) * min(1.0, 1 + 0.1*log2(len(G)))
+        E = sum(val for k,val in v.items() if k not in G) + v_G
+    else:
+        E = sum(v.values())
+    D = dispute_mass(indicator, now)
+    S = (0.5 + E) / (2.0 + E + D)
+    c = len(cl)
+    state = classify(c, S, indicator, now)
+    verdict = "KNOWN_SCAM" if state == HIGH_CONFIDENCE else "SUSPICIOUS"
+    if indicator.challenged or state == DISPUTED: verdict = "SUSPICIOUS"
+    if c < 3:                                      verdict = "SUSPICIOUS"
+    if indicator in ALLOWLIST:                     verdict = "VERIFIED_BUSINESS"
+    return TrustAssessment(verdict=verdict, state=state, score=round(S,6),
+        E=round(E,6), report_count=len(reports), distinct_reporters=c,
+        first_seen=min(...), last_seen=max(...), display_value=mask(indicator,c),
+        evidence=[...10 most recent...])</pre>
+<p>Determinism: sorted iteration, fixed MinHash seed, explicit <code>now</code>, no LLM, no wall clock inside scoring.</p>
+
+<h3>8.4 Attack-detection rules</h3>
+<table>
+<thead><tr><th style="width:22%">Rule</th><th style="width:44%">Fires when</th><th>Effect</th></tr></thead>
+<tbody>
+<tr><td><code>SAME_RID</code></td><td>same rid_fp</td><td>merge, <code>v=max(w)</code></td></tr>
+<tr><td><code>SAME_NET_BURST</code></td><td>same net_fp ∧ Δt≤6h</td><td>merge</td></tr>
+<tr><td><code>TEMPLATE_NOTE</code></td><td>Jaccard ≥ 0.85</td><td>q_note=0.35</td></tr>
+<tr><td><code>CAMPAIGN</code></td><td>γ_note≥0.60 ∧ γ≥0.70 ∧ |G|≥4</td><td>collapse</td></tr>
+<tr><td><code>BACKDATED</code></td><td>Δ&gt;7d</td><td>q_temporal=0.60</td></tr>
+<tr><td><code>STALE</code></td><td>&gt;90d</td><td>w×0.5</td></tr>
+<tr><td><code>RATE</code></td><td>&gt;10/h or 30/d rid; &gt;40/h net</td><td>429</td></tr>
+<tr><td><code>ALERT_NET_DIVERSITY</code></td><td>&lt;3 net_fp in spike</td><td>suppress SPIKE</td></tr>
+</tbody>
+</table>
+
+<h3>8.5 False-positive mitigations</h3>
+<ol>
+<li>Skeptical prior <code>S(0)=0.25</code></li>
+<li>Diminishing returns — extra units never reach 1</li>
+<li>Independent gate ladder (c ∧ S ∧ no dispute)</li>
+<li>Hard veto (not threshold) for dispute/allowlist</li>
+<li>Hysteresis</li>
+<li>Zero cold-start penalty (<code>ρ=1.00</code>)</li>
+<li>Conservative clustering — prefer FN over FP</li>
+</ol>
+
+<h3>8.6 Expected outcomes</h3>
+<table>
+<thead><tr><th style="width:26%">Test</th><th style="width:26%">Verdict</th><th style="width:22%">State</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>40 friends → bakery</td><td><code>SUSPICIOUS</code> or <code>VERIFIED_BUSINESS</code></td><td><code>CORROBORATED</code></td><td>masked; challenge open</td></tr>
+<tr><td>22 on one Wi-Fi</td><td><code>SUSPICIOUS</code></td><td><code>UNVERIFIED</code></td><td>1 cluster</td></tr>
+<tr><td>6 reports, 1 reporter</td><td><code>SUSPICIOUS</code></td><td><code>UNVERIFIED</code></td><td>1 reporter</td></tr>
+<tr><td>1000, one attacker</td><td><code>SUSPICIOUS</code></td><td><code>UNVERIFIED</code></td><td>429s</td></tr>
+<tr><td>7 genuine</td><td><code>KNOWN_SCAM</code></td><td><code>HIGH_CONFIDENCE</code></td><td>full value</td></tr>
+<tr><td>1 new user</td><td><code>SUSPICIOUS</code></td><td><code>UNVERIFIED</code></td><td>masked, c=1</td></tr>
+<tr><td>Verified</td><td><code>VERIFIED_BUSINESS</code></td><td>—</td><td>short-circuit</td></tr>
+<tr><td>Under dispute</td><td><code>SUSPICIOUS</code> + <code>challenged:true</code></td><td><code>DISPUTED</code></td><td>never <code>KNOWN_SCAM</code></td></tr>
+<tr><td>Junk</td><td>400</td><td>—</td><td>never stored</td></tr>
+<tr><td>Old (60 d)</td><td>no alert</td><td>unchanged</td><td>out of windows</td></tr>
+</tbody>
+</table>
+
+<h3>8.7 Pitch (60 s)</h3>
+<div class="note">
+<p>We never count reports — we count <strong>independent sources</strong>.</p>
+<p>Every report is fingerprinted with a keyed hash so we recognise "same person" without knowing them. Reports from the same person, or the same network inside a six-hour window, collapse into <strong>one</strong>. One person six times = one person. Twenty-two accounts on one Wi-Fi = one person.</p>
+<p>Each remaining piece gets a weight from 0 to 1: a written description counts more than copy-paste; a screenshot adds 8 %, not 80 %; a report from two months ago counts less than one from an hour ago; <strong>a brand-new user counts exactly the same as an established one</strong>.</p>
+<p>Then we look for campaigns: many "independent" accounts writing near-identical notes in the same two hours. When we find that, forty friends become <strong>one</strong> witness. Genuine victims write in their own words, so they never collapse.</p>
+<p>We combine with a Beta-Binomial starting from a skeptical prior. <strong><code>KNOWN_SCAM</code> needs five independent sources, a score above 0.75, and no active dispute.</strong> Three reporters is only where we stop hiding the number — never proof.</p>
+<p>If a business disputes, that's a hard switch, not a vote. <strong>A disputed identifier can never be <code>KNOWN_SCAM</code>.</strong></p>
+<p>Every verdict is reproducible — same reports, same verdict. We can show the arithmetic.</p>
+</div>
+
+<h3>Trade-offs</h3>
+<table>
+<thead><tr><th style="width:26%">Trade-off</th><th style="width:26%">Choice</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Recall vs FP</td><td>Favour FP-avoidance</td><td>False <code>KNOWN_SCAM</code> destroys a business</td></tr>
+<tr><td>/24 clustering</td><td>Coarse</td><td>Under-count recoverable, over-count isn't</td></tr>
+<tr><td>Paraphrase</td><td>~60 % target</td><td>Deterministic &gt; opaque; no LLM authority</td></tr>
+<tr><td>Reputation</td><td><code>[0.70, 1.10]</code></td><td>Prevents farming, protects new users</td></tr>
+<tr><td>Allowlist</td><td>Absolute</td><td>Helpline-as-scam worse than any miss</td></tr>
+<tr><td>Stale</td><td>180 d</td><td>Scam numbers churn</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ================================================================ -->
+<!-- PART 2 -->
+<!-- ================================================================ -->
+<section class="part">
+  <div class="num">Part Two</div>
+  <h1>Performance Engineering &amp; Data Algorithms</h1>
+  <div class="sub">Lookup · Ingestion · Time Windows · Alerts · Benchmarking</div>
+  <div class="abstract">
+    Objectives A–F: sub-500 ms lookup architecture, ingestion pipeline, exact time-window queries,
+    official SPIKE/NEW_TYPE algorithms with edge cases, benchmark plan with empty results template,
+    and the PostgreSQL-vs-Redis engineering decision.
+  </div>
+</section>
+
+<section>
+<h2>A. Lookup Architecture</h2>
+<h3>A.1 The core decision</h3>
+<p>The naive approach aggregates the <code>reports</code> table per lookup — cost is <strong>O(reports)</strong>, grows without bound. Wrong shape.</p>
+<p><strong>Precompute the verdict.</strong> At write time the trust engine computes a full <code>TrustAssessment</code> per indicator and stores it as <strong>one row</strong> in <code>indicators</code>. <code>GET /lookup</code> is then:</p>
+<ol>
+<li>Canonicalise (pure CPU, no I/O).</li>
+<li>One unique-index probe.</li>
+<li>Serialise.</li>
+</ol>
+<p>Cost is <strong>O(1) in reports.</strong> Redis, pooling, serialisation are optimisations on top. None is load-bearing.</p>
+
+<h3>A.2 Latency budget</h3>
+<table>
+<thead><tr><th style="width:36%">Stage</th><th style="width:14%">p50</th><th style="width:14%">p95</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Client → edge (keep-alive)</td><td>20 ms</td><td>60 ms</td><td>Outside our control</td></tr>
+<tr><td>Edge → app (same region)</td><td>1 ms</td><td>3 ms</td><td>—</td></tr>
+<tr><td>Middleware (parse, licence, RL)</td><td>0.5 ms</td><td>2 ms</td><td>Licence cached verify+compare</td></tr>
+<tr><td>Canonicalise</td><td>0.05 ms</td><td>0.3 ms</td><td>Compiled regex</td></tr>
+<tr><td>Redis hit</td><td>0.4 ms</td><td>2 ms</td><td>Or 0.05 ms on L1</td></tr>
+<tr><td>DB unique probe</td><td>1.5 ms</td><td>8 ms</td><td>Single index probe</td></tr>
+<tr><td>Serialise</td><td>0.3 ms</td><td>1.5 ms</td><td>Pre-serialised on hit</td></tr>
+<tr><td>App → client</td><td>20 ms</td><td>60 ms</td><td>—</td></tr>
+<tr><td><strong>Internal hit</strong></td><td><strong>~2.8</strong></td><td><strong>~10</strong></td><td>—</td></tr>
+<tr><td><strong>Internal miss</strong></td><td><strong>~4</strong></td><td><strong>~16</strong></td><td>—</td></tr>
+</tbody>
+</table>
+<p>Network dominates. Internal budget leaves ~480 ms headroom at p95. We don't chase microseconds; we prevent spikes (§A.9).</p>
+
+<h3>A.3 Canonicalisation</h3>
+<p>Shared function, compiled once, used at <strong>ingest and lookup</strong> — divergence is the classic "not found" bug.</p>
+<pre>PHONE_MOBILE   = re.compile(r"^\+91[6-9]\d{9}$")
+PHONE_TOLLFREE = re.compile(r"^\+91(1800|1860)\d{4,7}$")
+PHONE_HELPLINE = re.compile(r"^\+911\d{3}$")
+
+def canonicalise(kind, raw):
+    if kind == "phone":
+        s = re.sub(r"[ \-().]", "", raw.strip())
+        if s.startswith("00"): s = "+" + s[2:]
+        if s.startswith("0") and len(s)==11:  s = "+91" + s[1:]
+        if s.startswith("91") and len(s)==12: s = "+" + s
+        if not s.startswith("+"):             s = "+91" + s
+        return s if (PHONE_MOBILE.match(s) or PHONE_TOLLFREE.match(s)
+                     or PHONE_HELPLINE.match(s)) else None
+    if kind == "upi":
+        s = raw.strip().lower().replace(" ", "")
+        return s if UPI_RE.match(s) else None
+    if kind == "url":
+        s = raw.strip().lower()
+        s = re.sub(r"^http://", "https://", s)
+        s = re.sub(r"^https://www\.", "https://", s)
+        s = s.split("?", 1)[0].rstrip("/")
+        return s if URL_RE.match(s) else None
+    if kind == "sender_id":
+        s = raw.strip().upper()
+        s = re.sub(r"^[A-Z]{2}-?", "", s)
+        return s if SENDER_RE.match(s) else None</pre>
+<p>If <code>None</code>, return <code>400</code> <strong>before any datastore</strong>.</p>
+
+<h3>A.4 Schema</h3>
+<pre>CREATE TABLE indicators (
+    id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    kind               smallint NOT NULL,
+    canonical          text     NOT NULL,
+    verdict            smallint NOT NULL DEFAULT 0,
+    trust_state        smallint NOT NULL DEFAULT 0,
+    report_count       integer  NOT NULL DEFAULT 0,
+    distinct_reporters integer  NOT NULL DEFAULT 0,
+    first_seen         timestamptz,
+    last_seen          timestamptz,
+    scam_type          text,
+    challenged         boolean  NOT NULL DEFAULT false,
+    display_value      text,
+    evidence_json      jsonb    NOT NULL DEFAULT '[]'::jsonb,
+    version            bigint   NOT NULL DEFAULT 1,
+    computed_at        timestamptz,
+    UNIQUE (kind, canonical)
+);
+
+CREATE TABLE reports (
+    report_id       uuid PRIMARY KEY,
+    indicator_id    bigint REFERENCES indicators(id),
+    occurred_at     timestamptz NOT NULL,
+    reported_at     timestamptz NOT NULL,
+    ingested_at     timestamptz NOT NULL DEFAULT now(),
+    reporter_fp     bytea NOT NULL,
+    net_fp          bytea NOT NULL,
+    channel, scam_type, pincode, note_len, note_hash, has_screenshot,
+    amount_lost_inr, w, trust_state
+);</pre>
+
+<h3>A.5 Indexes</h3>
+<pre>-- Lookup (implicit via UNIQUE)
+UNIQUE (kind, canonical) ON indicators
+
+-- Evidence slice for lookup response
+CREATE INDEX reports_indicator_trusted
+    ON reports (indicator_id, occurred_at DESC)
+    INCLUDE (channel, scam_type, pincode)
+    WHERE trust_state = 1;
+
+-- Async worker queue
+CREATE INDEX reports_indicator_pending ON reports (indicator_id)
+    WHERE trust_state = 0;
+
+-- Map (7-day window)
+CREATE INDEX reports_pincode_occurred_trusted
+    ON reports (pincode, occurred_at DESC) INCLUDE (scam_type)
+    WHERE trust_state = 1;
+
+-- NEW_TYPE prior history
+CREATE INDEX reports_pincode_type_occurred_trusted
+    ON reports (pincode, scam_type, occurred_at DESC)
+    WHERE trust_state = 1;
+
+-- Rate limiting
+CREATE INDEX reports_reporter_recent ON reports (reporter_fp, reported_at DESC);
+CREATE INDEX reports_net_recent      ON reports (net_fp,      reported_at DESC);</pre>
+<p><strong>Partial</strong> indexes keep the trusted subset resident in <code>shared_buffers</code> and remove filter steps. <strong>INCLUDE</strong> makes the evidence query index-only. <strong>Selectivity:</strong> <code>(kind, canonical)</code> unique → planner has no risk. <strong>No query-planning uncertainty on the hot query</strong>, which removes a common p99 source.</p>
+
+<h3>A.6 DB-only vs cache</h3>
+<table>
+<thead><tr><th style="width:20%">Approach</th><th style="width:18%">p50 internal</th><th style="width:31%">Strengths</th><th>Weaknesses</th></tr></thead>
+<tbody>
+<tr><td>DB only</td><td>~2 ms</td><td>One source of truth</td><td>Pool consumption, repeated work</td></tr>
+<tr><td>Redis in front</td><td>~0.5 ms</td><td>~90 % DB round-trips removed</td><td>Invalidation protocol</td></tr>
+<tr><td>L1 + Redis</td><td>~0.05 ms</td><td>Fastest for top-N</td><td>Memory, staleness</td></tr>
+</tbody>
+</table>
+<p><strong>Selected: Redis as L2, optional L1 for top 1 000.</strong> DB-only meets the target <em>by itself</em>; Redis protects the connection pool as load grows. At 3 000 rps with DB-only, pool contention starts producing tail latency the p50 hides.</p>
+<p>Cache key: <code>"lk:v1:" + base64url(kind) + ":" + sha256(canonical)[:20]</code>; value is <strong>finished serialised bytes</strong>, so hit path does zero work. TTL 300 s + jitter ±30 s.</p>
+
+<h3>A.7 Invalidation</h3>
+<ol>
+<li><code>indicators.version</code> increments on recompute.</li>
+<li>Write-through: trust worker <code>SET</code>s new body in same TX.</li>
+<li>Delete-on-write fallback if SET fails.</li>
+<li>TTL 300 s bounds staleness.</li>
+<li><strong>Dispute is synchronous:</strong> <code>POST /challenges</code> writes <code>challenged=true</code> and <code>SET</code>/<code>DEL</code> <strong>before</strong> returning <code>201</code>.</li>
+</ol>
+
+<h3>A.8 Connection pooling</h3>
+<p>Pgbouncer (transaction mode) in front of Postgres. <code>connections = (cpu_cores × 2) + effective_spindles</code> — 4 vCPU SSD → 9. <code>max_connections = pools×10 + 5</code>.</p>
+<p>Postgres is process-per-connection; beyond <code>2×cores</code> active connections, context switching and lock contention raise latency. <strong>Little's Law:</strong> λ=300 rps, W=2 ms → L=0.6 avg, L≈3 at p99. Pool of 9 has 3× headroom.</p>
+
+<h3>A.9 Tail latency</h3>
+<table>
+<thead><tr><th style="width:36%">Source</th><th>Mitigation</th></tr></thead>
+<tbody>
+<tr><td>Pool exhaustion</td><td>Pgbouncer + <code>statement_timeout=200ms</code></td></tr>
+<tr><td>Redis timeout</td><td>Client timeout 20 ms; fall through to DB</td></tr>
+<tr><td>Cold <code>shared_buffers</code></td><td>Warm-up job on boot</td></tr>
+<tr><td>Plan regression</td><td>CI asserts <code>EXPLAIN</code> = Index Scan only</td></tr>
+<tr><td>GC stalls</td><td>Bounded response objects</td></tr>
+</tbody>
+</table>
+
+<h3>Degradation ladder</h3>
+<ol>
+<li>Redis down → DB only, no user-visible change.</li>
+<li>Replica lagging → reads go to primary.</li>
+<li>DB saturated → <code>statement_timeout</code> → <code>503</code> with <code>Retry-After</code>.</li>
+<li>Everything down → <code>/health</code> OK, <code>/lookup</code> 503. <strong>Licence checked before datastore</strong>, so expired still returns <code>403 LICENSE_EXPIRED</code>.</li>
+</ol>
+<p><strong>The rule: fail fast, honest, ordered.</strong></p>
+
+<h3>A.10 Serialisation</h3>
+<ul>
+<li><code>orjson</code>, benchmarked vs stdlib.</li>
+<li>Flat shape; <code>evidence ≤ 10</code>; dates pre-formatted at write time.</li>
+<li><strong>Pre-serialised on hit path.</strong></li>
+<li><strong>No gzip</strong> below 1 KB.</li>
+</ul>
+
+<h3>A.11 Fast vs slow path</h3>
+<table>
+<thead><tr><th style="width:14%">Path</th><th style="width:44%">Contains</th><th style="width:14%">Budget</th><th>May fail?</th></tr></thead>
+<tbody>
+<tr><td><strong>Fast</strong></td><td>Canonicalise, cache/DB probe, serialise</td><td>≤ 16 ms p95</td><td>Must not block external</td></tr>
+<tr><td><strong>Slow</strong></td><td>Trust recompute (clustering, similarity, campaign, posterior, reputation)</td><td>seconds</td><td>Yes, retried</td></tr>
+</tbody>
+</table>
+<p><strong>No LLM, no web, no external API on the fast path.</strong></p>
+
+<h3>A.12 Lookup pseudocode</h3>
+<pre>async def lookup(kind_raw, value_raw):
+    kind = KIND_MAP.get(kind_raw)
+    if kind is None: return 400("unknown identifier_type")
+    canonical = canonicalise(kind, value_raw)
+    if canonical is None: return 400("invalid identifier_value")
+
+    key = cache_key(kind, canonical)
+    if (hit := l1.get(key)) is not None: return raw_json(hit)
+    try: hit = await redis.get(key, timeout_ms=20)
+    except (RedisTimeout, RedisUnavailable): hit = None
+    if hit is not None:
+        l1.set(key, hit, ttl=30); return raw_json(hit)
+
+    try: row = await db.fetchrow(LOOKUP_SQL, kind, canonical, timeout_ms=200)
+    except StatementTimeout:
+        return json_error(503, "lookup timeout", retry_after=1)
+
+    body = encode(row) if row else encode(NO_REPORTS_BODY(kind, canonical))
+    await redis.set(key, body, ex=300 if row else 60)
+    l1.set(key, body, ttl=30)
+    return raw_json(body)</pre>
+
+<h2>B. Report Ingestion</h2>
+<h3>B.1 The 60-second contract</h3>
+<p>Server returns <code>201</code> in well under a second. A scam victim is not a patient user.</p>
+
+<h3>B.2 Synchronous work</h3>
+<table>
+<thead><tr><th style="width:44%">Step</th><th style="width:20%">Budget</th><th>Fails</th></tr></thead>
+<tbody>
+<tr><td>Rate limit</td><td>1 ms</td><td>429</td></tr>
+<tr><td>Parse + validate</td><td>0.3 ms</td><td>400</td></tr>
+<tr><td>Canonicalise</td><td>0.05 ms</td><td>400</td></tr>
+<tr><td>Pincode validate</td><td>0.05 ms</td><td>400</td></tr>
+<tr><td>Timestamp parse</td><td>0.05 ms</td><td>400</td></tr>
+<tr><td>Insert report (<code>trust_state=0</code>)</td><td>2 ms</td><td>503</td></tr>
+<tr><td>Upsert indicator</td><td>2 ms</td><td>503</td></tr>
+<tr><td>Enqueue recompute</td><td>0.3 ms</td><td>logged, retried</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>~6 ms</strong></td><td>—</td></tr>
+</tbody>
+</table>
+
+<h3>B.3 Asynchronous work</h3>
+<p><code>job = {indicator_id, reason, enqueued_at}</code>. Worker recomputes from stored reports. <strong>Pure function of stored reports</strong> → lost job is harmless.</p>
+
+<h3>B.4 Idempotency</h3>
+<pre>INSERT INTO reports (...) ON CONFLICT (report_id) DO NOTHING RETURNING report_id;</pre>
+<p>Row → first insert → 201, enqueue. Null → replay → 201, no enqueue. <code>merged:true</code> computed from whether the indicator row already existed.</p>
+
+<h3>B.5 Duplicate merging</h3>
+<table>
+<thead><tr><th style="width:24%">Concept</th><th style="width:44%">Mechanism</th><th>Effect</th></tr></thead>
+<tbody>
+<tr><td>Transport dup</td><td>Same <code>report_id</code></td><td>Rejected by ON CONFLICT</td></tr>
+<tr><td>Semantic dup</td><td>Different id, same <code>rid_fp</code>+indicator</td><td>Both stored, <strong>collapsed to 1 cluster</strong> at recompute</td></tr>
+</tbody>
+</table>
+
+<h3>B.6 Bounded queues</h3>
+<pre>INGEST_MAX_PENDING        = 10_000
+INGEST_SHED_THRESHOLD     = 0.80
+INGEST_WORKER_CONCURRENCY = 4
+INGEST_JOB_TIMEOUT        = 30 s</pre>
+<ul>
+<li><strong>&lt; 80 %</strong>: normal.</li>
+<li><strong>≥ 80 %</strong>: coalesce — one job per <code>indicator_id</code> pending. 100 reports → 1 recompute.</li>
+<li><strong>Queue full</strong>: shed enqueue, still <code>201</code>. Report durably stored. Sweeper picks it up. <strong>Never reject a genuine report because our worker is behind.</strong></li>
+</ul>
+<p>Coalescing is the key insight: work is per <em>indicator</em>, not per report.</p>
+
+<h3>B.7 Ingestion pseudocode</h3>
+<pre>async def post_report(payload):
+    rl = rate_limit(...)
+    if rl.exceeded: return 429(...)
+    kind = KIND_MAP.get(payload["identifier_type"])
+    canonical = canonicalise(kind, payload["identifier_value"]) if kind else None
+    if canonical is None: return 400("invalid identifier")
+    if payload["pincode"] not in AREA_TABLE: return 400("invalid area")
+    occurred_at = parse_offset_datetime(payload["occurred_at"])
+    if occurred_at is None or occurred_at > now()+5min: return 400("invalid occurred_at")
+
+    async with db.transaction():
+        indicator_id, was_new = await upsert_indicator(kind, canonical)
+        inserted = await db.fetchval(INSERT_SQL, ..., ON CONFLICT DO NOTHING)
+        if inserted is None:
+            return 201(idempotent response, merged=True)
+        if not queue.has_pending(indicator_id):
+            queue.enqueue(indicator_id, "new_report")
+    return 201(merged=not was_new)</pre>
+
+<h2>C. Exact Time Windows</h2>
+<h3>C.1 The rule</h3>
+<p><strong>All windows use <code>occurred_at</code>. Never <code>reported_at</code>.</strong> <code>reported_at</code> used only for rate limiting and <code>q_temporal</code>.</p>
+
+<h3>C.2 Timezones</h3>
+<ul>
+<li>Parse offset → store as <code>timestamptz</code> (UTC).</li>
+<li>Session <code>SET TIME ZONE 'UTC'</code>.</li>
+<li>Never store local as <code>timestamp without time zone</code>.</li>
+<li>Boundaries from DB <code>now()</code>, not app clock.</li>
+<li><code>now()</code> evaluated once per query.</li>
+</ul>
+
+<h3>C.3 Half-open intervals</h3>
+<p>Every window is <code>[start, end)</code>. A report at exactly <code>now−7d</code> is <strong>outside</strong>.</p>
+
+<h3>C.4 The four windows</h3>
+<pre>-- W1: seven-day rolling map
+SELECT pincode, count(*), mode() WITHIN GROUP (ORDER BY scam_type)
+FROM reports WHERE trust_state = 1
+  AND occurred_at >= now() - interval '7 days' AND occurred_at < now()
+GROUP BY pincode;
+
+-- W2: seven-day baseline = [now-8d, now-1d) / 7
+SELECT count(*)::float / 7 FROM reports
+WHERE trust_state = 1 AND pincode = $1
+  AND occurred_at >= now() - interval '8 days'
+  AND occurred_at <  now() - interval '1 day';
+
+-- W3: NEW_TYPE prior = [now-30d, now-1d)
+SELECT 1 FROM reports
+WHERE trust_state = 1 AND pincode = $1 AND scam_type = $2
+  AND occurred_at >= now() - interval '30 days'
+  AND occurred_at <  now() - interval '1 day'
+LIMIT 1;
+
+-- W4: 24-hour alert window
+SELECT count(*) FROM reports
+WHERE trust_state = 1 AND pincode = $1
+  AND occurred_at >= now() - interval '24 hours' AND occurred_at < now();</pre>
+<p>W2 excludes the 24 h window from its own baseline. W3 excludes the 24 h window from the prior (self-disqualification).</p>
+
+<h3>C.5 Test matrix</h3>
+<table>
+<thead><tr><th style="width:8%">#</th><th style="width:22%">occurred_at</th><th style="width:18%">W1 (7d)</th><th style="width:20%">W2 (baseline)</th><th>W4 (24h)</th></tr></thead>
+<tbody>
+<tr><td>T1</td><td>now−1h</td><td>yes</td><td>no</td><td>yes</td></tr>
+<tr><td>T2</td><td>now−25h</td><td>yes</td><td>yes</td><td>no</td></tr>
+<tr><td>T3</td><td>now−6d</td><td>yes</td><td>yes</td><td>no</td></tr>
+<tr><td>T4</td><td>now−7d exact</td><td><strong>no</strong></td><td>yes</td><td>no</td></tr>
+<tr><td>T5</td><td>now−8d exact</td><td>no</td><td><strong>no</strong></td><td>no</td></tr>
+<tr><td>T6</td><td>now+10min</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>T7</td><td>now+30min</td><td colspan="3">400 at ingest</td></tr>
+<tr><td>T8</td><td>occurred 60d, reported now</td><td><strong>no</strong></td><td>no</td><td>no</td></tr>
+</tbody>
+</table>
+<p>T8 is the replay defence.</p>
+
+<h2>D. Official Alerts</h2>
+<h3>D.1 Trusted reports only</h3>
+<p>Only <code>trust_state = 1</code>. Set by trust engine (representative of a cluster with <code>w ≥ 0.40</code>, not in collapsed campaign, passed validity gate). Duplicates → one representative; malicious → collapsed or <code>w&lt;0.40</code>. <strong>Alert layer has zero anti-abuse logic</strong> — all adversarial reasoning lives in the trust engine. One place to test.</p>
+
+<h3>D.2 SPIKE</h3>
+<pre>n24      = trusted clusters in [now-24h, now)
+baseline = trusted clusters in [now-8d, now-1d) / 7
+SPIKE    iff  n24 ≥ 5  ∧  n24 ≥ 2·baseline
+          AND  distinct net_fp in n24 ≥ 3  (hardening)</pre>
+<table>
+<thead><tr><th style="width:8%">#</th><th style="width:10%">n24</th><th style="width:12%">baseline</th><th style="width:14%">Fires?</th><th>Reasoning</th></tr></thead>
+<tbody>
+<tr><td>S1</td><td>5</td><td>2.0</td><td>yes</td><td><code>≥</code> is inclusive</td></tr>
+<tr><td>S2</td><td>10</td><td>5.0</td><td>yes</td><td>exactly 2×</td></tr>
+<tr><td>S3</td><td>9</td><td>5.0</td><td>no</td><td>below 2×</td></tr>
+<tr><td>S4</td><td>5</td><td>0.0</td><td>yes</td><td>2×0=0 vacuous; floor does work</td></tr>
+<tr><td>S5</td><td>4</td><td>0.0</td><td>no</td><td>below floor</td></tr>
+<tr><td>S6</td><td>4</td><td>0.1</td><td>no</td><td>ratio never fires alone</td></tr>
+<tr><td>S7</td><td>5</td><td>2.5</td><td>yes</td><td>5≥5</td></tr>
+<tr><td>S8</td><td>5 all one net</td><td>2.0</td><td>no (gate)</td><td>diversity &lt; 3</td></tr>
+<tr><td>S9</td><td>10 fake (trust_state=2)</td><td>2.0</td><td>no</td><td>trusted only</td></tr>
+<tr><td>S10</td><td>7 trusted + 30 fake</td><td>2.0</td><td>yes</td><td>fake ignored</td></tr>
+<tr><td>S12</td><td>at now−24h boundary</td><td>—</td><td>excluded</td><td>half-open</td></tr>
+</tbody>
+</table>
+<p><strong>S4 is the case most easily implemented wrong.</strong> <code>2*0 = 0</code>, <code>n24 &gt;= 0</code> is vacuously true, so ratio vanishes and the floor does the work. Correct reading of the PRD.</p>
+
+<h3>D.3 NEW_TYPE</h3>
+<pre>present = types in [now-24h, now) trusted
+prior   = types in [now-30d, now-1d) trusted
+NEW_TYPE = present \ prior</pre>
+<table>
+<thead><tr><th style="width:8%">#</th><th style="width:22%">Present</th><th style="width:30%">Prior 30d</th><th>Fires?</th></tr></thead>
+<tbody>
+<tr><td>N1</td><td><code>job-offer</code></td><td>none</td><td>yes</td></tr>
+<tr><td>N2</td><td><code>digital-arrest</code></td><td>day 12</td><td>no</td></tr>
+<tr><td>N3</td><td><code>otp-call</code></td><td>31 d ago</td><td>yes</td></tr>
+<tr><td>N4</td><td><code>otp-call</code></td><td>at now−30d</td><td>yes (half-open)</td></tr>
+<tr><td>N5</td><td><code>lottery-prize</code></td><td>2 d ago</td><td>no</td></tr>
+<tr><td>N6</td><td><code>sextortion</code></td><td>only in 24h</td><td>yes (upper bound prevents self-suppression)</td></tr>
+<tr><td>N7</td><td><code>courier-customs</code></td><td>25h ago</td><td>no</td></tr>
+<tr><td>N8</td><td><code>other</code> from fake wave</td><td>none</td><td>no (untrusted)</td></tr>
+<tr><td>N9</td><td><code>job-offer</code> other area</td><td>—</td><td>yes (per-area)</td></tr>
+</tbody>
+</table>
+
+<h3>D.4 Alert pseudocode</h3>
+<pre>async def evaluate_alerts(pincode, now):
+    alerts = []
+    n24      = await db.fetchval(N24_SQL, pincode)
+    baseline = await db.fetchval(BASELINE_SQL, pincode)
+    fires = (n24 >= 5) and (n24 >= 2*baseline)
+    if ALERT_NET_DIVERSITY_GATE:
+        fires = fires and (await db.fetchval(NET_DIV_SQL, pincode)) >= 3
+    if fires:
+        alerts.append(SPIKE(...))
+    for t in await db.fetch(NEW_TYPE_CANDIDATES_SQL, pincode):
+        if not await db.fetchval(NEW_TYPE_PRIOR_SQL, pincode, t):
+            alerts.append(NEW_TYPE(...))
+    return alerts</pre>
+
+<h2>E. Benchmarking Plan</h2>
+<div class="warn"><p><strong>No results asserted.</strong> This section specifies the harness.</p></div>
+<table>
+<thead><tr><th style="width:30%">Param</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Seed</td><td><code>20261029</code></td></tr>
+<tr><td>Indicators</td><td>100 000</td></tr>
+<tr><td>Reports</td><td>1 000 000</td></tr>
+<tr><td>Areas</td><td>25</td></tr>
+<tr><td>Scam types</td><td>12 + <code>other</code></td></tr>
+<tr><td>Reporters</td><td>200 000 synthetic</td></tr>
+<tr><td>Networks</td><td>50 000 Zipf</td></tr>
+<tr><td>Occurred distribution</td><td>80 % ≤30 d / 15 % ≤180 d / 5 % older</td></tr>
+<tr><td>Trusted fraction</td><td>~60 %</td></tr>
+<tr><td>Popularity</td><td>Zipf s=1.0</td></tr>
+</tbody>
+</table>
+<p>Content mix: 40 % unique, 30 % template, 20 % empty, 10 % junk. Committed, seeded.</p>
+<p><strong>Request mix:</strong> 60 % lookup hot, 20 % warm, 10 % cold, 5 % map, 4 % alerts, 0.9 % valid POST, 0.1 % invalid POST.</p>
+<p><strong>Concurrency:</strong> <code>1, 10, 50, 100, 200, 400</code>. Each level 120 s after 30 s warm-up. <code>400</code> finds the knee.</p>
+<table>
+<thead><tr><th style="width:20%">Test</th><th style="width:26%">Setup</th><th>Isolates</th></tr></thead>
+<tbody>
+<tr><td>Warm</td><td>Pre-populated Redis</td><td>Steady state</td></tr>
+<tr><td>Cold</td><td>FLUSHDB</td><td>Worst case</td></tr>
+<tr><td>Cold start</td><td>Restart app, cold buffers</td><td>Post-deploy</td></tr>
+<tr><td>Thundering herd</td><td>FLUSHDB mid-run</td><td>Stampede protection</td></tr>
+</tbody>
+</table>
+
+<h3>Results template — fill by harness, not by hand</h3>
+<table>
+<thead><tr><th>Conc</th><th>p50</th><th>p95</th><th>p99</th><th>p99.9</th><th>rps</th><th>Fail %</th><th>DB ms</th><th>Hit %</th></tr></thead>
+<tbody>
+<tr><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>50</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>100</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>200</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>400</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<table>
+<thead><tr><th>Cache</th><th>p50</th><th>p95</th><th>p99</th><th>rps</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Warm</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Cold</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Cold start</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Herd</td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<p><strong>Left blank intentionally.</strong></p>
+
+<h2>F. Engineering Decision</h2>
+<table>
+<thead><tr><th style="width:17%">Option</th><th style="width:14%">p95 internal</th><th style="width:15%">Consistency</th><th style="width:12%">Complexity</th><th style="width:15%">Failure modes</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td>Postgres only</td><td>~16 ms</td><td>Immediate</td><td>Low</td><td>Pool saturation</td><td>Meets target alone; no headroom</td></tr>
+<tr><td><strong>Postgres + Redis</strong></td><td><strong>~10 ms</strong></td><td>Bounded staleness</td><td>Medium</td><td>Cache bugs</td><td><strong>Selected</strong></td></tr>
+<tr><td>Postgres + mat views</td><td>~8 ms</td><td>Stale until refresh</td><td>Medium</td><td>Refresh blocks</td><td>Rejected — per-indicator lookup still needs indexed probe</td></tr>
+<tr><td>SQLite / in-memory</td><td>~0.1 ms</td><td>Full sync design needed</td><td>High</td><td>Data loss</td><td>Rejected — second source of truth</td></tr>
+</tbody>
+</table>
+<p>The <code>indicators</code> table <strong>is</strong> the materialised aggregate, incrementally maintained by the trust worker. Redis in option 2 is a <strong>cache</strong> — its loss is a performance event, never a data event.</p>
+<p><strong>Not built:</strong> read replicas, sharding, Elasticsearch, Kafka, gRPC, CDN — each adds complexity or failure modes for no measurable benefit at hackathon scale.</p>
+
+<h2>G. Deliverables</h2>
+<h3>G.1 Architecture</h3>
+<pre>client ─TLS─▶ LB ─keep-alive─▶ app ×N
+                                  │
+                    ┌─────────────┼─────────────┐
+                    ▼             ▼             ▼
+                 L1 (in-proc)   Redis L2    Pgbouncer(9) ─▶ Postgres
+                                                          (indicators + reports)
+                                                              │
+                                                       trust worker (async)
+                                                       recompute + SET</pre>
+
+<h3>G.3 Optimisation sequence</h3>
+<table>
+<thead><tr><th style="width:6%">#</th><th style="width:44%">Action</th><th style="width:34%">Effect</th><th>Effort</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>indicators</code> + unique index</td><td>O(n)→O(1) <strong>entire design</strong></td><td>2 h</td></tr>
+<tr><td>2</td><td>Shared canonicalise</td><td>Removes "not found" class</td><td>1 h</td></tr>
+<tr><td>3</td><td>Partial/covering indexes</td><td>Map/alerts index-only</td><td>1 h</td></tr>
+<tr><td>4</td><td><code>statement_timeout=200ms</code></td><td>Convert hangs to fast 503</td><td>15 m</td></tr>
+<tr><td>5</td><td>Pgbouncer, 9 conns</td><td>Removes pool exhaustion</td><td>1 h</td></tr>
+<tr><td>6</td><td>Redis L2, write-through</td><td>~90 % round-trips removed</td><td>2 h</td></tr>
+<tr><td>7</td><td>Pre-serialised bodies</td><td>Remove serialisation from hit</td><td>30 m</td></tr>
+<tr><td>8</td><td>Negative cache (60 s)</td><td>Scan protection</td><td>15 m</td></tr>
+<tr><td>9</td><td>Boot warm-up</td><td>No cold-start cliff</td><td>45 m</td></tr>
+<tr><td>10</td><td>Queue coalescing</td><td>Bombing becomes cheap for us</td><td>1 h</td></tr>
+<tr><td>11</td><td>L1 top-1000</td><td>50 µs hit path</td><td>1 h</td></tr>
+</tbody>
+</table>
+<p><strong>Steps 1–4 alone meet the target.</strong> Steps 5–11 are headroom.</p>
+
+<h3>G.4 Bottlenecks</h3>
+<table>
+<thead><tr><th style="width:6%">#</th><th style="width:20%">Bottleneck</th><th style="width:14%">When</th><th style="width:30%">Mitigation</th><th>Residual</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Client↔edge RTT</td><td>Always</td><td>Not ours; keep-alive, regional</td><td>Dominates budget — tight internal target compensates</td></tr>
+<tr><td>2</td><td>Pool contention</td><td>~1000+ rps</td><td>Pgbouncer, timeout, Redis</td><td>Most likely real-world p99 regression</td></tr>
+<tr><td>3</td><td>Cache stampede</td><td>Post-deploy</td><td>Jitter, single-flight</td><td>Brief latency bump</td></tr>
+<tr><td>4</td><td>Worker backlog</td><td>Hostile ingest</td><td>Coalescing, shedding</td><td>Lookup never degrades</td></tr>
+<tr><td>5</td><td><code>reports</code> growth</td><td>Months</td><td>Partial indexes; partition</td><td>Map/alerts before lookup</td></tr>
+<tr><td>6</td><td>Large evidence serial.</td><td>Pathological</td><td>Cap at 10 at write</td><td>None</td></tr>
+<tr><td>7</td><td>Cold buffers</td><td>Post-deploy</td><td>Warm-up job</td><td>Seconds</td></tr>
+</tbody>
+</table>
+<p><strong>Load-bearing observation:</strong> bottlenecks degrade secondary endpoints before <code>GET /lookup</code>. Lookup reads a precomputed row through a unique index — last thing to break. <strong>Intended failure ordering.</strong></p>
+
+<h3>G.5 Judge summary</h3>
+<div class="note">
+<p>Lookup does not count reports. It reads one precomputed row.</p>
+<p>Report arrives → canonicalise → store → <code>201</code> in ~6 ms. Background worker recomputes that indicator's trust and writes the verdict into a single <code>indicators</code> row, pushes finished JSON to Redis.</p>
+<p>Lookup: canonicalise, in-process cache, Redis, then one unique-index probe on a table with one row per phone number. <strong>O(1) in reports</strong> — query cost doesn't grow as the platform succeeds.</p>
+<p>Internal budget ~16 ms at p95. The 500 ms target is dominated by network we don't control — that's why we designed for an order of magnitude of headroom.</p>
+<p>All windows use <code>occurred_at</code>, compared in UTC against the database clock, half-open. <code>reported_at</code> never enters a window — that's what stops replay attacks.</p>
+<p>Alerts read only trusted reports. <strong>No anti-abuse logic in the alert layer</strong> — the trust engine sets <code>trust_state=1</code> for representatives, <code>=2</code> for ignored. SPIKE needs 5 trusted reports and 2× the 7-day daily average; zero baseline means 2×0=0 vacuous and the floor does the work. NEW_TYPE compares 24h vs prior 30d, evaluation window excluded so a report can't disqualify its own alert.</p>
+<p><strong>No benchmark numbers claimed.</strong> §E specifies dataset, mix, ladder, warm/cold, exact percentiles. Results land with the commit SHA when the harness runs.</p>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<!-- PART 3 -->
+<!-- ================================================================ -->
+<section class="part">
+  <div class="num">Part Three</div>
+  <h1>Trust Engine Specialist Review</h1>
+  <div class="sub">Reconciliation · Twelve-Scenario Simulation · Reason Codes · Config · Unit Tests</div>
+  <div class="abstract">
+    Reconciles the eight candidate designs into one deterministic algorithm. Simulates all twelve
+    required scenarios against it. Every numeric threshold is a recommendation for mentor sign-off.
+    Until approved, the engine runs in safe mode and cannot emit <code>KNOWN_SCAM</code>.
+  </div>
+</section>
+
+<section>
+<h2>1 · Option Reconciliation</h2>
+<table>
+<thead><tr><th style="width:22%">Option</th><th style="width:16%">Attack addressed</th><th style="width:16%">Strength</th><th style="width:16%">Weakness</th><th style="width:10%">Adopt?</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td>Same-reporter clustering</td><td>Repeat spam</td><td>Exact, O(1)</td><td>Misses multi-account</td><td><strong>Yes</strong></td><td>Hard merge</td></tr>
+<tr><td>Same-network + time</td><td>Same-Wi-Fi Sybil</td><td>Catches bursts cheaply</td><td>/24 false merges</td><td><strong>Yes</strong> (6 h)</td><td>Merge edge</td></tr>
+<tr><td>Note — exact hash</td><td>Templates</td><td>Trivial</td><td>Misses edits</td><td><strong>Yes</strong></td><td>Template signal</td></tr>
+<tr><td>Note — MinHash/Jaccard</td><td>Light paraphrase</td><td>Bounded, fast</td><td>Misses heavy paraphrase</td><td><strong>Yes</strong> (0.70)</td><td>Campaign gate</td></tr>
+<tr><td>Note — SimHash/embeddings</td><td>Heavy paraphrase</td><td>Better recall</td><td>Non-deterministic, unexplainable</td><td><strong>No</strong></td><td>Excluded — no LLM authority</td></tr>
+<tr><td>Campaign burst detection</td><td>40-friend, geo-fake</td><td>Collapses campaigns</td><td>Weak vs paraphrase/drip</td><td><strong>Yes</strong> (as gate)</td><td>Requires γ_note ∧ γ</td></tr>
+<tr><td>Evidence quality weights</td><td>Junk, screenshots, backdating</td><td>Traceable to PRD</td><td>Hand-tuned</td><td><strong>Yes</strong> (capped)</td><td>Per-report</td></tr>
+<tr><td>Bounded reputation</td><td>Farming, chronic FPs</td><td>Nudges abusers</td><td>Cold-start unfair</td><td><strong>Yes</strong> <code>[0.70, 1.10]</code></td><td>Never a gate</td></tr>
+<tr><td>Beta-Binomial</td><td>Volume inflation</td><td>Bounded, honest uncertainty</td><td>Independence assumption</td><td><strong>Yes</strong></td><td>Aggregation</td></tr>
+<tr><td>Deterministic state machine</td><td>Flicker, dispute</td><td>Explainable, invariant-enforcing</td><td>Edge cases</td><td><strong>Yes</strong></td><td>Final layer</td></tr>
+</tbody>
+</table>
+<p><strong>Rejected outright:</strong> LLM classification authority, embeddings as decision feature, pure counting, reputation gating.</p>
+
+<h2>2 · The Selected Algorithm</h2>
+<pre>INPUT: reports for indicator I, now, cfg
+
+1. GATE     If I ∈ VERIFIED_ALLOWLIST → VERIFIED_BUSINESS [ALLOWLISTED]
+2. VALIDATE (no-op at read time — rejected rows absent from store)
+3. WEIGH    For each report r:
+              w_r = clip(q_note·q_type·q_evidence·q_temporal·rho, 0, 1)
+4. CLUSTER  Union-Find: a~b iff a.rid_fp=b.rid_fp ∨ (a.net_fp=b.net_fp ∧ Δt≤cfg.net_window)
+              v(C_i) = max_{r∈C_i} w_r
+5. CAMPAIGN If k ≥ cfg.campaign_min_group, find 120-min window G:
+              γ_note = fraction with Jaccard ≥ 0.70 partner
+              γ_time = fraction in window
+              γ_age  = fraction with < 3 prior reports
+              γ      = 0.55·γ_note + 0.30·γ_time + 0.15·γ_age
+              If γ_note ≥ cfg.gamma_note_min ∧ γ ≥ cfg.gamma_min:
+                v(G) = max_{C_i∈G} v(C_i) · min(1, 1+0.1·log2|G|)
+                E = Σ_{C_i∉G} v(C_i) + v(G)
+              Else: E = Σ v(C_i)
+              Otherwise: E = Σ v(C_i)
+6. DISPUTE  D = cfg.D_open if open; cfg.D_upheld if upheld; else 0
+7. POSTERIOR α = cfg.alpha0 + E; β = cfg.beta0 + D; S = α/(α+β)
+8. STATE    c = k
+              NO_REPORTS       if c == 0
+              DISPUTED         elif challenge_open
+              HIGH_CONFIDENCE  elif c ≥ cfg.hc_min_clusters ∧ S ≥ cfg.hc_min_score
+              CORROBORATED     elif c ≥ cfg.corr_min_clusters ∧ S ≥ cfg.corr_min_score
+              UNVERIFIED       else
+              EXPIRED          if now-last_seen > cfg.expiry_days ∧ S < cfg.expiry_score_floor
+9. VERDICT  KNOWN_SCAM iff state==HIGH_CONFIDENCE
+                       ∧ c ≥ 3 ∧ ¬challenge ∧ ¬allowlisted
+            else SUSPICIOUS if c ≥ 1
+            else NO_REPORTS
+10. DISPLAY If c < 3: mask. "Reported by {c} people near you".</pre>
+<p>Pure function of <code>(reports, cfg, now)</code>. No random, no network, no wall clock.</p>
+
+<h2>3 · Formulas</h2>
+<pre>q_note(r)     = cfg.note_template_dup      if template hash match
+              = cfg.note_junk              if junk regex
+              = cfg.note_base + cfg.note_len_scale · min(1, len(r.note)/cfg.note_len_ref)
+                                            otherwise
+q_type(r)     = 1.0                        if r.scam_type ∈ KNOWN_SCAM_TYPES
+              = cfg.q_type_unknown         otherwise
+q_evidence(r) = min(cfg.q_ev_cap,
+                    1.0 + cfg.q_ev_screenshot·1{has_screenshot}
+                        + cfg.q_ev_amount·1{amount>0})
+q_temporal(r) = cfg.q_t_1h    if Δ ≤ 1h
+              = cfg.q_t_24h   if Δ ≤ 24h
+              = cfg.q_t_7d    if Δ ≤ 7d
+              = cfg.q_t_older if Δ ≤ 90d
+              = cfg.q_t_older × cfg.q_t_90d_multiplier otherwise
+rho(r)        = clip(cfg.rho_base + cfg.rho_slope·R̂, cfg.rho_min, cfg.rho_max)
+                R̂ = (good+1)/(good+bad+2)
+w(r)          = clip(q_note·q_type·q_evidence·q_temporal·rho, 0, 1)</pre>
+
+<div class="eq">C_i = equivalence classes of a~b ⟺ rid_fp match ∨ (net_fp match ∧ Δt ≤ net_window)
+v(C_i) = max_{r∈C_i} w(r)
+E      = Σ_i v(C_i)   or  Σ_{C_i∉G} v(C_i) + v(G)
+
+S = (alpha0 + E)/(alpha0 + beta0 + E + D)
+HIGH_CONFIDENCE iff c ≥ hc_min_clusters ∧ S ≥ hc_min_score
+Demote HC→CORR if S < demote_hc_to_corr
+Demote CORR→UNV if S < demote_corr_to_unv
+
+Hard invariants (post-hoc):
+I1. challenge_open ⟹ verdict ≠ KNOWN_SCAM
+I2. c < 3           ⟹ verdict ≠ KNOWN_SCAM ∧ masked display
+I3. allowlisted    ⟹ verdict = VERIFIED_BUSINESS</div>
+
+<h2>4 · Pseudocode</h2>
+<pre>def assess(indicator, now, cfg):
+    if allowlisted(indicator): return VERIFIED_BUSINESS
+
+    reports = sorted(store.reports(indicator), key=report_id)
+    if not reports: return NO_REPORTS
+
+    for r in reports:
+        r.w = clip(note_q(r,cfg) * type_q(r,cfg) * evidence_q(r,cfg)
+                   * temporal_q(r,now,cfg) * reputation(r,cfg), 0.0, 1.0)
+
+    clusters = union_find(reports,
+        same_rid     = lambda a,b: a.rid_fp == b.rid_fp,
+        same_netbust = lambda a,b: a.net_fp == b.net_fp
+                                    and abs(a.reported_at-b.reported_at) <= cfg.net_window)
+    v = {cid: max(r.w for r in g) for cid,g in clusters.items()}
+
+    E = sum(v.values())
+    campaign = detect_campaign(clusters, reports, cfg)
+    if campaign:
+        v_G = max(v[c] for c in campaign) * min(1.0, 1+0.1*log2(len(campaign)))
+        E = sum(val for c,val in v.items() if c not in campaign) + v_G
+
+    D = (cfg.D_open   if indicator.challenge_status == "open"
+         else cfg.D_upheld if indicator.challenge_status == "upheld"
+         else 0.0)
+    S = (cfg.alpha0 + E) / (cfg.alpha0 + cfg.beta0 + E + D)
+    c = len(clusters)
+    state, reason = classify(c, S, indicator, now, cfg)
+
+    verdict = "KNOWN_SCAM" if state == "HIGH_CONFIDENCE" else "SUSPICIOUS"
+    if indicator.challenge_status == "open": verdict = "SUSPICIOUS"; reason.append("CHALLENGE_OPEN")
+    if c < 3:                                verdict = "SUSPICIOUS"; reason.append("BELOW_PRIVACY_FLOOR")
+    if allowlisted(indicator):               verdict = "VERIFIED_BUSINESS"; reason.append("ALLOWLISTED")
+
+    return Assessment(verdict=verdict, state=state, c=c, E=round(E,6), S=round(S,6),
+        report_count=len(reports),
+        first_seen=min(r.occurred_at for r in reports),
+        last_seen=max(r.occurred_at for r in reports),
+        display_value=mask(indicator, c), reason=reason)</pre>
+
+<pre>def classify(c, S, indicator, now, cfg):
+    if c == 0: return "NO_REPORTS", ["EMPTY"]
+    if indicator.challenge_status == "open": return "DISPUTED", ["CHALLENGE_OPEN"]
+    if now - indicator.last_seen > cfg.expiry_days and S < cfg.expiry_score_floor:
+        return "EXPIRED", ["STALE_DECAY"]
+    prev = indicator.previous_state
+    if prev == "HIGH_CONFIDENCE" and S >= cfg.demote_hc_to_corr:
+        return "HIGH_CONFIDENCE", ["HYSTERESIS_HOLD"]
+    if prev == "CORROBORATED" and S >= cfg.demote_corr_to_unv and c >= cfg.corr_min_clusters:
+        return "CORROBORATED", ["HYSTERESIS_HOLD"]
+    if c >= cfg.hc_min_clusters and S >= cfg.hc_min_score:
+        return "HIGH_CONFIDENCE", ["HIGH_CONFIDENCE"]
+    if c >= cfg.corr_min_clusters and S >= cfg.corr_min_score:
+        return "CORROBORATED", ["CORROBORATED_LOW"]
+    return "UNVERIFIED", ["CLUSTER_SINGLE"]</pre>
+
+<pre>def detect_campaign(clusters, reports, cfg):
+    if len(clusters) < cfg.campaign_min_group: return None
+    for window in sliding_windows(reports, minutes=120):
+        ids = {cluster_of(r) for r in window}
+        if len(ids) < cfg.campaign_min_group: continue
+        γ_note = template_fraction(window, cfg.note_jaccard)
+        γ_time = fraction(window, minutes=120)
+        γ_age  = fraction(window, reporter_history_lt=3)
+        γ      = 0.55*γ_note + 0.30*γ_time + 0.15*γ_age
+        if γ_note >= cfg.gamma_note_min and γ >= cfg.gamma_min:
+            return ids
+    return None</pre>
+
+<h2>5 · Reason Codes</h2>
+<table>
+<thead><tr><th style="width:24%">Code</th><th style="width:46%">Meaning</th><th>Typical cause</th></tr></thead>
+<tbody>
+<tr><td><code>EMPTY</code></td><td>No accepted reports</td><td>new identifier</td></tr>
+<tr><td><code>ALLOWLISTED</code></td><td>Matches verified registry</td><td>helplines, banks, portals</td></tr>
+<tr><td><code>CHALLENGE_OPEN</code></td><td>Dispute filed</td><td>POST /challenges</td></tr>
+<tr><td><code>CLUSTER_SINGLE</code></td><td>1–2 independent sources</td><td>new victim, weak corroboration</td></tr>
+<tr><td><code>CLUSTERED_DUPLICATES</code></td><td>Multiple reports collapsed</td><td>repeat, same Wi-Fi</td></tr>
+<tr><td><code>CAMPAIGN_COLLAPSED</code></td><td>Campaign merged to one</td><td>40-friend, template wave</td></tr>
+<tr><td><code>TEMPLATE_NOTES</code></td><td>Notes exceeded Jaccard</td><td>copy-paste</td></tr>
+<tr><td><code>CORROBORATED_LOW</code></td><td>3–4 sources, moderate S</td><td>thin corroboration</td></tr>
+<tr><td><code>HIGH_CONFIDENCE</code></td><td>≥ hc_min_clusters ∧ S ≥ hc_min_score</td><td>organic wave</td></tr>
+<tr><td><code>HYSTERESIS_HOLD</code></td><td>Would demote but holding</td><td>boundary oscillation</td></tr>
+<tr><td><code>STALE_DECAY</code></td><td>Outside active window</td><td>historic</td></tr>
+<tr><td><code>BACKDATED</code></td><td>occurred_at lag discount</td><td>replay</td></tr>
+<tr><td><code>THRESHOLDS_NOT_APPROVED</code></td><td>Safe mode</td><td>pre-approval</td></tr>
+</tbody>
+</table>
+
+<h2>6 · Config Object</h2>
+<p>Recommended values shown. <strong>Implementation ships with them commented out</strong> until signed off.</p>
+<pre>@dataclass(frozen=True)
+class TrustConfig:
+    APPROVED: bool = False
+
+    # Beta prior
+    alpha0: float = 0.5
+    beta0:  float = 1.5
+
+    # Promotion
+    corr_min_clusters: int = 3
+    corr_min_score: float = 0.55
+    hc_min_clusters: int = 5
+    hc_min_score: float = 0.75
+
+    # Hysteresis
+    demote_hc_to_corr: float = 0.65
+    demote_corr_to_unv: float = 0.45
+
+    # Dispute
+    D_open: float = 2.0
+    D_upheld: float = 4.0
+
+    # Clustering
+    net_window_hours: int = 6
+    campaign_window_minutes: int = 120
+    campaign_min_group: int = 4
+    gamma_min: float = 0.70
+    gamma_note_min: float = 0.60
+    note_jaccard: float = 0.70
+    note_template_jaccard: float = 0.85
+
+    # Weights
+    note_base: float = 0.45
+    note_len_scale: float = 0.55
+    note_len_ref: int = 200
+    note_junk: float = 0.15
+    note_template_dup: float = 0.35
+    q_type_unknown: float = 0.75
+    q_ev_screenshot: float = 0.08
+    q_ev_amount: float = 0.04
+    q_ev_cap: float = 1.10
+    q_t_1h: float = 1.00
+    q_t_24h: float = 0.95
+    q_t_7d: float = 0.85
+    q_t_older: float = 0.60
+    q_t_90d_multiplier: float = 0.50
+    rho_base: float = 0.70
+    rho_slope: float = 0.60
+    rho_min: float = 0.70
+    rho_max: float = 1.10
+
+    # Alerts
+    alert_trusted_w_floor: float = 0.40
+    alert_spike_min_count: int = 5
+    alert_spike_ratio: float = 2.0
+    alert_net_diversity_min: int = 3
+    alert_new_type_min_clusters: int = 3
+
+    # Rate limits
+    rl_rid_per_hour: int = 10
+    rl_rid_per_day: int = 30
+    rl_net_per_hour: int = 40
+
+    # Expiry
+    expiry_days: int = 180
+    expiry_score_floor: float = 0.50
+
+    # Display floor (PRD-mandated)
+    mask_below_reporters: int = 3</pre>
+
+<h2>7 · Twelve-Scenario Simulation</h2>
+<p>Numbers use the <strong>recommended</strong> config and are <strong>illustrative only</strong>. Common assumptions: <code>α₀=0.5, β₀=1.5</code>, new-reporter <code>ρ=1.0</code>, <code>q_type=q_evidence=1.0</code>, <code>q_temporal=0.95</code> (filed within 24 h). <code>S = (0.5+E)/(2.0+E+D)</code>.</p>
+
+<h3>S1 · Organic genuine wave</h3>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Raw reports</td><td>7</td></tr>
+<tr><td>Distinct <code>rid_fp</code></td><td>7</td></tr>
+<tr><td>Network clusters</td><td>7, no time overlap</td></tr>
+<tr><td><strong>c</strong></td><td><strong>7</strong></td></tr>
+<tr><td>Per-report weight</td><td>L≈120 → q_note=0.78; w = 0.74</td></tr>
+<tr><td><strong>E</strong></td><td>5.18</td></tr>
+<tr><td><strong>S</strong></td><td><strong>0.791</strong></td></tr>
+<tr><td>State</td><td><strong>HIGH_CONFIDENCE</strong></td></tr>
+<tr><td><strong>Verdict</strong></td><td><strong>KNOWN_SCAM</strong></td></tr>
+<tr><td>Map count</td><td>7</td></tr>
+<tr><td>Alert</td><td>SPIKE fires if baseline &lt; 3.5; net diversity 7 ≥ 3</td></tr>
+<tr><td>Privacy</td><td>c ≥ 3 → full</td></tr>
+</tbody>
+</table>
+
+<h3>S2 · 40-friend bombing</h3>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Reports</td><td>40</td></tr>
+<tr><td>Distinct rid</td><td>40</td></tr>
+<tr><td>Clusters</td><td>40 before, <strong>1</strong> after campaign collapse</td></tr>
+<tr><td><strong>c</strong></td><td><strong>1</strong></td></tr>
+<tr><td>Per-report weight</td><td>3 templates → q_note=0.35, w=0.33</td></tr>
+<tr><td>Campaign</td><td>γ_note≈0.95, γ≈0.90 → collapsed; v_G≈0.33</td></tr>
+<tr><td><strong>E</strong></td><td><strong>0.33</strong></td></tr>
+<tr><td><strong>S</strong></td><td><strong>0.356</strong></td></tr>
+<tr><td>State</td><td><strong>UNVERIFIED</strong></td></tr>
+<tr><td><strong>Verdict</strong></td><td><strong>SUSPICIOUS</strong></td></tr>
+<tr><td>Map count</td><td><strong>1</strong></td></tr>
+<tr><td>Alert</td><td>n24=1, diversity=1 → suppressed</td></tr>
+<tr><td>Privacy</td><td>c=1 → masked</td></tr>
+</tbody>
+</table>
+
+<h3>S3 · 22 accounts, 1 Wi-Fi</h3>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Reports</td><td>22</td></tr>
+<tr><td>Distinct rid</td><td>22</td></tr>
+<tr><td>Clusters</td><td><strong>1</strong> (one net, 25 min)</td></tr>
+<tr><td><strong>c</strong></td><td><strong>1</strong></td></tr>
+<tr><td>Per-report weight</td><td>q_note=0.505, w=0.48</td></tr>
+<tr><td><strong>E</strong></td><td><strong>0.48</strong></td></tr>
+<tr><td><strong>S</strong></td><td><strong>0.395</strong></td></tr>
+<tr><td>State</td><td><strong>UNVERIFIED</strong></td></tr>
+<tr><td><strong>Verdict</strong></td><td><strong>SUSPICIOUS</strong>, masked</td></tr>
+<tr><td>Alert</td><td>Suppressed</td></tr>
+</tbody>
+</table>
+
+<h3>S4 · Six repeats, one reporter</h3>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Reports</td><td>6</td></tr>
+<tr><td>Distinct rid</td><td>1</td></tr>
+<tr><td>Clusters</td><td><strong>1</strong></td></tr>
+<tr><td><strong>c</strong></td><td><strong>1</strong></td></tr>
+<tr><td>Per-report weight</td><td>best = 0.69</td></tr>
+<tr><td><strong>E</strong></td><td><strong>0.69</strong> (not 4.14)</td></tr>
+<tr><td><strong>S</strong></td><td><strong>0.442</strong></td></tr>
+<tr><td>State</td><td><strong>UNVERIFIED</strong></td></tr>
+<tr><td><strong>Verdict</strong></td><td><strong>SUSPICIOUS</strong>, masked</td></tr>
+</tbody>
+</table>
+
+<h3>S5 · Junk</h3>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Reports</td><td>3</td></tr>
+<tr><td>Accepted</td><td><strong>0</strong> (400 at gate)</td></tr>
+<tr><td><strong>c</strong></td><td>0</td></tr>
+<tr><td><strong>E</strong></td><td>0</td></tr>
+<tr><td>State</td><td><strong>NO_REPORTS</strong></td></tr>
+<tr><td><strong>Verdict</strong></td><td><strong>NO_REPORTS</strong></td></tr>
+<tr><td>Privacy</td><td>Nothing stored</td></tr>
+</tbody>
+</table>
+
+<h3>S6 · Paraphrase coordination &nbsp;— <em>weakest point</em></h3>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Reports</td><td>15</td></tr>
+<tr><td>Distinct rid</td><td>15</td></tr>
+<tr><td>Clusters</td><td>15, 40 min</td></tr>
+<tr><td><strong>c</strong></td><td><strong>15</strong></td></tr>
+<tr><td>Per-report weight</td><td>L≈80 → q_note=0.67, w=0.636</td></tr>
+<tr><td>Campaign</td><td>γ_note≈0.20 &lt; 0.60 → <strong>not collapsed</strong></td></tr>
+<tr><td><strong>E</strong></td><td>9.54</td></tr>
+<tr><td><strong>S</strong></td><td><strong>0.874</strong></td></tr>
+<tr><td>State</td><td><strong>HIGH_CONFIDENCE</strong></td></tr>
+<tr><td><strong>Verdict</strong></td><td><strong>KNOWN_SCAM</strong> — residual risk</td></tr>
+</tbody>
+</table>
+
+<h3>S7 · Replay / backdated</h3>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Reports</td><td>12, occurred_at 3–18 mo ago</td></tr>
+<tr><td>Accepted</td><td>12, all <code>BACKDATED</code></td></tr>
+<tr><td><code>q_temporal</code></td><td>0.60 × 0.5 = 0.30</td></tr>
+<tr><td>E</td><td>deeply discounted</td></tr>
+<tr><td>State</td><td>unchanged</td></tr>
+<tr><td>Verdict</td><td><strong>SUSPICIOUS</strong> at most</td></tr>
+<tr><td>Alert</td><td><strong>None</strong> (out of windows)</td></tr>
+</tbody>
+</table>
+
+<h3>S8 · Geographic manipulation</h3>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Reports</td><td>30 to one pincode</td></tr>
+<tr><td>c after collapse</td><td><strong>1</strong></td></tr>
+<tr><td>E</td><td>≈ 0.33</td></tr>
+<tr><td>Map count</td><td><strong>1</strong></td></tr>
+<tr><td>Alert</td><td><strong>None</strong></td></tr>
+<tr><td>Verdict</td><td><code>SUSPICIOUS</code>, masked</td></tr>
+</tbody>
+</table>
+
+<h3>S9 · Verified business under attack</h3>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Reports</td><td>40</td></tr>
+<tr><td>Reports against allowlisted</td><td>40</td></tr>
+<tr><td>Short-circuit</td><td><strong>step 1</strong></td></tr>
+<tr><td>V

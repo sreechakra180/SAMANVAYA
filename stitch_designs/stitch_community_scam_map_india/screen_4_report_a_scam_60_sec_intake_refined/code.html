@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..500,0..1,-25..0&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+      }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-[#0b0f17] text-[#f1f5f9] antialiased min-h-screen flex flex-col selection:bg-cyan-500/20 selection:text-cyan-300">
+<!-- Header -->
+<header class="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#0b0f17]/80 backdrop-blur-xl transition-all">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+<div class="flex items-center gap-6">
+<a class="flex items-center gap-2.5 group" href="#">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-black font-semibold text-sm shadow-[0_0_15px_rgba(6,182,212,0.35)]">
+<span class="material-symbols-outlined text-[19px] text-[#0b0f17]">shield</span>
+</div>
+<span class="font-semibold text-[15px] tracking-tight text-white group-hover:text-cyan-400 transition-colors">ScamMap</span>
+<div class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-950/70 border border-cyan-800/40 text-[11px] font-medium text-cyan-400">
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Live telemetry
+          </div>
+</a>
+<nav class="hidden md:flex items-center gap-1 pl-2">
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-white bg-white/[0.07] border border-white/[0.06] transition-colors" href="#">Lookup</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Report</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Radar</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Alerts</a>
+<a class="px-3 py-1.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors" href="#">Directory</a>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<a class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-[12px] font-medium transition-all group" href="tel:1930">
+<span class="material-symbols-outlined text-[14px] text-rose-400 group-hover:scale-110 transition-transform">phone_in_talk</span>
+<span>Dial 1930</span>
+</a>
+<div class="h-4 w-[1px] bg-white/[0.1] hidden sm:block"></div>
+<button class="w-7 h-7 rounded-full bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] flex items-center justify-center text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[17px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full relative"><div class="flex flex-col w-full">
+<div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+<!-- Top Metadata Bar / Micro Tracker -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface-container-low p-4 rounded-xl shadow-sm">
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-primary text-on-primary font-mono-data text-mono-data">
+          04
+        </span>
+<div>
+<div class="flex items-center gap-2">
+<h1 class="font-headline-sm text-headline-sm text-on-surface">Rapid Incident Intake</h1>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-caption text-caption tracking-wider uppercase">
+              T-Zero Telemetry
+            </span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">Deterministic 60-second citizen vector triage · Ephemeral relay active</p>
+</div>
+</div>
+<!-- Live Pipeline Gauge -->
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2.5">
+<div class="relative w-8 h-8">
+<svg class="w-8 h-8 -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-variant" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-secondary transition-all duration-300" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" id="progress-ring" stroke="currentColor" stroke-dasharray="100, 100" stroke-dashoffset="85" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-mono-data text-label-sm text-on-surface" id="step-number">1/5</span>
+</div>
+<div class="flex flex-col">
+<span class="font-caption text-caption text-outline uppercase tracking-wider">Session Envelope</span>
+<span class="font-label-md text-label-md text-on-surface" id="step-name">Incident Channel</span>
+</div>
+</div>
+<div class="hidden sm:flex items-center gap-2 bg-surface-container-highest px-3 py-1.5 rounded-lg font-mono-data text-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[15px] text-secondary">verified_user</span>
+<span>Zero-PII Gateway</span>
+</div>
+</div>
+</div>
+<!-- Main Workspace Layout: Form Canvas (7 Cols) + Cryptographic Sidebar (5 Cols) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Primary Intake Canvas -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Step 1: Channel Selector Cards -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-mono-data text-label-sm text-outline">01</span>
+<h2 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Incident Channel</h2>
+</div>
+<span class="font-caption text-caption text-secondary font-medium">Vector Categorization</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="channel-grid">
+<button class="channel-card group p-3.5 rounded-lg bg-surface-container-low text-left transition-all duration-150 hover:bg-surface-container flex flex-col justify-between h-24" data-channel="voice" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="material-symbols-outlined text-[20px] text-on-surface group-hover:text-secondary transition-colors">phone_in_talk</span>
+<span class="indicator-dot w-2 h-2 rounded-full bg-outline-variant transition-colors"></span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Phone Call</div>
+<div class="font-caption text-caption text-outline">VoIP / GSM / Spoof</div>
+</div>
+</button>
+<button class="channel-card group p-3.5 rounded-lg bg-surface-container-low text-left transition-all duration-150 hover:bg-surface-container flex flex-col justify-between h-24" data-channel="messaging" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="material-symbols-outlined text-[20px] text-on-surface group-hover:text-secondary transition-colors">chat</span>
+<span class="indicator-dot w-2 h-2 rounded-full bg-outline-variant transition-colors"></span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">SMS / WhatsApp</div>
+<div class="font-caption text-caption text-outline">Smishing / Telegram</div>
+</div>
+</button>
+<button class="channel-card group p-3.5 rounded-lg bg-surface-container-low text-left transition-all duration-150 hover:bg-surface-container flex flex-col justify-between h-24" data-channel="qr" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="material-symbols-outlined text-[20px] text-on-surface group-hover:text-secondary transition-colors">qr_code_scanner</span>
+<span class="indicator-dot w-2 h-2 rounded-full bg-outline-variant transition-colors"></span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">QR Code</div>
+<div class="font-caption text-caption text-outline">Reverse Static / Quishing</div>
+</div>
+</button>
+<button class="channel-card group p-3.5 rounded-lg bg-surface-container-low text-left transition-all duration-150 hover:bg-surface-container flex flex-col justify-between h-24" data-channel="web" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="material-symbols-outlined text-[20px] text-on-surface group-hover:text-secondary transition-colors">language</span>
+<span class="indicator-dot w-2 h-2 rounded-full bg-outline-variant transition-colors"></span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Fake Web Portal</div>
+<div class="font-caption text-caption text-outline">Typosquat / Clone</div>
+</div>
+</button>
+<button class="channel-card group p-3.5 rounded-lg bg-surface-container-low text-left transition-all duration-150 hover:bg-surface-container flex flex-col justify-between h-24" data-channel="upi" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="material-symbols-outlined text-[20px] text-on-surface group-hover:text-secondary transition-colors">account_balance_wallet</span>
+<span class="indicator-dot w-2 h-2 rounded-full bg-outline-variant transition-colors"></span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">UPI Request</div>
+<div class="font-caption text-caption text-outline">Collect VPA / Escrow trap</div>
+</div>
+</button>
+<button class="channel-card group p-3.5 rounded-lg bg-surface-container-low text-left transition-all duration-150 hover:bg-surface-container flex flex-col justify-between h-24" data-channel="other" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="material-symbols-outlined text-[20px] text-on-surface group-hover:text-secondary transition-colors">more_horiz</span>
+<span class="indicator-dot w-2 h-2 rounded-full bg-outline-variant transition-colors"></span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Other Carrier</div>
+<div class="font-caption text-caption text-outline">App APK / Remote access</div>
+</div>
+</button>
+</div>
+</section>
+<!-- Step 2: Temporal Window -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-mono-data text-label-sm text-outline">02</span>
+<h2 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Incident Recency</h2>
+</div>
+<span class="font-caption text-caption text-outline">Golden Hour Window</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="timing-group">
+<button class="timing-pill py-2.5 px-3 rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface text-center transition-all hover:bg-surface-container" data-timing="1hr" type="button">
+              &lt; 1 hr ago
+            </button>
+<button class="timing-pill py-2.5 px-3 rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface text-center transition-all hover:bg-surface-container" data-timing="today" type="button">
+              Today
+            </button>
+<button class="timing-pill py-2.5 px-3 rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface text-center transition-all hover:bg-surface-container" data-timing="yesterday" type="button">
+              Yesterday
+            </button>
+<button class="timing-pill py-2.5 px-3 rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface text-center transition-all hover:bg-surface-container" data-timing="earlier" type="button">
+              Earlier
+            </button>
+</div>
+</section>
+<!-- Step 3: Identifier & Client Hash Detection -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-mono-data text-label-sm text-outline">03</span>
+<h2 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Entity Identifier</h2>
+</div>
+<span class="font-mono-data text-caption text-secondary">SHA-256 Client-Hashed</span>
+</div>
+<div class="space-y-2">
+<div class="relative flex items-center">
+<span class="absolute left-3.5 material-symbols-outlined text-[18px] text-outline">fingerprint</span>
+<input class="w-full pl-10 pr-24 py-3 bg-surface-container-low rounded-lg font-mono-data text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all" id="raw-identifier" placeholder="Phone (+91...), UPI ID (handle@bank), Domain, or Bank A/C" type="text"/>
+<button class="absolute right-2 px-2.5 py-1.5 rounded-md bg-surface-container font-mono-data text-caption text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-1" id="paste-btn" type="button">
+<span class="material-symbols-outlined text-[14px]">content_paste</span>
+<span>Paste</span>
+</button>
+</div>
+<!-- Auto Detection & Ephemeral Hash Badge -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 rounded-lg bg-surface-container text-on-surface font-mono-data text-caption" id="detection-badge">
+<div class="flex items-center gap-2 truncate">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-medium text-on-surface" id="detected-type">Awaiting Input</span>
+<span class="text-outline">·</span>
+<span class="text-outline truncate" id="detected-salt">Ephemeral Salt: 0x8F9A...43A1</span>
+</div>
+<span class="text-outline shrink-0">Zero cleartext logged</span>
+</div>
+</div>
+</section>
+<!-- Step 4: Geographic Zone Centroid -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-mono-data text-label-sm text-outline">04</span>
+<h2 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Spatial Cluster Area</h2>
+</div>
+<span class="font-mono-data text-caption text-outline">Centroid Node</span>
+</div>
+<div class="space-y-2">
+<div class="relative">
+<select class="w-full appearance-none px-4 py-3 bg-surface-container-low rounded-lg font-mono-data text-body-md text-on-surface focus:outline-none focus:bg-surface-container transition-all" id="zone-select">
+<option disabled="" selected="" value="">Select a Regional Threat Zone (25 Node Topology)...</option>
+<option value="BLR_09">Bengaluru Urban #09 (Karnataka Tech Node)</option>
+<option value="NCR_01">Delhi NCR #01 (Central Capital Cluster)</option>
+<option value="MUM_04">Mumbai Metropolitan #04 (Fin-Risk Core)</option>
+<option value="HYD_02">Cyberabad #02 (Telangana Telecom Node)</option>
+<option value="PUN_07">Pune Cluster #07 (Western Industrial Zone)</option>
+<option value="KOL_03">Kolkata Urban #03 (Eastern Regional Center)</option>
+<option value="CHN_05">Chennai Core #05 (South Coast Arc)</option>
+<option value="AMD_08">Ahmedabad Node #08 (Gujarat Corridor)</option>
+<option value="JAI_12">Jaipur Metro #12 (Northern Gateway)</option>
+<option value="LKO_14">Lucknow Node #14 (Central Plains)</option>
+<option value="PAT_19">Patna Node #19 (Eastern Corridor)</option>
+<option value="BHO_11">Bhopal Cluster #11 (Central Node)</option>
+<option value="CHD_06">Chandigarh Tri-City #06 (Northern Perimeter)</option>
+<option value="KOC_10">Kochi Urban #10 (Malabar Coast Node)</option>
+<option value="IND_15">Indore Node #15 (Western Central)</option>
+<option value="NAG_16">Nagpur Hub #16 (Central Transit Arc)</option>
+<option value="SUR_17">Surat Industrial #17 (Western Coast)</option>
+<option value="VIZ_18">Visakhapatnam #18 (Bay Coast Node)</option>
+<option value="BHU_20">Bhubaneswar #20 (Odisha Coastal)</option>
+<option value="GUW_21">Guwahati Node #21 (North East Hub)</option>
+<option value="RAN_22">Ranchi Node #22 (Chota Nagpur Area)</option>
+<option value="DEH_23">Dehradun #23 (Himalayan Foothills)</option>
+<option value="COI_24">Coimbatore #24 (Southern Hub)</option>
+<option value="VAR_25">Varanasi Hub #25 (Ganges Basin Node)</option>
+<option value="EXT_00">National Unassigned (Direct Centroid 00)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-outline">
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-1 font-caption text-caption text-outline">
+<span class="material-symbols-outlined text-[14px]">location_disabled</span>
+<span>Zero GPS capture. Coordinates snapped to fixed centroid of selected operational zone.</span>
+</div>
+</div>
+</section>
+<!-- Step 5: Modus Operandi & Context -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-mono-data text-label-sm text-outline">05</span>
+<h2 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Modus &amp; Signal Metadata</h2>
+</div>
+<span class="font-caption text-caption text-outline">Categorical Match</span>
+</div>
+<!-- Modus Operandi Selection Pills -->
+<div class="flex flex-wrap gap-2" id="vector-pills">
+<button class="vector-pill px-3 py-1.5 rounded-full bg-surface-container-low font-label-sm text-label-sm text-on-surface hover:bg-surface-container transition-all" type="button">Digital Arrest</button>
+<button class="vector-pill px-3 py-1.5 rounded-full bg-surface-container-low font-label-sm text-label-sm text-on-surface hover:bg-surface-container transition-all" type="button">Electricity KYC</button>
+<button class="vector-pill px-3 py-1.5 rounded-full bg-surface-container-low font-label-sm text-label-sm text-on-surface hover:bg-surface-container transition-all" type="button">UPI Reverse QR</button>
+<button class="vector-pill px-3 py-1.5 rounded-full bg-surface-container-low font-label-sm text-label-sm text-on-surface hover:bg-surface-container transition-all" type="button">Part-Time Job Offer</button>
+<button class="vector-pill px-3 py-1.5 rounded-full bg-surface-container-low font-label-sm text-label-sm text-on-surface hover:bg-surface-container transition-all" type="button">Instant Loan App</button>
+<button class="vector-pill px-3 py-1.5 rounded-full bg-surface-container-low font-label-sm text-label-sm text-on-surface hover:bg-surface-container transition-all" type="button">Customs Parcel Impersonation</button>
+</div>
+<!-- 280-char Summary -->
+<div class="space-y-1.5">
+<div class="relative">
+<textarea class="w-full p-3.5 bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all resize-none" id="intake-summary" maxlength="280" placeholder="Brief narrative: What did the actor claim? (e.g. 'Posed as CBI inspector demanding WhatsApp video call to avoid immediate freeze of bank account')." rows="3"></textarea>
+<div class="absolute bottom-2.5 right-3 font-mono-data text-caption text-outline">
+<span id="char-count">0</span>/280
+              </div>
+</div>
+</div>
+<!-- Client-side Proof Checkbox -->
+<label class="flex items-start gap-3 p-3 rounded-lg bg-surface-container-low cursor-pointer group hover:bg-surface-container transition-colors">
+<div class="relative flex items-center justify-center mt-0.5">
+<input class="peer appearance-none w-4 h-4 rounded bg-surface-container-highest checked:bg-secondary checked:text-on-secondary transition-all" id="proof-signal" type="checkbox"/>
+<span class="material-symbols-outlined text-[13px] text-on-secondary absolute pointer-events-none hidden peer-checked:block">check</span>
+</div>
+<div class="space-y-0.5">
+<div class="font-label-md text-label-md text-on-surface">Screenshot proof available locally on this device</div>
+<div class="font-caption text-caption text-outline">Zero image upload required. A cryptographic boolean token flag is attached to the threat cluster for corroboration score.</div>
+</div>
+</label>
+</section>
+<!-- Submit Bar CTA -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-fixed-variant">
+<span class="material-symbols-outlined text-[20px]">enhanced_encryption</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Zero-Knowledge Transmission</div>
+<div class="font-caption text-caption text-outline">Payload discarded from memory instantly post-broadcast</div>
+</div>
+</div>
+<button class="w-full sm:w-auto px-6 py-3 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all flex items-center justify-center gap-2 group shadow-sm active:scale-[0.99]" id="submit-report-btn" type="button">
+<span>Submit Anonymous Report (Zero-PII)</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Compact Technical Specification Rail (Right Rail) -->
+<aside class="lg:col-span-4 space-y-6">
+<!-- Visual Ingestion Diagram Card -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface">Ingestion Protocol</span>
+<span class="font-mono-data text-caption text-secondary">ZKP v2.4</span>
+</div>
+<!-- Interactive Cryptographic Topology Preview -->
+<div class="p-3.5 bg-surface-container-low rounded-lg space-y-3">
+<div class="flex items-center justify-between text-caption font-caption text-outline">
+<span>PII REDACTION PIPELINE</span>
+<span class="text-secondary font-mono-data">STATUS: ACTIVE</span>
+</div>
+<!-- Mini Visual Flow Graphic -->
+<div class="space-y-2 py-1">
+<div class="flex items-center gap-2.5">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-mono-data text-[10px] text-on-surface">1</span>
+<span class="font-mono-data text-caption text-on-surface truncate">Raw Input: Phone / VPA Handle</span>
+</div>
+<div class="ml-2.5 pl-2 py-0.5">
+<div class="w-px h-3 bg-surface-variant"></div>
+</div>
+<div class="flex items-center gap-2.5">
+<span class="w-5 h-5 rounded-full bg-surface-container-high flex items-center justify-center font-mono-data text-[10px] text-on-surface">2</span>
+<span class="font-mono-data text-caption text-on-surface truncate">Local Salt Hash: Argon2id + Node Ephemeral</span>
+</div>
+<div class="ml-2.5 pl-2 py-0.5">
+<div class="w-px h-3 bg-surface-variant"></div>
+</div>
+<div class="flex items-center gap-2.5">
+<span class="w-5 h-5 rounded-full bg-secondary-container flex items-center justify-center font-mono-data text-[10px] text-on-secondary-fixed-variant">3</span>
+<span class="font-mono-data text-caption text-secondary truncate">Broadcast to 1930 Triage Pool</span>
+</div>
+</div>
+<div class="pt-2">
+<div class="font-mono-data text-[10px] text-outline break-all bg-surface-container-lowest p-2 rounded">
+                OUT: 8f4a132...90eb_centroid_BLR09
+              </div>
+</div>
+</div>
+<div class="space-y-3 pt-1">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[17px] text-secondary mt-0.5">lock</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Client-Side Salted Hash</div>
+<div class="font-body-sm text-body-sm text-outline">Entities are hashed in your browser before network ingress. Plaintext numbers never hit national servers.</div>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[17px] text-secondary mt-0.5">speed</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface">1930 Golden Hour Broadcast</div>
+<div class="font-body-sm text-body-sm text-outline">High-confidence duplicates automatically flag correspondent nodal bank accounts for rapid-freeze intervention.</div>
+</div>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[17px] text-secondary mt-0.5">share_location</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Centroid Clustering</div>
+<div class="font-body-sm text-body-sm text-outline">Location metadata snaps strictly to coarse police station jurisdiction centroids, preventing geo-tracing.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Rapid Emergency Action Box -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm space-y-3">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+<span class="font-label-md text-label-md text-on-surface">Active Financial Loss in Progress?</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">
+            If money was debited within the last 120 minutes, skip standard crowdsourced deduplication and dial the Ministry of Home Affairs hotline immediately.
+          </p>
+<a class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" href="tel:1930">
+<span class="material-symbols-outlined text-[17px] text-error">phone_in_talk</span>
+<span>Emergency Dial 1930 (Golden Hour)</span>
+</a>
+</div>
+<!-- Telemetry Feed Snapshot -->
+<div class="p-4 rounded-xl bg-surface-container-low space-y-2">
+<div class="flex items-center justify-between font-mono-data text-caption">
+<span class="text-outline">INGESTION THROUGHPUT</span>
+<span class="text-secondary font-medium">84.2 ms / tx</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-secondary h-1.5 rounded-full w-4/5"></div>
+</div>
+<div class="flex items-center justify-between font-mono-data text-[11px] text-outline pt-1">
+<span>2,941 reports triangulated today</span>
+<span>0 PII preserved</span>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</div>
+<script>
+  (function () {
+    // State Tracker
+    const state = {
+      channel: null,
+      timing: null,
+      identifier: '',
+      zone: '',
+      vector: null,
+      proofSignal: false
+    };
+
+    // 1. Channel Selector
+    const channelCards = document.querySelectorAll('.channel-card');
+    channelCards.forEach(card => {
+      card.addEventListener('click', () => {
+        channelCards.forEach(c => {
+          c.classList.remove('bg-surface-container-high', 'shadow-sm');
+          c.classList.add('bg-surface-container-low');
+          const dot = c.querySelector('.indicator-dot');
+          if (dot) dot.classList.replace('bg-secondary', 'bg-outline-variant');
+        });
+        card.classList.remove('bg-surface-container-low');
+        card.classList.add('bg-surface-container-high', 'shadow-sm');
+        const activeDot = card.querySelector('.indicator-dot');
+        if (activeDot) activeDot.classList.replace('bg-outline-variant', 'bg-secondary');
+        state.channel = card.getAttribute('data-channel');
+        updateProgress();
+      });
+    });
+
+    // 2. Timing Selector
+    const timingPills = document.querySelectorAll('.timing-pill');
+    timingPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        timingPills.forEach(p => {
+          p.classList.remove('bg-primary', 'text-on-primary');
+          p.classList.add('bg-surface-container-low', 'text-on-surface');
+        });
+        pill.classList.remove('bg-surface-container-low', 'text-on-surface');
+        pill.classList.add('bg-primary', 'text-on-primary');
+        state.timing = pill.getAttribute('data-timing');
+        updateProgress();
+      });
+    });
+
+    // 3. Identifier Real-time Detection & Salt Simulation
+    const idInput = document.getElementById('raw-identifier');
+    const detectedType = document.getElementById('detected-type');
+    const detectedSalt = document.getElementById('detected-salt');
+    const pasteBtn = document.getElementById('paste-btn');
+
+    function analyzeInput(val) {
+      const v = val.trim();
+      state.identifier = v;
+      if (!v) {
+        detectedType.textContent = 'Awaiting Input';
+        detectedSalt.textContent = 'Ephemeral Salt: 0x8F9A...43A1';
+        return;
+      }
+
+      // Generate a mock SHA256 segment based on input length
+      const hexSim = '0x' + Array.from(v).map(c => c.charCodeAt(0).toString(16)).join('').slice(0, 8).toUpperCase() + '...SALTED';
+      detectedSalt.textContent = hexSim;
+
+      const cleanNum = v.replace(/[\s-]/g, '');
+      if (/^(\+91|91|0)?[6-9]\d{9}$/.test(cleanNum)) {
+        detectedType.textContent = 'Detected: Mobile Phone (+91)';
+      } else if (v.includes('@')) {
+        detectedType.textContent = 'Detected: UPI Virtual Payment Address (VPA)';
+      } else if (v.includes('.') || v.startsWith('http')) {
+        detectedType.textContent = 'Detected: FQDN / Fraudulent Web Domain';
+      } else if (/^\d{9,18}$/.test(cleanNum)) {
+        detectedType.textContent = 'Detected: Bank Account Routing Number';
+      } else {
+        detectedType.textContent = 'Detected: Generic Risk Entity Token';
+      }
+      updateProgress();
+    }
+
+    if (idInput) {
+      idInput.addEventListener('input', (e) => analyzeInput(e.target.value));
+    }
+
+    if (pasteBtn && navigator.clipboard) {
+      pasteBtn.addEventListener('click', async () => {
+        try {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            idInput.value = text;
+            analyzeInput(text);
+          }
+        } catch (err) {
+          idInput.focus();
+        }
+      });
+    }
+
+    // 4. Zone Selection
+    const zoneSelect = document.getElementById('zone-select');
+    if (zoneSelect) {
+      zoneSelect.addEventListener('change', (e) => {
+        state.zone = e.target.value;
+        updateProgress();
+      });
+    }
+
+    // 5. Vector Pills
+    const vectorPills = document.querySelectorAll('.vector-pill');
+    vectorPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        vectorPills.forEach(p => {
+          p.classList.remove('bg-primary', 'text-on-primary');
+          p.classList.add('bg-surface-container-low', 'text-on-surface');
+        });
+        pill.classList.remove('bg-surface-container-low', 'text-on-surface');
+        pill.classList.add('bg-primary', 'text-on-primary');
+        state.vector = pill.textContent.trim();
+        updateProgress();
+      });
+    });
+
+    // 6. Character Count
+    const summaryText = document.getElementById('intake-summary');
+    const charCount = document.getElementById('char-count');
+    if (summaryText && charCount) {
+      summaryText.addEventListener('input', (e) => {
+        charCount.textContent = e.target.value.length;
+      });
+    }
+
+    // Progress Ring & Counter
+    function updateProgress() {
+      let score = 0;
+      if (state.channel) score++;
+      if (state.timing) score++;
+      if (state.identifier.length > 3) score++;
+      if (state.zone) score++;
+      if (state.vector) score++;
+
+      const ring = document.getElementById('progress-ring');
+      const stepNum = document.getElementById('step-number');
+      const stepName = document.getElementById('step-name');
+
+      if (ring) {
+        // stroke-dashoffset: 100 is 0%, 0 is 100%
+        const offset = 100 - (score * 20);
+        ring.setAttribute('stroke-dashoffset', offset);
+      }
+      if (stepNum) {
+        stepNum.textContent = `${score}/5`;
+      }
+      if (stepName) {
+        const labels = [
+          'Incident Channel',
+          'Incident Recency',
+          'Entity Identifier',
+          'Spatial Cluster Area',
+          'Modus & Context',
+          'Ready to Broadcast'
+        ];
+        stepName.textContent = labels[score] || 'Payload Primed';
+      }
+    }
+
+    // Submit Simulation
+    const submitBtn = document.getElementById('submit-report-btn');
+    if (submitBtn) {
+      submitBtn.addEventListener('click', () => {
+        if (!state.channel && !state.identifier) {
+          idInput.focus();
+          return;
+        }
+        submitBtn.disabled = true;
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[18px] animate-spin">refresh</span>
+          <span>Cryptographic Relay in Progress...</span>
+        `;
+
+        setTimeout(() => {
+          submitBtn.innerHTML = `
+            <span class="material-symbols-outlined text-[18px] text-secondary">task_alt</span>
+            <span>Report Broadcast (#SCAM-9842)</span>
+          `;
+          submitBtn.classList.replace('bg-primary', 'bg-surface-container-highest');
+          submitBtn.classList.replace('text-on-primary', 'text-on-surface');
+        }, 900);
+      });
+    }
+
+  })();
+</script></main>
+<!-- Clean Minimalist Footer -->
+<footer class="border-t border-white/[0.08] bg-[#0b0f17] py-8 text-xs text-slate-500">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-slate-300">ScamMap</span>
+<span class="text-slate-600">/</span>
+<span>Civic Threat Intelligence Platform</span>
+</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-slate-300 transition-colors" href="#">Telemetry API</a>
+<a class="hover:text-slate-300 transition-colors" href="#">1930 Integration</a>
+<a class="hover:text-slate-300 transition-colors" href="#">Privacy Model</a>
+<a class="hover:text-slate-300 transition-colors" href="#">Security</a>
+</div>
+<div>© 2025 National Civic Network</div>
+</div>
+</footer>
+<script>
+    (function () {
+      const search = document.getElementById('omni-search');
+      const pill = document.getElementById('type-pill');
+      const chips = document.querySelectorAll('.sample-chip');
+
+      function evaluateQuery(val) {
+        const v = val.trim();
+        if (!v) {
+          pill.classList.add('hidden');
+          return;
+        }
+        pill.classList.remove('hidden');
+
+        if (/^(\+91|91|0)?[6-9]\d{9}$/.test(v.replace(/[\s-]/g, ''))) {
+          pill.textContent = 'Phone Detected';
+        } else if (v.includes('@')) {
+          pill.textContent = 'UPI Detected';
+        } else if (v.includes('.') || v.startsWith('http')) {
+          pill.textContent = 'URL Detected';
+        } else {
+          pill.textContent = 'Entity Query';
+        }
+      }
+
+      if (search) {
+        search.addEventListener('input', (e) => evaluateQuery(e.target.value));
+      }
+
+      chips.forEach((c) => {
+        c.addEventListener('click', () => {
+          const val = c.getAttribute('data-val');
+          if (search && val) {
+            search.value = val;
+            evaluateQuery(val);
+            search.focus();
+          }
+        });
+      });
+
+      // Quick keyboard shortcut simulation
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          if (search) search.focus();
+        }
+      });
+    })();
+  </script>
+</body></html>

@@ -1,0 +1,40 @@
+# Python & Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node & Frontend
+node_modules/
+app/frontend/node_modules/
+app/frontend/dist/
+dist/
+.eslintcache
+*.tsbuildinfo
+
+# Environment & Local Secrets
+.env
+.env.local
+
+# Databases & WAL
+scam_map.db-shm
+scam_map.db-wal
+*.sqlite3-shm
+*.sqlite3-wal
+
+# Temporary & Archive files
+*.zip
+*.log
+.claude/
+Samanvaya_*_video_mvp.mp4
+
+# OS generated
+.DS_Store
+Thumbs.db
