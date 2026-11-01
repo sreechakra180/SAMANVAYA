@@ -97,9 +97,13 @@ function SamanvayaApp() {
             initialType={lookupType}
             initialValue={lookupValue}
             initialCategory={reportCategory}
-            onDone={() => setPage('home')}
+            onDone={() => {
+              setLookupValue('')
+              setPage('home')
+            }}
             onViewLookup={handleAIScanLookup}
             onViewAlerts={handleViewAlerts}
+            onResetInitial={() => setLookupValue('')}
           />
         </div>
       )}

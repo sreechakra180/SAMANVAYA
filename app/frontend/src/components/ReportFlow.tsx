@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   PhoneCall,
   MessageSquare,
@@ -13,6 +13,9 @@ import {
   FileCheck,
   Sparkles,
   BellRing,
+  Phone,
+  User,
+  IdCard,
 } from 'lucide-react'
 import { AREAS, SCAM_TYPE_OPTIONS } from '../data.js'
 import { useTranslation } from '../i18n/index.js'
@@ -26,6 +29,7 @@ interface ReportFlowProps {
   onDone?: () => void
   onViewLookup?: (type: string, value: string) => void
   onViewAlerts?: (pincode?: string) => void
+  onResetInitial?: () => void
 }
 
 const CHANNEL_MAPPING: Record<string, string> = {
@@ -44,6 +48,7 @@ export function ReportFlow({
   onDone,
   onViewLookup,
   onViewAlerts,
+  onResetInitial,
 }: ReportFlowProps) {
   const { t, lang } = useTranslation()
   const [channel, setChannel] = useState<string>('phone')
@@ -58,6 +63,19 @@ export function ReportFlow({
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [successData, setSuccessData] = useState<any | null>(null)
+
+  useEffect(() => {
+    if (initialValue) {
+      setIdentifierValue(initialValue)
+      const detected = detectIdentifierType(initialValue)
+      if (detected) {
+        setIdentifierType(detected)
+        setAutoDetected(detected)
+      } else if (initialType) {
+        setIdentifierType(initialType)
+      }
+    }
+  }, [initialValue, initialType])
 
   const handleIdentifierChange = (val: string) => {
     setIdentifierValue(val)
@@ -153,7 +171,17 @@ export function ReportFlow({
       }
 
       const data = await res.json()
-      setSuccessData(data)
+      const submittedTarget = identifierValue.trim()
+      const submittedKind = identifierType
+      setSuccessData({
+        ...data,
+        targetValue: submittedTarget,
+        targetType: submittedKind,
+      })
+      // Clear identifier value and reset form so it doesn't persist
+      setIdentifierValue('')
+      setAutoDetected(null)
+      onResetInitial?.()
     } catch (err) {
       setError((err as Error).message || 'Failed to submit report.')
     } finally {
@@ -189,7 +217,7 @@ export function ReportFlow({
           </div>
           <div className="flex justify-between text-[#78877D]">
             <span>Target Identifier:</span>
-            <span className="font-bold text-[#24543B]">{identifierValue}</span>
+            <span className="font-bold text-[#24543B]">{successData.targetValue || 'Reported Entity'}</span>
           </div>
           <div className="flex justify-between text-[#78877D]">
             <span>Pipeline Status:</span>
@@ -201,14 +229,23 @@ export function ReportFlow({
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
           <button
-            onClick={() => onViewAlerts?.(pincode)}
+            onClick={() => {
+              const pin = pincode
+              setSuccessData(null)
+              onViewAlerts?.(pin)
+            }}
             className="btn-primary !py-2 !px-5 flex items-center justify-center gap-2"
           >
             <BellRing size={14} />
             <span>View in Community Alerts</span>
           </button>
           <button
-            onClick={() => onViewLookup?.(identifierType, identifierValue)}
+            onClick={() => {
+              const t = successData.targetType || 'phone'
+              const v = successData.targetValue || ''
+              setSuccessData(null)
+              onViewLookup?.(t, v)
+            }}
             className="btn-secondary !py-2 !px-5 flex items-center justify-center gap-2"
           >
             <span>Verify in Threat Lookup</span>
@@ -218,8 +255,8 @@ export function ReportFlow({
             onClick={() => {
               setSuccessData(null)
               setIdentifierValue('')
+              setAutoDetected(null)
               setNote('')
-              onDone?.()
             }}
             className="btn-secondary !py-2 !px-4 !text-xs"
           >
@@ -274,55 +311,88 @@ export function ReportFlow({
           </div>
 
           {/* 2. Identifier Type & Value */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <label className="text-xs font-mono uppercase tracking-wider text-[#78877D] font-semibold">
-                  {t.report.identifierTypeLabel} &amp; Value
-                </label>
-                {autoDetected && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#EAF3EA] border border-[#CADFCC] text-[10px] font-mono text-[#24543B] font-bold animate-fade-in">
-                    <Sparkles size={10} className="text-[#24543B]" />
-                    Auto: {getIdentifierLabel(autoDetected)}
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center gap-1 bg-[#F1F4F0] p-0.5 rounded-lg border border-[#DCE7DD]">
-                {(['phone', 'upi', 'url', 'sender_id'] as IdentifierType[]).map(typeKey => (
-                  <button
-                    type="button"
-                    key={typeKey}
-                    onClick={() => {
-                      setIdentifierType(typeKey)
-                      setAutoDetected(null)
-                    }}
-                    className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase transition-colors ${
-                      identifierType === typeKey
-                        ? 'bg-white text-[#24543B] font-bold shadow-sm'
-                        : 'text-[#78877D]'
-                    }`}
-                  >
-                    {typeKey}
-                  </button>
-                ))}
-              </div>
+          <div className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+              <label className="text-xs font-mono uppercase tracking-wider text-[#78877D] font-semibold">
+                {t.report.identifierTypeLabel} &amp; Value
+              </label>
+
+              {autoDetected && (
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAF3EA] border border-[#CADFCC] text-xs font-mono text-[#24543B] font-semibold animate-fade-in self-start sm:self-auto shadow-xs">
+                  <Sparkles size={12} className="text-[#24543B]" />
+                  <span>Auto-detected: <strong className="underline decoration-[#24543B]/40 underline-offset-2">{getIdentifierLabel(autoDetected)}</strong></span>
+                </div>
+              )}
             </div>
 
-            <input
-              type="text"
-              value={identifierValue}
-              onChange={e => handleIdentifierChange(e.target.value)}
-              placeholder={
-                identifierType === 'phone'
-                  ? 'Enter phone number (+91 98765 43210 or 0987...)'
-                  : identifierType === 'upi'
-                  ? 'Enter UPI ID (e.g. name@okhdfcbank)'
-                  : identifierType === 'url'
-                  ? 'Enter website URL (e.g. sbi-kyc-verify.top)'
-                  : 'Enter 6-char SMS sender ID (e.g. HDFCBK)'
-              }
-              className="input-editorial font-mono text-xs"
-            />
+            {/* Type Selector Tabs */}
+            <div className="flex items-center gap-1.5 p-1 bg-[#F1F4F0] border border-[#DCE7DD] rounded-xl overflow-x-auto">
+              {[
+                { key: 'phone', label: 'Phone Number', icon: <Phone size={13} /> },
+                { key: 'upi', label: 'UPI VPA', icon: <User size={13} /> },
+                { key: 'url', label: 'Website / Link', icon: <Globe size={13} /> },
+                { key: 'sender_id', label: 'SMS Sender ID', icon: <IdCard size={13} /> },
+              ].map(tab => (
+                <button
+                  type="button"
+                  key={tab.key}
+                  onClick={() => {
+                    setIdentifierType(tab.key as IdentifierType)
+                    setAutoDetected(null)
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+                    identifierType === tab.key
+                      ? 'bg-white text-[#24543B] font-bold shadow-sm'
+                      : 'text-[#78877D] hover:text-[#193A2A]'
+                  }`}
+                >
+                  {tab.icon}
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Search / Value Input */}
+            <div className="relative">
+              <div className="flex items-center gap-2.5 bg-white border border-[#DCE7DD] focus-within:border-[#24543B] focus-within:ring-2 focus-within:ring-[#24543B]/10 rounded-xl px-3.5 py-2.5 transition-all shadow-sm">
+                <div className="flex items-center gap-1.5 text-[#24543B] shrink-0 bg-[#EAF3EA] px-2.5 py-1 rounded-lg border border-[#CADFCC]/60">
+                  {identifierType === 'phone' && <Phone size={15} />}
+                  {identifierType === 'upi' && <User size={15} />}
+                  {identifierType === 'url' && <Globe size={15} />}
+                  {identifierType === 'sender_id' && <IdCard size={15} />}
+                  <span className="text-[11px] font-mono uppercase font-bold hidden sm:inline">
+                    {getIdentifierLabel(identifierType)}
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  value={identifierValue}
+                  onChange={e => handleIdentifierChange(e.target.value)}
+                  placeholder={
+                    identifierType === 'phone'
+                      ? 'Enter phone number (e.g. +91 98765 43210 or 1930)...'
+                      : identifierType === 'upi'
+                      ? 'Enter UPI ID (e.g. fraud@okhdfcbank or 9876543210@paytm)...'
+                      : identifierType === 'url'
+                      ? 'Enter website or phishing link (e.g. sbi-kyc-verify.top)...'
+                      : 'Enter 6-char TRAI SMS header (e.g. VK-HDFCBK or HDFCBK)...'
+                  }
+                  className="w-full bg-transparent text-sm text-[#193A2A] placeholder-[#78877D] focus:outline-none font-mono"
+                />
+                {identifierValue && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIdentifierValue('')
+                      setAutoDetected(null)
+                    }}
+                    className="text-xs text-[#78877D] hover:text-[#193A2A] font-mono px-2 shrink-0"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* 3. Incident Recency */}
