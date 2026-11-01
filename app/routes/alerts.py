@@ -109,11 +109,17 @@ def alerts(response: Response, pincode: Optional[str] = None, db: Session = Depe
                     "window": "24h",
                 })
 
-    # Fetch recent trusted reports for locality feed and live alerts
+    # Fetch recent trusted reports for locality feed and live alerts (strictly ordered by most recent submission first)
     recent_query = select(Report).where(Report.trust_state == 1)
     if pincode:
         recent_query = recent_query.where(Report.pincode == pincode)
-    recent_rows = db.scalars(recent_query.order_by(Report.occurred_at.desc()).limit(50)).all()
+    recent_rows = db.scalars(
+        recent_query.order_by(
+            Report.reported_at.desc(),
+            Report.ingested_at.desc(),
+            Report.occurred_at.desc(),
+        ).limit(50)
+    ).all()
 
     # Look up indicators for rich alert metadata
     ind_ids = {r.indicator_id for r in recent_rows}

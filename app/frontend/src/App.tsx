@@ -16,6 +16,7 @@ function SamanvayaApp() {
   const [lookupValue, setLookupValue] = useState<string>('')
   const [reportCategory, setReportCategory] = useState<string>('digital_arrest')
   const [alertsPincode, setAlertsPincode] = useState<string>('all')
+  const [reportSuccessNotice, setReportSuccessNotice] = useState<string | null>(null)
 
   const handleGlobalSearch = (type: string, value: string) => {
     setLookupType(type as IdentifierType)
@@ -37,7 +38,12 @@ function SamanvayaApp() {
   }
 
   const handleViewAlerts = (pin?: string) => {
-    if (pin) setAlertsPincode(pin)
+    if (pin) {
+      setAlertsPincode(pin)
+      setReportSuccessNotice(`Report Ingested Successfully! Incident registered and live in Corridor PIN ${pin}.`)
+    } else {
+      setReportSuccessNotice('Report Ingested Successfully! Incident registered and live in community defense.')
+    }
     setPage('alerts')
   }
 
@@ -86,6 +92,8 @@ function SamanvayaApp() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           <AlertsScreen
             initialPincode={alertsPincode}
+            successBanner={reportSuccessNotice}
+            onClearBanner={() => setReportSuccessNotice(null)}
             onLookupIdentifier={handleAIScanLookup}
           />
         </div>

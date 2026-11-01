@@ -19,6 +19,8 @@ import {
   User,
   Globe,
   IdCard,
+  Calendar,
+  Clock,
 } from 'lucide-react'
 import { useTranslation } from '../i18n/index.js'
 import { AREAS } from '../data.js'
@@ -26,11 +28,46 @@ import { detectIdentifierType } from '../utils/detector.js'
 
 interface AlertsScreenProps {
   initialPincode?: string
+  successBanner?: string | null
+  onClearBanner?: () => void
   onLookupIdentifier?: (type: string, value: string) => void
+}
+
+function formatFullDateTime(isoString?: string | null): { date: string; time: string; relative: string } {
+  if (!isoString) {
+    const now = new Date()
+    return {
+      date: now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
+      time: now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+      relative: 'Just Now',
+    }
+  }
+
+  const d = new Date(isoString)
+  const now = new Date()
+  const diffMs = now.getTime() - d.getTime()
+  const diffMins = Math.floor(diffMs / 60000)
+
+  let relative = 'Just Now'
+  if (diffMins > 0 && diffMins < 60) {
+    relative = `${diffMins}m ago`
+  } else if (diffMins >= 60 && diffMins < 1440) {
+    relative = `${Math.floor(diffMins / 60)}h ago`
+  } else if (diffMins >= 1440) {
+    relative = `${Math.floor(diffMins / 1440)}d ago`
+  }
+
+  return {
+    date: d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
+    time: d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+    relative,
+  }
 }
 
 export function AlertsScreen({
   initialPincode = 'all',
+  successBanner,
+  onClearBanner,
   onLookupIdentifier,
 }: AlertsScreenProps) {
   const { t, lang } = useTranslation()
@@ -130,7 +167,25 @@ export function AlertsScreen({
     : alerts
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-8 animate-fade-in">
+    <div className="w-full max-w-5xl mx-auto space-y-6 animate-fade-in">
+      {/* Live Submission Ingestion Banner */}
+      {successBanner && (
+        <div className="p-4 rounded-xl bg-[#EAF3EA] border border-[#24543B]/40 text-[#193A2A] flex items-center justify-between gap-3 shadow-sm animate-slide-up">
+          <div className="flex items-center gap-2.5 text-xs font-mono font-semibold">
+            <CheckCircle size={18} className="text-[#24543B] shrink-0" />
+            <span>{successBanner}</span>
+          </div>
+          {onClearBanner && (
+            <button
+              onClick={onClearBanner}
+              className="text-xs text-[#78877D] hover:text-[#193A2A] font-mono px-2 py-1 rounded hover:bg-white"
+            >
+              Dismiss
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Top Banner Card */}
       <div className="samanvaya-card p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -269,6 +324,7 @@ export function AlertsScreen({
                     const area = AREAS[alt.pincode]
                     const areaLabel = area ? `${area.locality}, ${area.city}` : `PIN ${alt.pincode}`
                     const isLive = alt.type === 'LIVE_REPORT'
+                    const dt = formatFullDateTime(alt.reported_at || alt.occurred_at || alt.ingested_at)
 
                     return (
                       <div
@@ -304,6 +360,22 @@ export function AlertsScreen({
                           </span>
                         </div>
 
+                        {/* Date and Timestamp Bar */}
+                        <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[#78877D] bg-[#F1F4F0] px-3 py-2 rounded-xl border border-[#DCE7DD]">
+                          <div className="flex items-center gap-1.5 font-semibold text-[#193A2A]">
+                            <Calendar size={13} className="text-[#24543B]" />
+                            <span>{dt.date}</span>
+                          </div>
+                          <span>•</span>
+                          <div className="flex items-center gap-1.5 font-semibold text-[#193A2A]">
+                            <Clock size={13} className="text-[#24543B]" />
+                            <span>{dt.time}</span>
+                          </div>
+                          <span className="px-2 py-0.5 rounded-full bg-[#EAF3EA] border border-[#CADFCC] text-[#24543B] text-[10px] font-bold ml-auto shadow-2xs">
+                            {dt.relative}
+                          </span>
+                        </div>
+
                         {/* Target Identifier Box for Live Reports */}
                         {isLive && alt.identifier_value && (
                           <div className="p-3 rounded-xl bg-[#F8FAF7] border border-[#DCE7DD] flex items-center justify-between gap-2">
@@ -336,9 +408,9 @@ export function AlertsScreen({
 
                         {/* Bottom Metadata */}
                         <div className="flex items-center justify-between text-[11px] font-mono text-[#78877D] pt-2 border-t border-[#DCE7DD]">
-                          <span>
+                          <span className="text-[#193A2A] font-medium">
                             {isLive
-                              ? (alt.occurred_at ? `Reported ${new Date(alt.occurred_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Just Now')
+                              ? `Logged: ${dt.date} at ${dt.time}`
                               : (alt.type === 'SPIKE' ? `24h Volume: ${alt.count} (vs ${alt.baseline_per_day}/day)` : 'Novel Threat Category')}
                           </span>
                           <a href="tel:1930" className="text-[#24543B] hover:underline font-semibold flex items-center gap-1">
@@ -419,13 +491,25 @@ export function AlertsScreen({
                             </div>
                           </div>
 
-                          <div className="text-left sm:text-right shrink-0">
-                            <span className="text-[11px] font-mono text-[#78877D] block">
-                              {rep.occurred_at ? new Date(rep.occurred_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recent'}
-                            </span>
-                            <span className="text-[10px] font-mono text-[#24543B] font-bold">
-                              STATUS: LOGGED &amp; VERIFIED
-                            </span>
+                          <div className="text-left sm:text-right shrink-0 font-mono">
+                            {(() => {
+                              const repDt = formatFullDateTime(rep.reported_at || rep.occurred_at || rep.ingested_at)
+                              return (
+                                <>
+                                  <div className="flex sm:flex-col items-baseline sm:items-end gap-1.5 sm:gap-0.5">
+                                    <span className="text-xs font-bold text-[#193A2A]">
+                                      {repDt.date}
+                                    </span>
+                                    <span className="text-[11px] text-[#78877D]">
+                                      {repDt.time} ({repDt.relative})
+                                    </span>
+                                  </div>
+                                  <span className="text-[10px] font-mono text-[#24543B] font-bold block mt-0.5">
+                                    STATUS: LOGGED &amp; VERIFIED
+                                  </span>
+                                </>
+                              )
+                            })()}
                           </div>
                         </div>
                       )

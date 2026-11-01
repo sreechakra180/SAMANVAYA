@@ -171,17 +171,15 @@ export function ReportFlow({
       }
 
       const data = await res.json()
-      const submittedTarget = identifierValue.trim()
-      const submittedKind = identifierType
-      setSuccessData({
-        ...data,
-        targetValue: submittedTarget,
-        targetType: submittedKind,
-      })
+      const reportedPincode = pincode
+
       // Clear identifier value and reset form so it doesn't persist
       setIdentifierValue('')
       setAutoDetected(null)
       onResetInitial?.()
+
+      // Automatically navigate directly to Alerts tab with the reported corridor!
+      onViewAlerts?.(reportedPincode)
     } catch (err) {
       setError((err as Error).message || 'Failed to submit report.')
     } finally {
